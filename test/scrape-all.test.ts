@@ -2,15 +2,25 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { test } from "node:test";
+import { beforeEach, test } from "node:test";
 import type { Product, SourceProduct } from "../src/types.js";
 
 // Config is read at import time: set it first, then import the modules.
-process.env.OUTPUT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "rae-run-"));
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-run-"));
+process.env.OUTPUT_DIR = tmp;
 process.env.CONCURRENCY = "2";
 process.env.DELAY_MS = "0";
+process.env.MAX_ATTEMPTS = "2";
 const { BlockedError } = await import("../src/lib/http.js");
+const { closeState, initState } = await import("../src/lib/state.js");
 const { scrapeAll } = await import("../src/scrape/scrape-all.js");
+
+// Every test starts from an empty state.
+let run = 0;
+beforeEach(() => {
+  closeState();
+  initState(path.join(tmp, `state-${++run}.db`));
+});
 
 const sources: SourceProduct[] = Array.from({ length: 10 }, (_, i) => ({
   id: `P${i}`,
@@ -49,4 +59,37 @@ test("stops and skips the rest when the site keeps blocking", async () => {
   assert.equal(products.length, 0);
   assert.equal(failures.length, sources.length);
   assert.ok(skipped.length > 0, "the queue should stop before trying every product");
+});
+
+test("resumes: a second run only scrapes what is missing and returns everything", async () => {
+  await scrapeAll(sources, async (s) => {
+    if (s.id === "P3") throw new Error("boom");
+    return product(s);
+  });
+
+  const scraped: string[] = [];
+  const { products, failures } = await scrapeAll(sources, async (s) => {
+    scraped.push(s.id);
+    return product(s);
+  });
+  assert.deepEqual(scraped, ["P3"]);
+  assert.equal(products.length, 10);
+  assert.equal(failures.length, 0);
+});
+
+test("abandons a product after MAX_ATTEMPTS failed runs", async () => {
+  const failP3 = async (s: SourceProduct) => {
+    if (s.id === "P3") throw new Error("boom");
+    return product(s);
+  };
+  await scrapeAll(sources, failP3);
+  await scrapeAll(sources, failP3); // 2nd failure = MAX_ATTEMPTS
+
+  const scraped: string[] = [];
+  const { failures } = await scrapeAll(sources, async (s) => {
+    scraped.push(s.id);
+    return product(s);
+  });
+  assert.deepEqual(scraped, []);
+  assert.deepEqual(failures.map((f) => [f.id, f.reason]), [["P3", "abandoned after 2 failed attempts"]]);
 });

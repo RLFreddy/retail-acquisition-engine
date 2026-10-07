@@ -13,6 +13,7 @@ export const LIMIT = readIntEnv("LIMIT", 0); // 0 = all products
 export const CONCURRENCY = Math.max(1, readIntEnv("CONCURRENCY", 4));
 export const DELAY_MS = readIntEnv("DELAY_MS", 500); // at most one product starts every DELAY_MS
 export const RETRIES = readIntEnv("RETRIES", 4);
+export const MAX_ATTEMPTS = readIntEnv("MAX_ATTEMPTS", 5); // failed runs before a product is abandoned
 export const RETRY_DELAY_MS = readIntEnv("RETRY_DELAY_MS", 5_000); // doubled on each retry
 export const TIMEOUT_MS = readIntEnv("TIMEOUT_MS", 20_000);
 
