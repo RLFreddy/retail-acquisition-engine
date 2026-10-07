@@ -6,3 +6,4 @@ data_docker/
 *.db
 *.db-wal
 *.db-shm
+results/

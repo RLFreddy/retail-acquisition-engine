@@ -9,7 +9,8 @@ page: no headless browser, one request per product.
 
 ## Results
 
-Full run of the 700 products in the CSV:
+Full run of the 700 products in the CSV (output in `results/`, a 5-product
+sample in [`sample-output/`](sample-output/)):
 
 | Metric                  | Value                                         |
 | ----------------------- | --------------------------------------------- |
@@ -49,7 +50,15 @@ make docker-run LIMIT=10
 ```
 
 **Output** goes to `data/` (`data_docker/` with Docker). The folder is
-git-ignored because `output.json` is ~110 MB.
+git-ignored because `output.json` is ~110 MB. Two copies come with the
+submission:
+
+- [`sample-output/`](sample-output/) (in git): 5 products of different types
+  (putter, iron set, wedge, driver shaft, hybrid), in exactly the same format as
+  the full output, plus the full run's `run-report.json`. No need to run
+  anything to see the result.
+- `results/` (not in git, delivered separately): the full output of the run
+  described above, also as `retail-acquisition-engine-results.zip` (4.4 MB).
 
 **Configuration** is optional: copy `.env.example` to `.env`. It covers the
 input CSV, output folder, concurrency, delays, retries and thresholds. One
