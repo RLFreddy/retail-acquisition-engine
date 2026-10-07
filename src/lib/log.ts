@@ -5,27 +5,43 @@ import { OUTPUT_DIR } from "../config.js";
 
 export const LOG_FILE = path.join(OUTPUT_DIR, "logs", "run.log");
 
-const LEVELS: Record<number, [label: string, color: "green" | "yellow" | "red"]> = {
-  30: ["INFO ", "green"],
-  40: ["WARN ", "yellow"],
+type Color = "blue" | "green" | "yellow" | "red";
+const LEVELS: Record<number, [label: string, color: Color]> = {
+  20: ["DEBUG", "blue"],
+  30: ["INFO", "green"],
+  40: ["WARN", "yellow"],
   50: ["ERROR", "red"],
   60: ["FATAL", "red"],
 };
+const LABEL_WIDTH = 5;
 
-// Crawlee-style console line: "INFO  Scraper: message". styleText already
-// follows the color conventions: TTY detection, NO_COLOR and FORCE_COLOR.
+const style = (format: Parameters<typeof styleText>[0], text: string) =>
+  styleText(format, text, { stream: process.stderr });
+
+// Same layout and colors as Crawlee's text logger (@apify/log LoggerText):
+//   INFO  Scraper: message {"data":"in gray"}
+// styleText already follows the color conventions (TTY, NO_COLOR, FORCE_COLOR).
 const consoleStream = {
   write(line: string) {
-    const { level, msg } = JSON.parse(line) as { level: number; msg: string };
+    const { level, msg, data, err } = JSON.parse(line) as {
+      level: number;
+      msg: string;
+      data?: unknown;
+      err?: { stack?: string };
+    };
     const [label, color] = LEVELS[level] ?? LEVELS[30]!;
-    const style = (format: Parameters<typeof styleText>[0], text: string) =>
-      styleText(format, text, { stream: process.stderr });
-    process.stderr.write(`${style(color, label)} ${style("gray", "Scraper:")} ${msg}\n`);
+    const dataText = data === undefined ? "" : style("gray", ` ${JSON.stringify(data)}`);
+    const stack = (err?.stack?.split("\n").slice(1) ?? [])
+      .map((frame) => `\n  ${style("gray", frame.trim())}`)
+      .join("");
+    process.stderr.write(
+      `${style(color, label.padEnd(LABEL_WIDTH))}${style("yellow", " Scraper:")} ${msg}${dataText}${stack}\n`,
+    );
   },
 };
 
-// Usage: log.info(fields, message). The console shows the message (on
-// stderr); run.log gets one JSON line with the message and the fields.
+// Usage: log.info({ event, data }, message). The console shows the message
+// plus `data` in gray; run.log gets every field as one JSON line.
 export const log = pino(
   { level: "debug" },
   pino.multistream([

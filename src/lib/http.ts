@@ -51,8 +51,8 @@ export async function fetchHtml(url: string): Promise<string | null> {
       if (!retryable || attempt >= RETRIES) throw err;
       const wait = RETRY_DELAY_MS * 2 ** attempt;
       log.warn(
-        { event: "retry", url, status, attempt: attempt + 1, wait_ms: wait },
-        `Reclaiming failed request (${status ?? "network error"}) · ${url} · retry ${attempt + 1}/${RETRIES} in ${wait / 1000}s`,
+        { event: "retry", status, data: { url, retryCount: attempt + 1, waitSecs: wait / 1000 } },
+        `Reclaiming failed request back to the queue. ${status ? `HTTP ${status}` : "Network error"}`,
       );
       await sleep(wait);
     }

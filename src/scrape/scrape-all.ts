@@ -2,7 +2,6 @@ import PQueue from "p-queue";
 import { CONCURRENCY, DELAY_MS } from "../config.js";
 import { BlockedError } from "../lib/http.js";
 import { log } from "../lib/log.js";
-import { formatDuration } from "../lib/time.js";
 import type { Failure, Product, SourceProduct } from "../types.js";
 import { buildProductUrl, scrapeProduct } from "./scrape-product.js";
 
@@ -13,8 +12,8 @@ const STATUS_INTERVAL_MS = 60_000; // like Crawlee's periodic statistics
 function stopRun(queue: PQueue): void {
   if (queue.isPaused) return;
   log.error(
-    { event: "run_stopped", remaining: queue.size },
-    `The site is blocking this IP (${MAX_CONSECUTIVE_BLOCKS} products in a row), stopping the run. A US IP is required.`,
+    { event: "run_stopped", data: { consecutiveBlocks: MAX_CONSECUTIVE_BLOCKS, remaining: queue.size } },
+    "The site is blocking this IP, stopping the scraper. A US IP is required.",
   );
   queue.pause();
   queue.clear();
@@ -34,11 +33,10 @@ export async function scrapeAll(
 
   const startedAt = performance.now();
   const status = setInterval(() => {
-    const minutes = (performance.now() - startedAt) / 60_000;
+    const perMinute = Math.round(finishedCount / ((performance.now() - startedAt) / 60_000));
     log.info(
       { event: "status", finished: finishedCount, failed: failures.length },
-      `Crawled ${finishedCount}/${sources.length} products, ${failures.length} failed, ` +
-        `${Math.round(finishedCount / minutes)}/min, running for ${formatDuration(minutes * 60_000)}.`,
+      `Crawled ${finishedCount}/${sources.length} products, ${failures.length} failed requests, ${perMinute}/min.`,
     );
   }, STATUS_INTERVAL_MS);
 
@@ -55,12 +53,19 @@ export async function scrapeAll(
       consecutiveBlocks = 0;
       const { variants, customizations, extraction_time_ms: ms } = product;
       log.info(
-        { event: "product_ok", id: source.id, variants: variants.length, customizations: customizations.length, ms },
-        `${nextProgress()} ${source.id} · ${variants.length} variants · ${customizations.length} options · ${Math.round(ms)}ms`,
+        {
+          event: "product_ok",
+          id: source.id,
+          data: { variants: variants.length, options: customizations.length, ms: Math.round(ms) },
+        },
+        `${nextProgress()} ${source.id}`,
       );
     } catch (err) {
       const failure = fail(source, err instanceof Error ? err.message : String(err));
-      log.error({ event: "product_failed", ...failure }, `${nextProgress()} ${source.id} failed · ${failure.reason}`);
+      log.error(
+        { event: "product_failed", reason: failure.reason, data: { id: failure.id, url: failure.url } },
+        `${nextProgress()} Request failed. ${failure.reason}`,
+      );
       if (err instanceof BlockedError && ++consecutiveBlocks >= MAX_CONSECUTIVE_BLOCKS) stopRun(queue);
     }
   };

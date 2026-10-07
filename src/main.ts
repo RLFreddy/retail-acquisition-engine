@@ -11,8 +11,8 @@ async function main(): Promise<void> {
   const allProducts = await loadProducts(INPUT_CSV);
   const sources = LIMIT > 0 ? allProducts.slice(0, LIMIT) : allProducts;
   log.info(
-    { event: "run_started", input: INPUT_CSV, products: sources.length, concurrency: CONCURRENCY },
-    `Starting the scraper · ${sources.length} of ${allProducts.length} products · concurrency ${CONCURRENCY}`,
+    { event: "run_started", data: { input: INPUT_CSV, products: sources.length, concurrency: CONCURRENCY } },
+    "Starting the scraper.",
   );
 
   const start = performance.now();
@@ -21,14 +21,13 @@ async function main(): Promise<void> {
 
   const metrics = buildMetrics(products, failures, totalMs);
   const files = writeOutputs(OUTPUT_DIR, products, failures, metrics);
-  const seconds = (ms: number) => `${(ms / 1000).toFixed(1)}s`;
-  log.info({ event: "run_finished", ...metrics }, "All products processed. Final statistics:");
+  log.info("All products have been processed, the scraper will shut down.");
+  log.info({ event: "run_finished", data: metrics }, "Final request statistics:");
   log.info(
-    `finished ${products.length} · failed ${failures.length} · ${Math.round(metrics.products_per_minute)}/min · ` +
-      `p50 ${seconds(metrics.product_ms.p50)} · p95 ${seconds(metrics.product_ms.p95)} · ` +
-      `${getRequestCount()} requests · total ${formatDuration(totalMs)}`,
+    `Finished! Total ${products.length + failures.length} products: ` +
+      `${products.length} succeeded, ${failures.length} failed (${getRequestCount()} requests, ${formatDuration(totalMs)}).`,
   );
-  log.info(`Output: ${[...files, LOG_FILE].join(", ")}`);
+  log.info({ data: [...files, LOG_FILE] }, "Output saved:");
 }
 
 main().catch((err) => {
