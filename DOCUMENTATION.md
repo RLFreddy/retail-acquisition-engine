@@ -120,7 +120,7 @@ Customizations are not conditional: the JSON exposes no dependency between them.
 | Decision                              | Why                                                    | Cost                                         |
 | ------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
 | HTTP + embedded JSON, no browser      | One request per product returns everything; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
-| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, and needs 2 requests (a redirect, or a results list to pick from: 12 of 40 SKUs tested) | Relies on the site's URL convention (SKU checked on the page) |
+| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, needs 2 requests (a redirect, or a results list to pick from: 12 of 40 SKUs tested), and started answering 406 after ~40 searches while product pages kept answering 200 | Relies on the site's URL convention (SKU checked on the page) |
 | 4 in parallel, 1 new product every 500 ms | Considerate pace with no blocks                       | Slower than the site can take (see the test below) |
 | Retries with backoff (5 s → 40 s), stop after 3 blocked products | Survives throttling without hammering the site | A blocked run ends early (and resumes later)  |
 
