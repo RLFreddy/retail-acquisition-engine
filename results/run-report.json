@@ -1,21 +1,21 @@
 {
   "metrics": {
-    "started_at": "2026-10-07T04:04:47.296Z",
-    "finished_at": "2026-10-07T04:12:29.773Z",
-    "total_ms": 482735.1,
-    "concurrency": 4,
+    "started_at": "2026-10-07T20:28:49.013Z",
+    "finished_at": "2026-10-07T20:30:43.816Z",
+    "total_ms": 114803.9,
+    "concurrency": 20,
     "products": 700,
     "ok": 696,
     "failed": 4,
-    "http_requests": 700,
-    "products_per_minute": 87,
+    "http_requests": 1396,
+    "products_per_minute": 365.8,
     "product_ms": {
-      "p50": 2359.2,
-      "p95": 4379.6,
-      "max": 19987.2
+      "p50": 2861.3,
+      "p95": 5503.6,
+      "max": 21853.8
     },
     "variants": 280886,
-    "customizations": 39703
+    "customizations": 39838
   },
   "failures": [
     {

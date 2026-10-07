@@ -1,23 +1,37 @@
 [
   {
     "id": "M CRAFT X S3 PUT",
+    "title": "Mizuno M.Craft X S3 Putter",
     "name": "Mizuno M.Craft X S3 Putter",
     "brand": "Mizuno",
     "category": "Putter",
     "model": "M.Craft X S3",
     "url": "https://www.2ndswing.com/golf-clubs/putters/mizuno-mdotcraft-x-s3-putter/m-craft-x-s3-put",
-    "title": "Mizuno M.Craft X S3 Putter",
     "base_price": 399.99,
-    "pricing_unit": "per_item",
     "price_range": {
       "min": 399.99,
       "max": 399.99
     },
+    "pricing_unit": "per_item",
     "included_clubs": [],
+    "default_set_price": null,
+    "description": "Who’s It For?\nDesigned for golfers who appreciate the classic look and feel of a premium putter but want the flexibility to fine-tune performance, the Mizuno M.Craft X S3 Putter blends traditional craftsmanship with modern adjustability. Its precision-forged construction delivers exceptional feel and feedback, while the fully adjustable design allows players to customize the putter to match their stroke and preferences. Ideal for golfers seeking a balance of refined aesthetics, personalization, and performance on the greens, it offers both confidence at address and consistency in putting results.\nThe Tech Story\nThe Mizuno M.Craft X S3 Putter is engineered to combine the precision feel of a traditional blade with the forgiveness and stability of a modern mallet. Its dynamically shallow center of gravity creates the controlled, responsive swing sensation preferred by skilled players, while the larger head profile and adjustable weighting system increase MOI and deliver exceptional stability on off-center strikes. At its core is a forged 1025 carbon steel body that provides the soft, responsive feel Mizuno is known for, paired with a CNC-milled face that promotes consistent roll, speed control, and accuracy across the hitting surface. A lightweight milled aluminum back section strategically redistributes mass to enhance forgiveness and improve overall stability without sacrificing the premium feedback and craftsmanship that define the M.Craft lineup.\nFacts and Figures\nHead Style: Mallet\nNeck Type: Slant Neck\nAlignment: Single Back Cavity Line\nMaterial: Forged 1025 Steel face section with CNC-milled aluminum back\nFinish: Sleek Black\nHeadcover: M Craft X Black\nStock Shafts and Grips\nStock Shaft: Black KBS CT Tour 120\nStock Grip: Lamkin Sink Fit\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
+    "specs": [
+      {
+        "Length": "32\" - 38\"",
+        "Loft": "3°",
+        "Lie": "70°",
+        "Hand": "RH/LH"
+      }
+    ],
     "media": [
       "https://www.2ndswing.com/images/standard/M%20CRAFT%20X%20S3%20PUT.jpg",
-      "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT.jpg"
+      "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT.jpg",
+      "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT_2.jpg",
+      "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT_3.jpg",
+      "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT_4.jpg"
     ],
+    "videos": [],
     "attributes": [
       {
         "code": "g2_dexterity",
@@ -390,25 +404,25 @@
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1\u00b0 Flat",
+        "option_name": "1° Flat",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1\u00b0 Upright",
+        "option_name": "1° Upright",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "2\u00b0 Flat",
+        "option_name": "2° Flat",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "2\u00b0 Upright",
+        "option_name": "2° Upright",
         "price_modifier": 0,
         "final_price": 399.99
       },
@@ -420,51 +434,172 @@
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Strong",
+        "option_name": "1° Strong",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Weak",
+        "option_name": "1° Weak",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Strong",
+        "option_name": "2° Strong",
         "price_modifier": 0,
         "final_price": 399.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Weak",
+        "option_name": "2° Weak",
         "price_modifier": 0,
         "final_price": 399.99
       }
     ],
-    "extraction_time_ms": 970.1,
-    "scraped_at": "2026-10-07T04:04:48.286Z"
+    "scraped_at": "2026-10-07T20:28:51.961Z",
+    "extraction_time_ms": 2927.2
   },
   {
     "id": "EXOTICS MILLED WGS",
+    "title": "Tour Edge Exotics Milled Wedge",
     "name": "Tour Edge Exotics Milled Wedge",
     "brand": "Tour Edge",
     "category": "Wedge",
     "model": "Exotics Milled",
     "url": "https://www.2ndswing.com/golf-clubs/wedges/tour-edge-exotics-milled-wedge/exotics-milled-wgs",
-    "title": "Tour Edge Exotics Milled Wedge",
     "base_price": 119.99,
-    "pricing_unit": "per_item",
     "price_range": {
       "min": 119.99,
       "max": 119.99
     },
+    "pricing_unit": "per_item",
     "included_clubs": [],
+    "default_set_price": null,
+    "description": "Who’s It For?\nDesigned for golfers who want to sharpen their short game performance and gain greater confidence around the greens, the Tour Edge Exotics Milled Wedge is ideal for players focused on precision, versatility, and control. Engineered to optimize contact, trajectory, and spin, it caters to golfers who demand consistent results on everything from full approach shots to delicate finesse shots, helping them execute a wider variety of scoring shots with confidence and accuracy.\nThe Tech Story\nThe Tour Edge Exotics Milled Wedge is engineered to deliver exceptional short game precision through a combination of advanced sole geometry, spin-enhancing face technology, and premium materials. At its core is a versatile Tri-Grind sole featuring a carefully designed leading edge that resists digging for cleaner turf interaction, a flatter center sole with reduced camber for crisp and consistent contact, and trailing-edge relief that allows the face to open easily for enhanced shot-making versatility around the greens. Precision CNC-milled Superspin™ grooves utilize steeper groove walls, advanced face texturing, and tighter edge tolerances to maximize friction at impact, generating exceptional spin and control on scoring shots. New groove geometry and increased groove volume across the face further promote consistent spin performance in both wet and dry conditions, helping golfers produce predictable results regardless of playing environment. Crafted from soft 304 stainless steel, the wedge delivers responsive feedback and a premium feel, while a durable triple-chrome finish minimizes glare at address and helps preserve groove integrity over time for long-lasting performance.\nBounce Options\nLow Bounce (LB): Firm turf, tight lies, and shallow attack angles.\nMid Bounce (MB): Mixed course conditions and neutral swing deliveries.\nHigh Bounce (HB): Soft turf, fluffy sand, and steeper attack angles to help resist digging\nStock Shaft and Grip\nStock Shaft: KBS Hi-Rev 2.0 Wedge\nStock Grip: Golf Pride Tour Velvet 360 Black\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
+    "specs": [
+      {
+        "Loft": "50°",
+        "Bounce": "10°",
+        "Length": "35.5\"",
+        "Lie": "64°",
+        "Offset": "1mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "52°",
+        "Bounce": "10°",
+        "Length": "35.5\"",
+        "Lie": "64°",
+        "Offset": "1mm",
+        "Hand": "RH/LH"
+      },
+      {
+        "Loft": "54°",
+        "Bounce": "14°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "54°",
+        "Bounce": "8°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "54°",
+        "Bounce": "10°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "56°",
+        "Bounce": "14°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "56°",
+        "Bounce": "8°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "56°",
+        "Bounce": "10°",
+        "Length": "35.25\"",
+        "Lie": "64°",
+        "Offset": "0.5mm",
+        "Hand": "RH/LH"
+      },
+      {
+        "Loft": "58°",
+        "Bounce": "12°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "58°",
+        "Bounce": "6°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "58°",
+        "Bounce": "10°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "60°",
+        "Bounce": "12°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "60°",
+        "Bounce": "6°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH Only"
+      },
+      {
+        "Loft": "60°",
+        "Bounce": "10°",
+        "Length": "35\"",
+        "Lie": "64°",
+        "Offset": "0mm",
+        "Hand": "RH/LH"
+      }
+    ],
     "media": [
       "https://www.2ndswing.com/images/standard/EXOTICS%20MILLED%20WGS.jpg",
-      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS.jpg"
+      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS.jpg",
+      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_2.jpg",
+      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_3.jpg",
+      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_4.jpg",
+      "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_5.jpg"
     ],
+    "videos": [],
     "attributes": [
       {
         "code": "g2_dexterity",
@@ -478,12 +613,12 @@
         "code": "g2_club_loft",
         "label": "Club Loft",
         "options": [
-          "50\u00b0",
-          "52\u00b0",
-          "54\u00b0",
-          "56\u00b0",
-          "58\u00b0",
-          "60\u00b0"
+          "50°",
+          "52°",
+          "54°",
+          "56°",
+          "58°",
+          "60°"
         ]
       },
       {
@@ -524,7 +659,7 @@
         "sku": "C4606273",
         "options": {
           "Dexterity": "Left Handed",
-          "Club Loft": "52\u00b0",
+          "Club Loft": "52°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -538,7 +673,7 @@
         "sku": "C4606274",
         "options": {
           "Dexterity": "Left Handed",
-          "Club Loft": "56\u00b0",
+          "Club Loft": "56°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -552,7 +687,7 @@
         "sku": "C4606275",
         "options": {
           "Dexterity": "Left Handed",
-          "Club Loft": "60\u00b0",
+          "Club Loft": "60°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -566,7 +701,7 @@
         "sku": "C4606276",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "50\u00b0",
+          "Club Loft": "50°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -580,7 +715,7 @@
         "sku": "C4606277",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "52\u00b0",
+          "Club Loft": "52°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -594,7 +729,7 @@
         "sku": "C4606278",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "54\u00b0",
+          "Club Loft": "54°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -608,7 +743,7 @@
         "sku": "C4606279",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "56\u00b0",
+          "Club Loft": "56°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -622,7 +757,7 @@
         "sku": "C4606280",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "58\u00b0",
+          "Club Loft": "58°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -636,7 +771,7 @@
         "sku": "C4606281",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "60\u00b0",
+          "Club Loft": "60°",
           "Bounce": "10 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -650,7 +785,7 @@
         "sku": "C4606282",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "58\u00b0",
+          "Club Loft": "58°",
           "Bounce": "12 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -664,7 +799,7 @@
         "sku": "C4606283",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "60\u00b0",
+          "Club Loft": "60°",
           "Bounce": "12 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -678,7 +813,7 @@
         "sku": "C4606284",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "54\u00b0",
+          "Club Loft": "54°",
           "Bounce": "14 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -692,7 +827,7 @@
         "sku": "C4606285",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "56\u00b0",
+          "Club Loft": "56°",
           "Bounce": "14 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -706,7 +841,7 @@
         "sku": "C4606286",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "58\u00b0",
+          "Club Loft": "58°",
           "Bounce": "6 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -720,7 +855,7 @@
         "sku": "C4606287",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "60\u00b0",
+          "Club Loft": "60°",
           "Bounce": "6 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -734,7 +869,7 @@
         "sku": "C4606288",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "54\u00b0",
+          "Club Loft": "54°",
           "Bounce": "8 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -748,7 +883,7 @@
         "sku": "C4606289",
         "options": {
           "Dexterity": "Right Handed",
-          "Club Loft": "56\u00b0",
+          "Club Loft": "56°",
           "Bounce": "8 Deg Bounce",
           "Shaft Material": "Steel",
           "Shaft Flex": "Wedge Flex",
@@ -864,13 +999,13 @@
       },
       {
         "category": "Grips",
-        "option_name": "Golf Pride Tour Velvet 360\u00b0",
+        "option_name": "Golf Pride Tour Velvet 360°",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Grips",
-        "option_name": "Golf Pride Tour Velvet 360\u00b0 Midsize",
+        "option_name": "Golf Pride Tour Velvet 360° Midsize",
         "price_modifier": 0,
         "final_price": 119.99
       },
@@ -1068,13 +1203,13 @@
       },
       {
         "category": "Grips",
-        "option_name": "Golf Pride Tour Velvet 360\u00b0 White",
+        "option_name": "Golf Pride Tour Velvet 360° White",
         "price_modifier": 7,
         "final_price": 126.99
       },
       {
         "category": "Grips",
-        "option_name": "Golf Pride Tour Velvet 360\u00b0 White Midsize",
+        "option_name": "Golf Pride Tour Velvet 360° White Midsize",
         "price_modifier": 7,
         "final_price": 126.99
       },
@@ -1398,37 +1533,37 @@
       },
       {
         "category": "Lie Angle",
-        "option_name": "1.0\u00b0 Flat",
+        "option_name": "1.0° Flat",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Lie Angle",
-        "option_name": "1.0\u00b0 Upright",
+        "option_name": "1.0° Upright",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Lie Angle",
-        "option_name": "2.0\u00b0 Flat",
+        "option_name": "2.0° Flat",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Lie Angle",
-        "option_name": "2.0\u00b0 Upright",
+        "option_name": "2.0° Upright",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Lie Angle",
-        "option_name": "3.0\u00b0 Flat",
+        "option_name": "3.0° Flat",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Lie Angle",
-        "option_name": "3.0\u00b0 Upright",
+        "option_name": "3.0° Upright",
         "price_modifier": 0,
         "final_price": 119.99
       },
@@ -1440,46 +1575,46 @@
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Strong",
+        "option_name": "1° Strong",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Weak",
+        "option_name": "1° Weak",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Strong",
+        "option_name": "2° Strong",
         "price_modifier": 0,
         "final_price": 119.99
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Weak",
+        "option_name": "2° Weak",
         "price_modifier": 0,
         "final_price": 119.99
       }
     ],
-    "extraction_time_ms": 206.2,
-    "scraped_at": "2026-10-07T04:04:54.547Z"
+    "scraped_at": "2026-10-07T20:28:53.091Z",
+    "extraction_time_ms": 4014.8
   },
   {
     "id": "PRO S4 STS",
+    "title": "Mizuno Pro S-4 Iron Set",
     "name": "Mizuno Pro S-4 Iron Set",
     "brand": "Mizuno",
     "category": "Iron Set",
     "model": "Pro S-4",
     "url": "https://www.2ndswing.com/golf-clubs/iron-sets/mizuno-pro-s-4-iron-set/pro-s4-sts",
-    "title": "Mizuno Pro S-4 Iron Set",
     "base_price": 215,
-    "pricing_unit": "per_club",
     "price_range": {
       "min": 215,
       "max": 275
     },
+    "pricing_unit": "per_club",
     "included_clubs": [
       "4 Iron",
       "5 Iron",
@@ -1489,9 +1624,77 @@
       "9 Iron",
       "PW"
     ],
+    "default_set_price": 1505,
+    "description": "Who’s It For?\nDesigned for accomplished golfers who value the soft, responsive feel of a forged iron but want added forgiveness and confidence throughout the set, the Mizuno Pro S-4 Irons blend traditional shot-making precision with modern playability. The progressive offset, wider sole, deeper center of gravity, and lower-positioned mass help promote higher launch, greater stability, and increased forgiveness, making it easier to maintain consistent performance across the bag. Golfers who appreciate the feedback, workability, and craftsmanship of Mizuno’s Grain Flow Forged HD process will find it especially appealing, offering a balance of control and forgiveness without sacrificing the premium forged feel Mizuno is known for.\nThe Tech Story\nThe Mizuno Pro S-4 Irons combine the legendary feel of a forged Mizuno iron with modern performance enhancements designed to inspire more confidence throughout the set. At the core of the design is a redesigned curved muscle that strategically positions mass lower in the clubhead to increase forgiveness, promote higher launch, and improve stability while preserving the classic, compact Mizuno Pro profile preferred by skilled players. Each iron is Grain Flow Forged HD from a single billet of 1025E Mild Carbon Steel in Hiroshima, Japan, delivering the exceptionally soft feel, precise feedback, and workability that define Mizuno’s forged heritage. Progressive head geometry incorporates increased offset, a wider sole, and a deeper center of gravity to make launching the ball easier while enhancing forgiveness and consistency. The Triple Cut Sole features beveled leading and trailing edges for cleaner turf interaction and smoother movement through impact, while a copper underlay further refines feel for a softer, more responsive sensation. Complementing these technologies, Harmonic Impact Technology (HIT) precisely tunes vibration frequencies to produce the solid, satisfying sound and feel expected from Mizuno’s most premium forged irons.\nFacts and Figures\nConstruction: Forged\nCategory: Players\nMaterial: 1025E Mild Carbon Steel\nStock Set Makeup: 4 – PW\nStock Shafts and Grips\nStock Steel Shaft: True Temper Dynamic Gold MID 115 S300\nStock Grip: Golf Pride Z-Cord Std.\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
+    "specs": [
+      {
+        "Club": "3",
+        "Loft": "21°",
+        "Length": "39.25\"",
+        "Bounce": "3°",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "4",
+        "Loft": "24°",
+        "Length": "38.75\"",
+        "Bounce": "3°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "5",
+        "Loft": "27°",
+        "Length": "38.25\"",
+        "Bounce": "4°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "6",
+        "Loft": "30°",
+        "Length": "37.75\"",
+        "Bounce": "5°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "7",
+        "Loft": "34°",
+        "Length": "37.25\"",
+        "Bounce": "6°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "8",
+        "Loft": "38°",
+        "Length": "36.75\"",
+        "Bounce": "7°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "9",
+        "Loft": "42°",
+        "Length": "36.25\"",
+        "Bounce": "8°",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "PW",
+        "Loft": "46°",
+        "Length": "35.75\"",
+        "Bounce": "9°",
+        "Hand": "RH/LH"
+      }
+    ],
     "media": [
       "https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg",
-      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS.jpg"
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS.jpg",
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_2.jpg",
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_3.jpg",
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_4.jpg",
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_5.jpg",
+      "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_6.jpg"
+    ],
+    "videos": [
+      "https://www.youtube.com/watch?v=1LNL-MUEc1Y"
     ],
     "attributes": [
       {
@@ -3876,49 +4079,49 @@
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "0.5\u00b0 Flat",
+        "option_name": "0.5° Flat",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "0.5\u00b0 Upright",
+        "option_name": "0.5° Upright",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1.5\u00b0 Flat",
+        "option_name": "1.5° Flat",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1\u00b0 Flat",
+        "option_name": "1° Flat",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1.5\u00b0 Upright",
+        "option_name": "1.5° Upright",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "1\u00b0 Upright",
+        "option_name": "1° Upright",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "2\u00b0 Flat",
+        "option_name": "2° Flat",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Lie Angle Adjustment",
-        "option_name": "2\u00b0 Upright",
+        "option_name": "2° Upright",
         "price_modifier": 0,
         "final_price": 215
       },
@@ -3930,25 +4133,25 @@
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Strong",
+        "option_name": "1° Strong",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "1\u00b0 Weak",
+        "option_name": "1° Weak",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Strong",
+        "option_name": "2° Strong",
         "price_modifier": 0,
         "final_price": 215
       },
       {
         "category": "Loft Adjustment",
-        "option_name": "2\u00b0 Weak",
+        "option_name": "2° Weak",
         "price_modifier": 0,
         "final_price": 215
       },
@@ -4001,27 +4204,111 @@
         "final_price": 215
       }
     ],
-    "extraction_time_ms": 190.3,
-    "scraped_at": "2026-10-07T04:04:55.032Z"
+    "scraped_at": "2026-10-07T20:28:51.236Z",
+    "extraction_time_ms": 2158.3
   },
   {
     "id": "ZXI RKT HYG",
+    "title": "Srixon ZXi RKT Hybrid",
     "name": "Srixon ZXi RKT Hybrid",
     "brand": "Srixon",
     "category": "Hybrid",
     "model": "ZXi RKT",
-    "url": "https://www.2ndswing.com/golf-clubs/hybrids/srixon-zxi-rkt-hybrid",
-    "title": "Srixon ZXi RKT Hybrid",
+    "url": "https://www.2ndswing.com/golf-clubs/hybrids/srixon-zxi-rkt-hybrid/zxi-rkt-hyg",
     "base_price": 329.99,
-    "pricing_unit": "per_item",
     "price_range": {
       "min": 329.99,
       "max": 529.99
     },
+    "pricing_unit": "per_item",
     "included_clubs": [],
+    "default_set_price": null,
+    "description": "Who’s It For?\nDesigned for golfers who want the versatility and control of a compact hybrid without sacrificing speed or forgiveness, the Srixon ZXi RKT Hybrid is ideal for players seeking a reliable long-game option from a variety of lies. Its tour-validated shaping appeals to golfers who prefer a more compact, confidence-inspiring profile, while the advanced adjustability system allows precise tuning of swing weight and distance gapping. With optimized lofts that promote easy launch from the fairway, rough, or even fairway bunkers, it is a strong fit for players looking for consistent performance and shot-making versatility throughout the course.\nThe Tech Story\nThe Srixon ZXi RKT Hybrid is built around the innovative RKT Face, a technology platform that combines the company’s most advanced ball speed, face flex, and roll characteristics into a single, highly optimized design engineered to produce faster ball speeds and greater accuracy across the hitting area. Its Tour-Driven Shaping was developed through extensive prototype refinement and on-tour testing, resulting in a compact, confidence-inspiring profile that aligns with the visual and performance preferences of elite players while delivering exceptional control and stability. Adding a new level of customization, the ZXi RKT Hybrid introduces Player-Focused Adjustability through the combined use of an Adjustable Sole Weight and Adjustable Hosel Sleeve, allowing golfers to precisely fine-tune launch conditions, swing weight, and distance gapping to achieve ideal performance throughout the bag. Together, these technologies create a versatile hybrid that blends speed, precision, and personalized fitting capabilities for optimized long-game performance.\nFacts and Figures\nDesired Ball Flight: High MOI\nLaunch: Mid\nSpin: Mid\nWeight Adjustability: Backweight\nStock Shafts and Grips\nStock Shafts: Mitsubishi MMT HYB 60 (SR, R), Mitsubishi MMT HYB 80 (S, X), Mitsubishi Bassara PL 40 Women’s (Ladies)\nStock Grip: Golf Pride Tour Velvet 360 Std., Golf Pride Fine Line Women’s Std.\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
+    "specs": [
+      {
+        "Club": "2 Hybrid",
+        "Loft": "17°",
+        "Length": "41\"",
+        "Lie": "58.5°",
+        "Head Volume": "122cc",
+        "Swing Weight": "D2",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "3 Hybrid",
+        "Loft": "19°",
+        "Length": "40.5\"",
+        "Lie": "59°",
+        "Head Volume": "120cc",
+        "Swing Weight": "D2",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "4 Hybrid",
+        "Loft": "22°",
+        "Length": "40\"",
+        "Lie": "59.5°",
+        "Head Volume": "118cc",
+        "Swing Weight": "D2",
+        "Hand": "RH/LH"
+      },
+      {
+        "Club": "5 Hybrid",
+        "Loft": "25°",
+        "Length": "39.5\"",
+        "Lie": "60°",
+        "Head Volume": "115cc",
+        "Swing Weight": "D2",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "6 Hybrid",
+        "Loft": "28°",
+        "Length": "39\"",
+        "Lie": "60.5°",
+        "Head Volume": "113cc",
+        "Swing Weight": "D2",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "4 Hybrid (Women's)",
+        "Loft": "22°",
+        "Length": "39\"",
+        "Lie": "59.5°",
+        "Head Volume": "118cc",
+        "Swing Weight": "C6",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "5 Hybrid (Women's)",
+        "Loft": "25°",
+        "Length": "38.5\"",
+        "Lie": "60°",
+        "Head Volume": "115cc",
+        "Swing Weight": "C6",
+        "Hand": "RH Only"
+      },
+      {
+        "Club": "6 Hybrid (Women's)",
+        "Loft": "28°",
+        "Length": "38\"",
+        "Lie": "60.5°",
+        "Head Volume": "113cc",
+        "Swing Weight": "C6",
+        "Hand": "RH Only"
+      }
+    ],
     "media": [
       "https://www.2ndswing.com/images/standard/ZXI%20RKT%20HYG.jpg",
-      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG.jpg"
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG.jpg",
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_2.jpg",
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_3.jpg",
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_4.jpg",
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_5.jpg",
+      "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_6.jpg"
+    ],
+    "videos": [
+      "https://www.youtube.com/watch?v=-0hL5wv2aEk"
     ],
     "attributes": [
       {
@@ -4047,11 +4334,11 @@
         "code": "g2_club_loft",
         "label": "Club Loft",
         "options": [
-          "17\u00b0",
-          "19\u00b0",
-          "22\u00b0",
-          "25\u00b0",
-          "28\u00b0"
+          "17°",
+          "19°",
+          "22°",
+          "25°",
+          "28°"
         ]
       },
       {
@@ -4110,7 +4397,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4123,7 +4410,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4136,7 +4423,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4149,7 +4436,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4162,7 +4449,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4175,7 +4462,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4188,7 +4475,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Aldila Ascent PL 40"
         },
@@ -4201,7 +4488,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4214,7 +4501,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4227,7 +4514,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4240,7 +4527,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4253,7 +4540,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4266,7 +4553,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4279,7 +4566,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Aldila Ascent PL 50"
         },
@@ -4292,7 +4579,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4305,7 +4592,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4318,7 +4605,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4331,7 +4618,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4344,7 +4631,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4357,7 +4644,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4370,7 +4657,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4383,7 +4670,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4396,7 +4683,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4409,7 +4696,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4422,7 +4709,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4435,7 +4722,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4448,7 +4735,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4461,7 +4748,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Fujikura Ventus TR Blue 8"
         },
@@ -4474,7 +4761,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4487,7 +4774,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4500,7 +4787,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4513,7 +4800,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4526,7 +4813,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4539,7 +4826,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4552,7 +4839,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4565,7 +4852,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4578,7 +4865,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4591,7 +4878,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4604,7 +4891,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4617,7 +4904,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4630,7 +4917,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4643,7 +4930,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Fujikura Ventus TR Blue HB 7"
         },
@@ -4656,7 +4943,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4669,7 +4956,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4682,7 +4969,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4695,7 +4982,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4708,7 +4995,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4721,7 +5008,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4734,7 +5021,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4747,7 +5034,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4760,7 +5047,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4773,7 +5060,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4786,7 +5073,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4799,7 +5086,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4812,7 +5099,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4825,7 +5112,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD DI-75 Hybrid"
         },
@@ -4838,7 +5125,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4851,7 +5138,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4864,7 +5151,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4877,7 +5164,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4890,7 +5177,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4903,7 +5190,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4916,7 +5203,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4929,7 +5216,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4942,7 +5229,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4955,7 +5242,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4968,7 +5255,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4981,7 +5268,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -4994,7 +5281,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -5007,7 +5294,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-95 Hybrid"
         },
@@ -5020,7 +5307,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5033,7 +5320,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5046,7 +5333,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5059,7 +5346,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5072,7 +5359,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5085,7 +5372,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5098,7 +5385,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Graphite Design Tour AD IZ-75"
         },
@@ -5111,7 +5398,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5124,7 +5411,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5137,7 +5424,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5150,7 +5437,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5163,7 +5450,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5176,7 +5463,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5189,7 +5476,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-85"
         },
@@ -5202,7 +5489,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5215,7 +5502,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5228,7 +5515,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5241,7 +5528,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5254,7 +5541,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5267,7 +5554,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5280,7 +5567,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD IZ-95"
         },
@@ -5293,7 +5580,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5306,7 +5593,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5319,7 +5606,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5332,7 +5619,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5345,7 +5632,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5358,7 +5645,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5371,7 +5658,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5384,7 +5671,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5397,7 +5684,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5410,7 +5697,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5423,7 +5710,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5436,7 +5723,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5449,7 +5736,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5462,7 +5749,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 85HY"
         },
@@ -5475,7 +5762,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5488,7 +5775,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5501,7 +5788,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5514,7 +5801,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5527,7 +5814,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5540,7 +5827,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5553,7 +5840,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5566,7 +5853,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5579,7 +5866,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5592,7 +5879,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5605,7 +5892,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5618,7 +5905,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5631,7 +5918,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5644,7 +5931,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD VF 95HY"
         },
@@ -5657,7 +5944,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5670,7 +5957,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5683,7 +5970,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5696,7 +5983,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5709,7 +5996,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5722,7 +6009,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5735,7 +6022,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5748,7 +6035,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5761,7 +6048,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5774,7 +6061,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5787,7 +6074,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5800,7 +6087,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5813,7 +6100,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5826,7 +6113,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5839,7 +6126,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5852,7 +6139,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5865,7 +6152,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5878,7 +6165,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5891,7 +6178,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Max HL"
         },
@@ -5904,7 +6191,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "KBS Max HL"
         },
@@ -5917,7 +6204,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Max HL"
         },
@@ -5930,7 +6217,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -5943,7 +6230,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -5956,7 +6243,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -5969,7 +6256,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -5982,7 +6269,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -5995,7 +6282,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6008,7 +6295,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6021,7 +6308,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6034,7 +6321,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6047,7 +6334,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6060,7 +6347,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6073,7 +6360,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6086,7 +6373,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6099,7 +6386,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 75"
         },
@@ -6112,7 +6399,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6125,7 +6412,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6138,7 +6425,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6151,7 +6438,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6164,7 +6451,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6177,7 +6464,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6190,7 +6477,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6203,7 +6490,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6216,7 +6503,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6229,7 +6516,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6242,7 +6529,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6255,7 +6542,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6268,7 +6555,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6281,7 +6568,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6294,7 +6581,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6307,7 +6594,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6320,7 +6607,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6333,7 +6620,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6346,7 +6633,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6359,7 +6646,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6372,7 +6659,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "KBS Tour Hybrid Prototype 85"
         },
@@ -6385,7 +6672,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6398,7 +6685,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6411,7 +6698,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6424,7 +6711,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6437,7 +6724,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6450,7 +6737,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6463,7 +6750,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6476,7 +6763,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6489,7 +6776,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6502,7 +6789,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6515,7 +6802,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6528,7 +6815,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6541,7 +6828,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6554,7 +6841,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "KBS Tour Hybrid Prototype 95"
         },
@@ -6567,7 +6854,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6580,7 +6867,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6593,7 +6880,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6606,7 +6893,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6619,7 +6906,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6632,7 +6919,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6645,7 +6932,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 70"
         },
@@ -6658,7 +6945,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6671,7 +6958,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6684,7 +6971,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6697,7 +6984,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6710,7 +6997,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6723,7 +7010,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6736,7 +7023,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6749,7 +7036,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6762,7 +7049,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6775,7 +7062,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6788,7 +7075,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6801,7 +7088,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6814,7 +7101,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6827,7 +7114,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Mitsubishi MMT 80"
         },
@@ -6840,7 +7127,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6853,7 +7140,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6866,7 +7153,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6879,7 +7166,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6892,7 +7179,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6905,7 +7192,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6918,7 +7205,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6931,7 +7218,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6944,7 +7231,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6957,7 +7244,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6970,7 +7257,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6983,7 +7270,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -6996,7 +7283,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -7009,7 +7296,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Nippon NS Pro Modus 3 GOST"
         },
@@ -7022,7 +7309,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7035,7 +7322,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7048,7 +7335,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7061,7 +7348,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7074,7 +7361,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7087,7 +7374,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7100,7 +7387,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7113,7 +7400,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7126,7 +7413,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7139,7 +7426,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7152,7 +7439,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7165,7 +7452,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7178,7 +7465,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7191,7 +7478,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Project X Denali Red 60"
         },
@@ -7204,7 +7491,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7217,7 +7504,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7230,7 +7517,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7243,7 +7530,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7256,7 +7543,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7269,7 +7556,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7282,7 +7569,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X Denali Red 70"
         },
@@ -7295,7 +7582,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7308,7 +7595,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7321,7 +7608,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7334,7 +7621,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7347,7 +7634,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7360,7 +7647,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7373,7 +7660,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7386,7 +7673,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7399,7 +7686,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7412,7 +7699,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7425,7 +7712,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7438,7 +7725,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7451,7 +7738,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7464,7 +7751,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7477,7 +7764,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7490,7 +7777,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7503,7 +7790,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7516,7 +7803,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7529,7 +7816,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7542,7 +7829,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7555,7 +7842,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Project X HZRDUS Black Gen5 80HY"
         },
@@ -7568,7 +7855,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7581,7 +7868,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7594,7 +7881,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7607,7 +7894,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7620,7 +7907,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7633,7 +7920,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7646,7 +7933,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "UST Mamiya Recoil Dart 55H F1"
         },
@@ -7659,7 +7946,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7672,7 +7959,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7685,7 +7972,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7698,7 +7985,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7711,7 +7998,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7724,7 +8011,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7737,7 +8024,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "UST Mamiya Recoil Dart 65H F2"
         },
@@ -7750,7 +8037,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7763,7 +8050,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7776,7 +8063,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7789,7 +8076,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7802,7 +8089,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7815,7 +8102,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7828,7 +8115,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "UST Mamiya Recoil Dart 75H F3"
         },
@@ -7841,7 +8128,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7854,7 +8141,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7867,7 +8154,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7880,7 +8167,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7893,7 +8180,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7906,7 +8193,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7919,7 +8206,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 85H F4"
         },
@@ -7932,7 +8219,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -7945,7 +8232,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -7958,7 +8245,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -7971,7 +8258,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -7984,7 +8271,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -7997,7 +8284,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -8010,7 +8297,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Recoil Dart 95H F5"
         },
@@ -8023,7 +8310,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8036,7 +8323,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8049,7 +8336,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8062,7 +8349,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8075,7 +8362,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8088,7 +8375,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8101,7 +8388,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8114,7 +8401,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8127,7 +8414,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8140,7 +8427,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8153,7 +8440,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8166,7 +8453,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8179,7 +8466,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8192,7 +8479,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "Graphite Design Tour AD DI-85 Hybrid"
         },
@@ -8205,7 +8492,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8218,7 +8505,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8231,7 +8518,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8244,7 +8531,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8257,7 +8544,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8270,7 +8557,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8283,7 +8570,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Ladies",
           "Shaft Model": "Mitsubishi Bassara PL 40"
         },
@@ -8296,7 +8583,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8309,7 +8596,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8322,7 +8609,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8335,7 +8622,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8348,7 +8635,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8361,7 +8648,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8374,7 +8661,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8387,7 +8674,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8400,7 +8687,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8413,7 +8700,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8426,7 +8713,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8439,7 +8726,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8452,7 +8739,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Regular",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8465,7 +8752,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi MMT 60"
         },
@@ -8478,7 +8765,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8491,7 +8778,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8504,7 +8791,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8517,7 +8804,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8530,7 +8817,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8543,7 +8830,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8556,7 +8843,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Mitsubishi Vanquish 4"
         },
@@ -8569,7 +8856,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8582,7 +8869,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8595,7 +8882,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8608,7 +8895,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8621,7 +8908,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8634,7 +8921,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8647,7 +8934,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Senior",
           "Shaft Model": "Nippon Modus3 GOST HL"
         },
@@ -8660,7 +8947,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8673,7 +8960,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "2 Hybrid",
-          "Club Loft": "17\u00b0",
+          "Club Loft": "17°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8686,7 +8973,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8699,7 +8986,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8712,7 +8999,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8725,7 +9012,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "3 Hybrid",
-          "Club Loft": "19\u00b0",
+          "Club Loft": "19°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8738,7 +9025,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8751,7 +9038,7 @@
         "options": {
           "Dexterity": "Left Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8764,7 +9051,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8777,7 +9064,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "4 Hybrid",
-          "Club Loft": "22\u00b0",
+          "Club Loft": "22°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8790,7 +9077,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8803,7 +9090,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "5 Hybrid",
-          "Club Loft": "25\u00b0",
+          "Club Loft": "25°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8816,7 +9103,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -8829,7 +9116,7 @@
         "options": {
           "Dexterity": "Right Handed",
           "Subcategory": "6 Hybrid",
-          "Club Loft": "28\u00b0",
+          "Club Loft": "28°",
           "Shaft Flex": "X-Stiff",
           "Shaft Model": "UST Mamiya Proforce V2 HB"
         },
@@ -9434,27 +9721,89 @@
         "final_price": 329.99
       }
     ],
-    "extraction_time_ms": 203.7,
-    "scraped_at": "2026-10-07T04:04:55.553Z"
+    "scraped_at": "2026-10-07T20:28:53.359Z",
+    "extraction_time_ms": 4279.8
   },
   {
     "id": "SHOGUN RED DST",
+    "title": "Accra Shogun Red Driver Shaft",
     "name": "Accra Shogun Red Driver Shaft",
     "brand": "Accra",
     "category": "Driver Shaft",
     "model": "Shogun Red",
     "url": "https://www.2ndswing.com/accessories/driver-shafts/accra-shogun-red-driver-shaft/shogun-red-dst",
-    "title": "Accra Shogun Red Driver Shaft",
     "base_price": 375,
-    "pricing_unit": "per_item",
     "price_range": {
       "min": 375,
       "max": 375
     },
+    "pricing_unit": "per_item",
     "included_clubs": [],
+    "default_set_price": null,
+    "description": "Who’s It For?\nThe Accra Shogun Red Driver Shaft is designed for golfers with aggressive swings who prioritize stability and a smooth feel. It lives up to the legacy of the \"GOAT\" ACCRA shaft, the SE 80, and is built for stability from top to bottom. This shaft is a great option for those seeking a highly stable shaft without sacrificing the signature smooth feel that ACCRA is known for.\nThe Tech Story\nThe 2024 Accra Shogun driver shaft series represents a significant leap in golf shaft technology, designed to optimize launch conditions, increase clubhead speed, and promote more consistent center strikes. The line features a constant taper design across three unique profiles, which allows for precise club fitting to optimize a golfer's low point for improved accuracy and ball speed. At the heart of its construction is the new \"ACCelaron MX\" material, an ultra-lightweight 5K composite from Toray Japan that combines high modulus and high elasticity. This material ensures rapid recovery and minimizes ovaling, which leads to exceptional speed, stability, and feel. Additionally, the shaft incorporates \"Tornado Material Stabilization\" (TMS), a manufacturing process that evenly distributes the composite material's strength around the shaft's circumference. This technology stabilizes the shaft's performance at all swing speeds, resulting in unparalleled consistency. The Shogun shafts were developed using S3 analytics and advanced composite materials, showcasing a creative design process focused on delivering a high-performance golf shaft.\nFacts and Figures\nLaunch: Low\nSpin: Low\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: 2ndswing.com/golf-fittings.",
+    "specs": [
+      {
+        "Type": "Shogun Red 62",
+        "Flex": "M4 / Stiff",
+        "Length": "46\"",
+        "Weight": "63g",
+        "Torque": "3.1°",
+        "Tip OD": "0.335\"",
+        "Butt OD.": "0.620\"",
+        "Tip Parallel": "3.0\"",
+        "Balance Point": "23.5"
+      },
+      {
+        "Type": "M5 / X-Stiff",
+        "Flex": "46\"",
+        "Length": "65g",
+        "Weight": "3°",
+        "Torque": "0.335\"",
+        "Tip OD": "0.620\"",
+        "Butt OD.": "3.0\"",
+        "Tip Parallel": "23.5",
+        "Balance Point": ""
+      },
+      {
+        "Type": "Shogun Red 72",
+        "Flex": "M4 / Stiff",
+        "Length": "46\"",
+        "Weight": "72g",
+        "Torque": "3.1°",
+        "Tip OD": "0.335\"",
+        "Butt OD.": "0.620\"",
+        "Tip Parallel": "3.0\"",
+        "Balance Point": "24"
+      },
+      {
+        "Type": "M5 / X-Stiff",
+        "Flex": "46\"",
+        "Length": "72g",
+        "Weight": "3°",
+        "Torque": "0.335\"",
+        "Tip OD": "0.620\"",
+        "Butt OD.": "3.0\"",
+        "Tip Parallel": "24",
+        "Balance Point": ""
+      },
+      {
+        "Type": "Shogun Red 82",
+        "Flex": "M5 / X-Stiff",
+        "Length": "46\"",
+        "Weight": "80g",
+        "Torque": "3°",
+        "Tip OD": "0.335\"",
+        "Butt OD.": "0.620\"",
+        "Tip Parallel": "3.0\"",
+        "Balance Point": "24.5"
+      }
+    ],
     "media": [
       "https://www.2ndswing.com/images/standard/SHOGUN%20RED%20DST.jpg",
       "https://www.2ndswing.com/images/representative/SHOGUN%20RED%20DST.jpg"
+    ],
+    "videos": [
+      "https://www.youtube.com/watch?v=5TaFNFXXCk0"
     ],
     "attributes": [
       {
@@ -9872,7 +10221,7 @@
         "final_price": 375
       }
     ],
-    "extraction_time_ms": 2296.8,
-    "scraped_at": "2026-10-07T04:08:32.453Z"
+    "scraped_at": "2026-10-07T20:29:41.821Z",
+    "extraction_time_ms": 2075.5
   }
 ]

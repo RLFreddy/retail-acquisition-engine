@@ -1,12 +1,13 @@
 # retail-acquisition-engine
 
 A scraper for [2ndswing.com](https://www.2ndswing.com) that turns a CSV of product
-SKUs into structured data: details, images, every valid configuration (hand,
-shaft, flex, loft…) and every customization option (grips, lie, length…), each
-with its price.
+SKUs into structured data: details (description and specs), images and videos,
+every valid configuration (hand, shaft, flex, loft…) and every customization
+option (grips, lie, length…), each with its price.
 
 It uses plain HTTP requests and reads the JSON that the store (Magento 2) embeds
-in each product page: no headless browser, one request per product. It resumes
+in each product page: no headless browser, and per product one page plus one
+small JSON with its photo gallery. It resumes
 after interruptions, retries when the site pushes back, and stops on its own if
 it keeps getting blocked.
 
@@ -18,16 +19,22 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 | --------------------- | -------------------------------------------------- |
 | Products captured     | **696 / 700** (the other 4 are not available on the site) |
 | Valid configurations  | **280,886**, each with its price                   |
-| Customization options | **39,703**, each with its price change             |
-| Requests              | 700 (one per product), 0 retries, 0 blocks         |
-| Runtime               | **8 min 3 s** with the defaults · 39 s with `DELAY_MS=0` (one test) |
+| Customization options | **39,838**, each with its price change             |
+| Details and media     | Description for all 696, specs table for 689, 4,093 photos (every gallery), 852 YouTube videos on 535 products |
+| Requests              | 1,396 (page + gallery per product), 0 retries, 0 blocks |
+| Runtime               | **1 min 55 s** with `CONCURRENCY=20 DELAY_MS=0` · 8 min 2 s with the defaults (before the gallery request) |
 
 ## Features
 
 - **Every valid configuration with its price**, including combinations that the
   site only reveals after several clicks
 - **Customization options with their price change**, grouped and ordered as the
-  site shows them
+  site shows them, including those that only exist in the page's HTML form
+- **Product details and media:** description, specs table, every photo of the
+  gallery and the YouTube videos
+- **Iron sets:** per-club prices plus the price of the default set (4–PW)
+- **Explorer:** search the products by SKU or name and check each one against
+  its live page (`make explorer`)
 - **Validated input:** if the site changes its data, the product fails with a
   clear error instead of producing silently empty data
 - **Resumable:** progress is saved per product; running it again continues where
@@ -42,14 +49,15 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 ```mermaid
 flowchart LR
     A["searchresults.csv"] --> B["Queue<br/>4 in parallel, polite pace"]
-    B --> C["GET product page<br/>retries with backoff"]
+    B --> C["GET product page + gallery JSON<br/>retries with backoff"]
     C --> D["Parse embedded JSON<br/>validated with zod"]
     D --> E[("state/scraper.db<br/>resume")]
     E --> F["output.json<br/>variants.csv<br/>customizations.csv<br/>run-report.json"]
 ```
 
 Each product's page already contains every valid configuration and its price,
-so one request is enough. Details in
+so one request is enough for them; a second, small one brings the photo gallery.
+Details in
 [Conditional-option discovery](DOCUMENTATION.md#2-conditional-option-discovery).
 
 ## Requirements
@@ -88,6 +96,7 @@ Run `make dev` (no `LIMIT`) to scrape all the products in the CSV.
 | --------------------------- | -------------------------------------------------- |
 | `make dev`                  | Scrape every product in the CSV                    |
 | `make dev LIMIT=10`         | Scrape only the first 10 (quick test)              |
+| `make explorer`             | Browse the products at `http://localhost:4321`: search by SKU or name, see each one laid out like the store page |
 | `make test`                 | Typecheck and run the tests (no network needed)    |
 | `make build` / `make start` | Compile to `dist/` and run the compiled version    |
 | `make reset`                | Delete all output and the resume state             |
@@ -140,15 +149,15 @@ Docker, and any variable can also be set on the command line
 | `DELAY_MS`         | `500`               | At most one product starts every `DELAY_MS`              |
 | `RETRIES`          | `4`                 | Retries per request on 406, 429, 5xx and network errors  |
 | `RETRY_DELAY_MS`   | `5000`              | First retry wait; doubles on each retry                  |
-| `TIMEOUT_MS`       | `20000`             | Timeout per request                                      |
+| `TIMEOUT_MS`       | `60000`             | Timeout per request                                      |
 | `MAX_ATTEMPTS`     | `5`                 | Runs a product may fail before it is abandoned           |
 | `MAX_FAILURE_RATE` | `0.1`               | Above this failure rate the run exits with code 1        |
 | `USER_AGENT`       | a desktop Chrome    | User-Agent sent with every request                       |
 
-**Speed:** `DELAY_MS` limits speed more than `CONCURRENCY` does. In a test with
-the same 700 products, `CONCURRENCY=20` and `DELAY_MS=0` took 39 s instead of
-8 min, without blocks. The defaults stay conservative on purpose; see the
-[concurrency test](DOCUMENTATION.md#concurrency-test).
+**Speed:** `DELAY_MS` limits speed more than `CONCURRENCY` does. The last full
+run used `CONCURRENCY=20 DELAY_MS=0`: 1 min 55 s for the 700 products and 1,396
+requests, without retries or blocks. The defaults stay conservative on purpose;
+see the [concurrency test](DOCUMENTATION.md#concurrency-test).
 
 ## Project structure
 
@@ -157,9 +166,10 @@ src/
 ├── main.ts        entry point: run, report, exit code
 ├── config.ts      settings from environment variables
 ├── scrape/        queue, resume, metrics
-├── extract/       parsing: variants, customizations, media, zod schemas
+├── extract/       parsing: variants, customizations, details, media, zod schemas
 └── lib/           HTTP client, CSV, SQLite state, logging, output files
-test/              21 offline tests
+explorer/          web explorer: server.ts (API) + public/ (page, styles, script)
+test/              29 offline tests
 results/           output of the full run (sample/ + full-results.zip)
 ```
 

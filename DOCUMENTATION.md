@@ -29,7 +29,11 @@ erDiagram
         string category
         number base_price "Starting at price"
         string pricing_unit "per_item or per_club"
-        string_list media "image URLs"
+        number default_set_price "iron sets: base x default clubs"
+        string description "one paragraph per line"
+        object_list specs "rows of the Specs table"
+        string_list media "every photo of the gallery"
+        string_list videos "YouTube URLs"
     }
     ATTRIBUTE {
         string label "Dexterity, Shaft Flex..."
@@ -53,22 +57,28 @@ erDiagram
 | ----------------- | -------------------------------------------------- | ----------------------------------- |
 | **Variant**       | A combination the store sells as its own SKU (hand × shaft × flex…) | Absolute price; `price_modifier = final_price − base_price` |
 | **Customization** | An add-on chosen on top (grip, lie, length…)       | Site gives the extra cost; `final_price = base_price + price_modifier` |
-| **Iron sets**     | `pricing_unit: "per_club"`                         | Both prices are per club            |
+| **Iron sets**     | `pricing_unit: "per_club"`                         | Both prices are per club; the site multiplies them by the clubs checked. `default_set_price` = `base_price` × the default clubs (4–PW) |
 
 A trimmed record (full examples in [`results/sample/output.json`](results/sample/output.json)):
 
 ```jsonc
 {
-  "id": "PRO S4 STS", "name": "Mizuno Pro S-4 Iron Set", "brand": "Mizuno",
-  "base_price": 215, "pricing_unit": "per_club",
-  "price_range": { "min": 215, "max": 275 },
-  "media": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg"],
+  "id": "PRO S4 STS", "title": "Mizuno Pro S-4 Iron Set", "name": "Mizuno Pro S-4 Iron Set",
+  "brand": "Mizuno", "category": "Iron Set", "model": "Pro S-4",
+  "url": "https://www.2ndswing.com/golf-clubs/iron-sets/mizuno-pro-s-4-iron-set/pro-s4-sts",
+  "base_price": 215, "price_range": { "min": 215, "max": 275 }, "pricing_unit": "per_club",
+  "included_clubs": ["4 Iron", "5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron", "PW"], "default_set_price": 1505,
+  "description": "Who’s It For?\nDesigned for accomplished golfers who value the soft, responsive feel…",
+  "specs": [{ "Club": "4", "Loft": "24°", "Length": "38.75\"", "Bounce": "3°", "Hand": "RH/LH" }],
+  "media": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg",
+            "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_2.jpg"],
+  "videos": ["https://www.youtube.com/watch?v=1LNL-MUEc1Y"],
   "attributes": [{ "label": "Dexterity", "options": ["Right Handed", "Left Handed"] }],
   "variants": [{ "sku": "C4605039", "options": { "Dexterity": "Left Handed", "Shaft Flex": "Stiff" },
                  "final_price": 275, "price_modifier": 60 }],
   "customizations": [{ "category": "Ferrule", "option_name": "ICON (Black/Blue/White)",
                        "price_modifier": 2.5, "final_price": 217.5 }],
-  "extraction_time_ms": 2222, "scraped_at": "2026-10-07T04:03:47.966Z"
+  "scraped_at": "2026-10-07T20:28:51.236Z", "extraction_time_ms": 2158.3
 }
 ```
 
@@ -84,9 +94,11 @@ flowchart LR
     B --> C["spConfig.index<br/>only combinations that exist"]
     B --> D["spConfig.optionPrices + sku<br/>price and SKU of each"]
     B --> E["ironsetOptions<br/>customization prices"]
-    A --> F["HTML<br/>group names and order"]
+    A --> F["HTML form<br/>group names and order,<br/>options when there is no JSON"]
+    A --> G["HTML tabs<br/>Description, Specs, Videos"]
     C & D --> V[variants]
     E & F --> K[customizations]
+    G --> P[details and videos]
 ```
 
 | Source in the page             | Gives                                                       |
@@ -96,6 +108,11 @@ flowchart LR
 | `spConfig.optionPrices`, `sku` | Price and SKU of each combination                           |
 | `ironsetOptions.optionConfig`  | Customization options and their extra cost                  |
 | HTML labels                    | Group names ("Grips") and display order (not in any JSON; GraphQL returns null for them) |
+| HTML `<select>` options        | Customization options on pages without `optionConfig` (66 products, mostly putters); each option's `price` attribute holds the same amount as the JSON |
+| `ironsetOptions.clubInformation` | The clubs an iron set includes by default (4–PW)          |
+| Description, Specs, Videos tabs | `description`, `specs`, `videos`                           |
+| `<link rel="canonical">`       | `url`: the product page (the JSON's own url leads to the model's listing of new and used clubs for 533 of 696 products) |
+| `/gallery/<SKU>.json` (2nd request) | `media`: every photo of the page's gallery (the JSON in the page only has the first) |
 
 **Example:** the OPUS SP wedge has ~700,000 theoretical combinations
 (6 bounces × 5 grinds × 9 lofts × 2 materials × 2 hands × 8 flexes × 81 shafts).
@@ -108,18 +125,26 @@ exactly those.
 - The SKU on the page must match the CSV, so a wrong product is never recorded.
 - Every JSON block is validated with zod: if the site changes a field, the product fails with `site data changed in …` instead of producing empty data.
 
-Customizations are not conditional: the JSON exposes no dependency between them.
+**Customizations:** which options exist does not depend on other choices;
+picking another variant only re-prices them. The site's JavaScript adds two
+rules:
+- **Iron sets:** the per-club price and every customization are multiplied by
+  the clubs checked (4–PW by default, hence `default_set_price`).
+- **Required together:** a non-standard length makes grip and grip install
+  required, and an upgrade shaft makes tip and length required. These rules are
+  not in the output (see [Not captured](#4-data-that-could-not-be-captured-reliably)).
 
 ## 3. Runtime
 
-**Result:** 700 products in **8 min 3 s** with the defaults: 696 captured,
-0 retries, 0 blocks.
+**Result:** the last full run took **1 min 55 s** with `CONCURRENCY=20 DELAY_MS=0`:
+696 of 700 captured, 1,396 requests (page + gallery), 0 retries, 0 blocks. With
+the defaults, the run before the gallery request took 8 min 2 s.
 
 ### Trade-offs
 
 | Decision                              | Why                                                    | Cost                                         |
 | ------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
-| HTTP + embedded JSON, no browser      | One request per product returns everything; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
+| HTTP + embedded JSON, no browser      | One request per product returns every configuration and price, and a second, small JSON the photo gallery; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
 | Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the site search (see below)                    | Relies on the site's URL convention (SKU checked on the page) |
 | 4 in parallel, 1 new product every 500 ms | Considerate pace with no blocks                       | Slower than the site can take (see the test below) |
 | Retries with backoff (5 s → 40 s), stop after 3 blocked products | Survives throttling without hammering the site | A blocked run ends early (and resumes later)  |
@@ -149,18 +174,22 @@ per product.
 
 ### Concurrency test
 
-The same 700 products from the same connection; all three captured identical
-data:
+The same 700 products from the same connection. The first three runs requested
+only the page and captured identical data; the last row is the latest full run,
+which also requests each gallery:
 
 | Setting                          | Time       | Products/min | Per product (p50 · p95) | 406 / retries / blocks |
 | -------------------------------- | ---------- | ------------ | ----------------------- | ---------------------- |
 | `CONCURRENCY=4`, `DELAY_MS=500`  | 8 min 3 s  | 87           | 2.4 s · 4.4 s           | 0 / 0 / 0              |
 | `CONCURRENCY=20`, `DELAY_MS=500` | 6 min 5 s  | 115          | 2.2 s · 4.1 s           | 0 / 0 / 0              |
 | `CONCURRENCY=20`, `DELAY_MS=0`   | **39 s**   | **1,074**    | 0.75 s · 2.8 s          | 0 / 0 / 0              |
+| `CONCURRENCY=20`, `DELAY_MS=0`, page + gallery | 1 min 55 s | 366 | 2.9 s · 5.5 s     | 0 / 0 / 0              |
 
 The pace (`DELAY_MS`) limits speed, not concurrency: 500 ms caps the run at
 120 products per minute. It is a single test (the last two runs overlapped by
-~10 s), so the defaults stay conservative.
+~10 s), so the defaults stay conservative. The test ran before description,
+specs and videos were extracted; the later run with them kept the same pace
+(8 min 2 s, 87 products/min).
 
 ### Where to improve
 
@@ -171,7 +200,9 @@ The pace (`DELAY_MS`) limits speed, not concurrency: 500 ms caps the run at
 | Daily runs: skip unchanged records by content hash           | Less storage and processing, not fewer requests  |
 
 Large pages dominate the time: the OPUS wedge page is 2.6 MB (1.1 s to
-download, 0.5 s to parse), and the largest product (26,400 variants) took 20 s.
+download, 0.5 s to parse), and the largest product (26,400 variants, 11.9 MB)
+takes about 20 s. That is why the request timeout is 60 s: with 20 s it once
+needed a retry.
 
 ## 4. Data that could not be captured reliably
 
@@ -188,10 +219,14 @@ download, 0.5 s to parse), and the largest product (26,400 variants) took 20 s.
 
 | Data                                   | Why                                                                     |
 | -------------------------------------- | ----------------------------------------------------------------------- |
-| Total price of an iron set             | Prices are per club and the number of clubs is a separate choice; `included_clubs` lists the default set |
-| Dependencies between customizations    | Not in the site's JSON (e.g. grip size per grip model)                  |
+| Iron set price for other club choices  | `default_set_price` covers the default set; any other selection costs the per-club price × the clubs checked |
+| Rules between customizations           | Only in the site's JavaScript (a non-standard length requires a grip; an upgrade shaft requires a tip), so the output lists every option without them |
 | Stock per configuration                | The stock field is empty in the JSON; availability is only per product  |
-| Media files                            | Captured as image URLs, not downloaded. One image per SKU (`standard` and `representative`); no per-configuration images exist |
+| Media files                            | Captured as URLs, not downloaded: every photo of the gallery and the YouTube videos. No per-configuration images exist (colors are plain dropdowns) |
+| Add-ons and shipping time              | The "Add On" box (e.g. Bridgestone Tour B XS balls, $19.99) is a separate product, and "Typically ships in 1 to 3 weeks" comes per variant in `spConfig.leadtimes`; neither is in the output |
+| Group headers in selects               | "STANDARD GRIPS" / "PREMIUM GRIPS" come in the HTML of every grip select; "STANDARD SHAFTS" / "CUSTOM SHAFTS" are drawn by the site's JavaScript in the Shaft Model dropdown. Both only mark whether an option costs extra (all 16,510 premium grips do, no standard one does), which `price_modifier` already says, so they are not stored |
+| Specs of 7 products                    | 6 have no Specs tab; `20 AKA OM-5 NEW PUT` writes them as prose instead of a table |
+| Labels                                 | Kept as the site writes them, which varies by product (customizations "Grip", "Grips", "GripModel(InstallPriceIncluded)"; spec columns "Length", "LENGTH"); 24 products list the same option twice, as the site does |
 
 ## 5. Production
 
@@ -209,7 +244,7 @@ flowchart LR
 | **Run**      | The Docker image as a one-off job (Cloud Run Jobs, ECS Fargate or cron) in a US region, which provides the US IP without a VPN. Settings via environment variables. |
 | **Monitor**  | Exit code 1 = bad run (nothing extracted or >10% failed). One JSON log file per run (`product_ok`, `product_failed`, `retry`, `run_stopped`…). `run-report.json` gives success rate, products/min and p95 to track over time. |
 | **Alert on** | `retry` / `run_stopped` events (site throttling or blocking) and `site data changed in …` errors (parser needs updating) |
-| **Maintain** | zod schemas pinpoint which field changed. 21 offline tests (`make test`) cover parsing, pricing, retries, resume and the quality check. Interrupted runs resume from `state/scraper.db`. |
+| **Maintain** | zod schemas pinpoint which field changed. 29 offline tests (`make test`, also run by CI) cover parsing, pricing, retries, resume, the quality check and the explorer. `make explorer` shows any product next to its live page for spot checks. Interrupted runs resume from `state/scraper.db`. |
 
 ## 6. Daily CSV pipeline (design)
 
@@ -232,7 +267,7 @@ flowchart TD
 | -------------------------------- | ---------------------------------------------------------------------- |
 | **Identify new products**        | Compare today's CSV with yesterday's by `Parent Item`: new SKUs are scraped and inserted; removed SKUs are marked inactive, never deleted |
 | **Scrape**                       | Every SKU once a day at a gentle pace (e.g. `CONCURRENCY=1 DELAY_MS=10000`, ~2 h, fine for an unattended job). The run state is keyed by date, so a re-run the same day resumes instead of duplicating |
-| **Detect changes**               | SHA-256 of the normalized record (sorted keys, without `scraped_at` and `extraction_time_ms`). Same hash: nothing to write. Different: compare fields to classify the change (base price, variant price, variant added/removed, customization added/removed/re-priced, out of stock, gone) |
+| **Detect changes**               | SHA-256 of the normalized record (sorted keys, without `scraped_at` and `extraction_time_ms`). Same hash: nothing to write. Different: compare fields to classify the change (base price, variant price, variant added/removed, customization added/removed/re-priced, out of stock, gone). Changes are frequent: between two runs 13 h apart, 22,690 variant prices changed in 36 products |
 | **Store history**                | SCD Type 2 in PostgreSQL: a change closes the current row (`valid_to`, `is_current = false`) and inserts a new one. Only changes are stored, instead of ~280,000 near-identical rows a day |
 | **Flag changes**                 | One daily summary (Slack or email): new products, price changes (old → new, %; moves above 10% flagged for review), variants added or removed, products out of stock or gone |
 | **Flag failures**                | Exit code 1, coverage drop, runtime above twice the usual, `site data changed in …`, repeated 406 (egress IP blocked or not in the US). Out-of-stock and not-found count as status changes, not failures |
