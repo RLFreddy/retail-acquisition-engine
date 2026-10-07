@@ -52,7 +52,7 @@ export async function fetchHtml(url: string): Promise<string | null> {
       const wait = RETRY_DELAY_MS * 2 ** attempt;
       log.warn(
         { event: "retry", url, status, attempt: attempt + 1, wait_ms: wait },
-        `↻ ${status ?? "network error"} on ${url} — retry in ${wait / 1000}s`,
+        `Reclaiming failed request (${status ?? "network error"}) · ${url} · retry ${attempt + 1}/${RETRIES} in ${wait / 1000}s`,
       );
       await sleep(wait);
     }

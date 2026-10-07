@@ -1,37 +1,35 @@
 import path from "node:path";
+import { styleText } from "node:util";
 import pino from "pino";
 import { OUTPUT_DIR } from "../config.js";
 
 export const LOG_FILE = path.join(OUTPUT_DIR, "logs", "run.log");
 
-// Colors only for a person at a terminal (clig.dev, no-color.org):
-// FORCE_COLOR wins, then NO_COLOR, then "is stderr a TTY?".
-const useColor = process.env.FORCE_COLOR
-  ? process.env.FORCE_COLOR !== "0"
-  : !process.env.NO_COLOR && process.stderr.isTTY === true;
+const LEVELS: Record<number, [label: string, color: "green" | "yellow" | "red"]> = {
+  30: ["INFO ", "green"],
+  40: ["WARN ", "yellow"],
+  50: ["ERROR", "red"],
+  60: ["FATAL", "red"],
+};
 
-// Usage: log.info(fields, message). The console shows the message; run.log
-// gets one JSON line with the message and the fields.
+// Crawlee-style console line: "INFO  Scraper: message". styleText already
+// follows the color conventions: TTY detection, NO_COLOR and FORCE_COLOR.
+const consoleStream = {
+  write(line: string) {
+    const { level, msg } = JSON.parse(line) as { level: number; msg: string };
+    const [label, color] = LEVELS[level] ?? LEVELS[30]!;
+    const style = (format: Parameters<typeof styleText>[0], text: string) =>
+      styleText(format, text, { stream: process.stderr });
+    process.stderr.write(`${style(color, label)} ${style("gray", "Scraper:")} ${msg}\n`);
+  },
+};
+
+// Usage: log.info(fields, message). The console shows the message (on
+// stderr); run.log gets one JSON line with the message and the fields.
 export const log = pino(
   { level: "debug" },
-  pino.transport({
-    targets: [
-      {
-        target: "pino-pretty",
-        level: "info",
-        options: {
-          destination: 2, // status messages belong on stderr
-          colorize: useColor,
-          translateTime: "SYS:HH:MM:ss",
-          ignore: "pid,hostname",
-          hideObject: true,
-        },
-      },
-      {
-        target: "pino/file",
-        level: "debug",
-        options: { destination: LOG_FILE, mkdir: true },
-      },
-    ],
-  }),
+  pino.multistream([
+    { level: "info", stream: consoleStream },
+    { level: "debug", stream: pino.destination({ dest: LOG_FILE, mkdir: true, sync: true }) },
+  ]),
 );
