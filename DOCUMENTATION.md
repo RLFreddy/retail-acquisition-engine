@@ -145,9 +145,30 @@ flowchart LR
 | 40 sequential requests                      | 406 after ~40 searches                        | 200                    |
 | 40 + 40 requests, 10 in parallel, at the same time | **40 × 406**                           | **40 × 200**           |
 | Full browser headers                        | Still 406                                     | –                      |
+| 4 different User-Agents (Chrome, Firefox, Safari, iPhone) | Still 406                       | –                      |
 
-The search block is a usage limit on the search page only, not on the IP or the
-request format; it was still active minutes later.
+**What `robots.txt` says.** It works as a deny list: anything not disallowed is
+allowed. The search is disallowed for every bot; product URLs match no rule.
+[robots.txt](https://www.2ndswing.com/robots.txt), relevant lines:
+
+```text
+User-agent: *                 # applies to every bot
+Disallow: /catalogsearch/     # the site search: /catalogsearch/result/?q=...
+Disallow: /checkout/          # other rules: /customer/, /catalog/, /*.php$, /*?dir*, ...
+                              # no rule matches /link-2dot2-put, so it is allowed
+User-agent: msnbot
+Crawl-delay: 10               # only for Microsoft's bot
+```
+
+All 700 direct URLs were checked against every rule: 0 disallowed.
+
+**What the tests show.** `robots.txt` is only a request; it blocks nothing by
+itself (the first ~40 searches worked). The 406 is a separate usage limit the
+site applies to the search page per IP: product pages kept answering 200 from
+the same IP, changing headers or User-Agent did not lift it, and it was still
+active minutes later. Rotating proxies would get around it, but that goes
+against `robots.txt` and the brief's "considerate of the site", and the direct
+URL does not need it.
 
 ### How it was measured
 
