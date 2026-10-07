@@ -186,7 +186,7 @@ src/
 ├── extract/       parsing: variants, customizations, details, media, zod schemas
 └── lib/           HTTP client, CSV, SQLite state, logging, output files
 explorer/          web explorer: server.ts (API) + public/ (page, styles, script)
-test/              38 offline tests
+test/              37 offline tests
 results/           output of the full run (sample/ + full-results.zip)
 ```
 

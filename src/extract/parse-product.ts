@@ -4,7 +4,7 @@ import type { Product, SourceProduct } from "../types.js";
 import { parseClubs, parseCustomizations } from "./customizations.js";
 import { parseDescription, parseSpecs } from "./details.js";
 import { readProductConfigs } from "./magento.js";
-import { parseImages, parseVideos } from "./media.js";
+import { parseMainImage, parseVideos } from "./media.js";
 import { parseVariants, sortAttributes, toProductOptions } from "./variants.js";
 
 export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms" | "scraped_at"> {
@@ -44,7 +44,7 @@ export function parseProduct(source: SourceProduct, html: string): Omit<Product,
       options?.isIronsetProduct && includedClubs.length ? roundToCents(basePrice * includedClubs.length) : null,
     description: parseDescription($),
     specs: parseSpecs($),
-    media: { images: parseImages(product), videos: parseVideos($) },
+    media: { images: parseMainImage(product), videos: parseVideos($) },
     options: toProductOptions(attributes),
     variants,
     customizations: parseCustomizations($, options),

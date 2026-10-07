@@ -267,7 +267,7 @@ function tabsPanel(p) {
       ? h("div", { class: "thumbs" }, videos.map((url) =>
           figure(`https://i.ytimg.com/vi/${new URL(url).searchParams.get("v")}/mqdefault.jpg`, url, "YouTube video")))
       : h("p", { class: "empty" }, "No videos."),
-    h("p", { class: "source" }, "media.images ← the product JSON and /gallery/<SKU>.json · media.videos ← the Videos tab (#video)"));
+    h("p", { class: "source" }, "media.images ← /gallery/<SKU>.json (the page's main photo if there is none) · media.videos ← the Videos tab (#video)"));
 
   ui.variantsInfo = h("p", { class: "count" });
   ui.variantsBody = h("tbody", {});

@@ -123,7 +123,7 @@ flowchart LR
 | `spConfig`                       | `options` (`attributes`); **only the combinations that exist** (`index`), which is the conditional logic itself; price and SKU of each (`optionPrices`, `sku`) |
 | `ironsetOptions`                 | Customization upcharges, Irons In Set (`option_type: "clubs"`), default clubs, `forceRequireOptions` |
 | HTML                             | Group names and order (in no JSON), options on the 66 pages without the JSON, the Description / Specs / Videos tabs, the canonical `url` |
-| `/gallery/<SKU>.json` (2nd request) | `media.images`: the page's gallery (the page itself only has the main photo) |
+| `/gallery/<SKU>.json` (2nd request) | `media.images`: the page's gallery. The page's own JSON only has the main photo, used if a product has no gallery |
 
 **Example:** `OPUS SP BS WGS` has ~700,000 theoretical combinations
 (6 bounces × 5 grinds × 9 lofts × 2 materials × 2 hands × 8 flexes × 81 shafts);
@@ -214,7 +214,7 @@ flowchart LR
 | **Run**      | The Docker image as a one-off job (Cloud Run Jobs, ECS Fargate or cron) in a US region, which gives the US IP without a VPN |
 | **Monitor**  | Exit code 1 = bad run (nothing extracted or >10% failed); one JSON log file per run; `run-report.json` with success rate, products per minute, p95 and `coverage` to track over time |
 | **Alert on** | `retry` / `run_stopped` (throttling or blocking), `site data changed in …` (parser needs updating), drops in `coverage` |
-| **Maintain** | zod points at the field that changed; 38 offline tests (also in CI) cover parsing, pricing, retries, resume, the CSV files and the explorer; `make explorer` puts any product next to its live page. Interrupted runs resume from `state/scraper.db` |
+| **Maintain** | zod points at the field that changed; 37 offline tests (also in CI) cover parsing, pricing, retries, resume, the CSV files and the explorer; `make explorer` puts any product next to its live page. Interrupted runs resume from `state/scraper.db` |
 
 ## 6. Daily CSV pipeline (design)
 

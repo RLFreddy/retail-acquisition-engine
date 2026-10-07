@@ -8,7 +8,7 @@ import { after, test } from "node:test";
 // point OUTPUT_DIR at a temp dir first, then import the modules.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-extract-"));
 process.env.OUTPUT_DIR = tmp;
-const { mergeImages, parseGallery } = await import("../src/extract/media.js");
+const { parseGallery } = await import("../src/extract/media.js");
 const { parseProduct } = await import("../src/extract/parse-product.js");
 const { buildProductUrl } = await import("../src/scrape/scrape-product.js");
 after(() => fs.rmSync(tmp, { recursive: true, force: true }));
@@ -152,18 +152,8 @@ test("description and specs from the page tabs", () => {
   ]);
 });
 
-test("images from the provider JSON: canonical, encoded, deduped", () => {
-  assert.deepEqual(product.media.images, [
-    "https://www.2ndswing.com/images/standard/S3%20PUT.jpg",
-    "https://www.2ndswing.com/images/representative/S3%20PUT.jpg",
-  ]);
-});
-
-test("images: the gallery's copy of the main photo replaces the /standard/ one", () => {
-  const page = ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg", "https://www.2ndswing.com/images/representative/S3%20PUT.jpg"];
-  const gallery = ["https://www.2ndswing.com/images/representative/S3%20PUT.jpg", "https://www.2ndswing.com/images/representative/S3%20PUT_2.jpg"];
-  assert.deepEqual(mergeImages(page, gallery), gallery);
-  assert.deepEqual(mergeImages(page.slice(0, 1), []), page.slice(0, 1)); // kept when it is the only copy
+test("the page JSON gives one main photo: the gallery's copy, encoded, without ?width", () => {
+  assert.deepEqual(product.media.images, ["https://www.2ndswing.com/images/representative/S3%20PUT.jpg"]);
 });
 
 test("gallery: one image per name, encoded like the site does", () => {
