@@ -3,6 +3,7 @@ import csv from "csv-parser";
 import type { SourceProduct } from "../types.js";
 
 export async function loadProducts(file: string): Promise<SourceProduct[]> {
+  if (!fs.existsSync(file)) throw new Error(`input CSV not found: ${file}`);
   const products = new Map<string, SourceProduct>();
   const rows = fs.createReadStream(file).pipe(
     // Strip the BOM that Excel adds to the first header.
