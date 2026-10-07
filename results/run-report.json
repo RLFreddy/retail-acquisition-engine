@@ -1,43 +1,43 @@
 {
   "metrics": {
-    "started_at": "2026-10-07T20:28:49.013Z",
-    "finished_at": "2026-10-07T20:30:43.816Z",
-    "total_ms": 114803.9,
+    "started_at": "2026-10-07T22:04:51.466Z",
+    "finished_at": "2026-10-07T22:06:43.035Z",
+    "total_ms": 111569,
     "concurrency": 20,
     "products": 700,
     "ok": 696,
     "failed": 4,
     "http_requests": 1396,
-    "products_per_minute": 365.8,
+    "products_per_minute": 376.4,
     "product_ms": {
-      "p50": 2861.3,
-      "p95": 5503.6,
-      "max": 21853.8
+      "p50": 2727.4,
+      "p95": 5617.2,
+      "max": 24877.8
     },
     "variants": 280886,
-    "customizations": 39838
+    "customization_options": 39838
   },
   "failures": [
     {
-      "id": "2026 HL MAX D WGS",
+      "sku": "2026 HL MAX D WGS",
       "name": "Tour Edge 2026 Hot Launch Max D Wedge",
       "url": "https://www.2ndswing.com/2026-hl-max-d-wgs",
       "reason": "out of stock (site shows no price)"
     },
     {
-      "id": "2026 HL MAX D FWG",
+      "sku": "2026 HL MAX D FWG",
       "name": "Tour Edge 2026 Hot Launch Max D Fairway Wood",
       "url": "https://www.2ndswing.com/2026-hl-max-d-fwg",
       "reason": "out of stock (site shows no price)"
     },
     {
-      "id": "KM2 PUT",
+      "sku": "KM2 PUT",
       "name": "Miura KM-2 Putter",
       "url": "https://www.2ndswing.com/km2-put",
       "reason": "product page not found (404)"
     },
     {
-      "id": "STAFF MOD TG NEW WGS",
+      "sku": "STAFF MOD TG NEW WGS",
       "name": "Wilson Staff Staff Model Tour Grind Wedge",
       "url": "https://www.2ndswing.com/staff-mod-tg-new-wgs",
       "reason": "not a product page (no provider block)"

@@ -14,13 +14,13 @@
   <header class="top">
     <p class="eyebrow" id="run">2ndswing.com scraper</p>
     <h1>Scraper Explorer</h1>
-    <p class="lede">What the scraper extracted, laid out like the live product page. Search a product, open its live page (from a US IP), pick the same options on both sides and compare.</p>
+    <p class="lede">What the scraper extracted, laid out like the live product page. Search by product or variant SKU, name or brand, open its live page (from a US IP), pick the same options on both sides and compare.</p>
     <div class="stats" id="stats"></div>
   </header>
 
   <div class="layout">
     <aside class="side">
-      <input id="q" type="search" placeholder="Search by SKU (product or variant), name or brand" autocomplete="off" aria-label="Search products">
+      <input id="q" type="search" placeholder="e.g. PRO S4 STS, C4592868, Mizuno" autocomplete="off" aria-label="Search products">
       <select id="cat" aria-label="Category"><option value="">All categories</option></select>
       <p class="count" id="list-count"></p>
       <div class="list" id="list" aria-label="Products"></div>
@@ -29,7 +29,7 @@
     <main id="product"><p class="empty">Loading products…</p></main>
   </div>
 
-  <footer>Data from <span class="mono">output.json</span> and <span class="mono">run-report.json</span>. Photos and video thumbnails load from 2ndswing.com and YouTube; prices may have changed since the run.</footer>
+  <footer>Data from <span class="mono">output.json</span> and <span class="mono">run-report.json</span>. Images and video thumbnails load from 2ndswing.com and YouTube; prices may have changed since the run.</footer>
 </div>
 <script src="app.js"></script>
 </body>

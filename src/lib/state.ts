@@ -33,18 +33,18 @@ export const markDone = (product: Product): void => {
   db.prepare(
     `INSERT INTO products (id, status, data) VALUES (?, 'done', ?)
      ON CONFLICT(id) DO UPDATE SET status = 'done', data = excluded.data`,
-  ).run(product.id, JSON.stringify(product));
+  ).run(product.sku, JSON.stringify(product));
 };
 
-export const markFailed = (id: string): void => {
+export const markFailed = (sku: string): void => {
   db.prepare(
     `INSERT INTO products (id, status, attempts) VALUES (?, 'failed', 1)
      ON CONFLICT(id) DO UPDATE SET status = 'failed', attempts = attempts + 1`,
-  ).run(id);
+  ).run(sku);
 };
 
-export const productState = (id: string): ProductState =>
-  (db.prepare("SELECT status, attempts FROM products WHERE id = ?").get(id) as ProductState | undefined) ?? {
+export const productState = (sku: string): ProductState =>
+  (db.prepare("SELECT status, attempts FROM products WHERE id = ?").get(sku) as ProductState | undefined) ?? {
     status: "pending",
     attempts: 0,
   };

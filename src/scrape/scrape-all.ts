@@ -21,9 +21,9 @@ function stopRun(queue: PQueue): void {
 }
 
 const toFailure = (source: SourceProduct, reason: string): Failure => ({
-  id: source.id,
+  sku: source.sku,
   name: source.name,
-  url: buildProductUrl(source.id),
+  url: buildProductUrl(source.sku),
   reason,
 });
 
@@ -36,7 +36,7 @@ export async function scrapeAll(
   const failures: Failure[] = [];
   const pending: SourceProduct[] = [];
   for (const source of sources) {
-    const { status, attempts } = productState(source.id);
+    const { status, attempts } = productState(source.sku);
     if (status === "done") continue;
     if (attempts >= MAX_ATTEMPTS) failures.push(toFailure(source, `abandoned after ${attempts} failed attempts`));
     else pending.push(source);
@@ -70,20 +70,21 @@ export async function scrapeAll(
       markDone(product);
       consecutiveBlocks = 0;
       const { variants, customizations, extraction_time_ms: ms } = product;
+      const options = customizations.reduce((n, c) => n + c.options.length, 0);
       log.info(
         {
           event: "product_ok",
-          id: source.id,
-          data: { variants: variants.length, options: customizations.length, ms: Math.round(ms) },
+          sku: source.sku,
+          data: { variants: variants.length, options, ms: Math.round(ms) },
         },
-        `${nextProgress()} ${source.id}`,
+        `${nextProgress()} ${source.sku}`,
       );
     } catch (err) {
-      markFailed(source.id);
+      markFailed(source.sku);
       const failure = toFailure(source, err instanceof Error ? err.message : String(err));
       failures.push(failure);
       log.error(
-        { event: "product_failed", reason: failure.reason, data: { id: failure.id, url: failure.url } },
+        { event: "product_failed", reason: failure.reason, data: { sku: failure.sku, url: failure.url } },
         `${nextProgress()} Request failed. ${failure.reason}`,
       );
       if (err instanceof BlockedError && ++consecutiveBlocks >= MAX_CONSECUTIVE_BLOCKS) stopRun(queue);
@@ -96,13 +97,13 @@ export async function scrapeAll(
 
   // Products never started because the run was stopped stay pending in the
   // state, so the next run picks them up.
-  const order = new Map(sources.map((s, i) => [s.id, i]));
-  const products = doneProducts().filter((p) => order.has(p.id));
-  const reported = new Set([...products, ...failures].map((p) => p.id));
+  const order = new Map(sources.map((s, i) => [s.sku, i]));
+  const products = doneProducts().filter((p) => order.has(p.sku));
+  const reported = new Set([...products, ...failures].map((p) => p.sku));
   for (const source of pending) {
-    if (!reported.has(source.id)) failures.push(toFailure(source, "skipped: run stopped, site blocking requests"));
+    if (!reported.has(source.sku)) failures.push(toFailure(source, "skipped: run stopped, site blocking requests"));
   }
 
-  products.sort((a, b) => order.get(a.id)! - order.get(b.id)!);
+  products.sort((a, b) => order.get(a.sku)! - order.get(b.sku)!);
   return { products, failures };
 }

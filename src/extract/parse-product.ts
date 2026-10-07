@@ -4,15 +4,15 @@ import type { Product, SourceProduct } from "../types.js";
 import { parseCustomizations } from "./customizations.js";
 import { parseDescription, parseSpecs } from "./details.js";
 import { readProductConfigs } from "./magento.js";
-import { parseMedia, parseVideos } from "./media.js";
-import { parseVariants, sortAttributes, toOutputAttributes } from "./variants.js";
+import { parseImages, parseVideos } from "./media.js";
+import { parseVariants, sortAttributes, toProductOptions } from "./variants.js";
 
 export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms" | "scraped_at"> {
   const $ = cheerio.load(html);
   const { product, spConfig, options } = readProductConfigs($);
 
   const pageSku = product.extension_attributes.ddg_sku;
-  if (pageSku.toUpperCase() !== source.id.toUpperCase()) {
+  if (pageSku.toUpperCase() !== source.sku.toUpperCase()) {
     throw new Error(`unexpected page for SKU "${pageSku}"`);
   }
   if (!product.is_available) throw new Error("out of stock (site shows no price)");
@@ -22,14 +22,13 @@ export function parseProduct(source: SourceProduct, html: string): Omit<Product,
 
   const attributes = sortAttributes(spConfig);
   const variants = parseVariants(spConfig, attributes, basePrice);
-  const prices = variants.length ? variants.map((v) => v.final_price) : [basePrice];
+  const prices = variants.length ? variants.map((v) => v.price) : [basePrice];
   // The site multiplies the per-club price by the clubs checked; these are checked by default.
   const includedClubs = (options?.clubInformation?.included_clubs ?? []).filter(Boolean);
 
   return {
-    id: source.id,
-    title: product.name,
-    name: source.name,
+    sku: source.sku,
+    name: product.name,
     brand: source.brand,
     category: source.category,
     model: source.model,
@@ -44,10 +43,9 @@ export function parseProduct(source: SourceProduct, html: string): Omit<Product,
       options?.isIronsetProduct && includedClubs.length ? roundToCents(basePrice * includedClubs.length) : null,
     description: parseDescription($),
     specs: parseSpecs($),
-    media: parseMedia(product),
-    videos: parseVideos($),
-    attributes: toOutputAttributes(attributes),
+    media: { images: parseImages(product), videos: parseVideos($) },
+    options: toProductOptions(attributes),
     variants,
-    customizations: parseCustomizations($, options, basePrice),
+    customizations: parseCustomizations($, options),
   };
 }

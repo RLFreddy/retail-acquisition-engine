@@ -7,23 +7,26 @@ import type { Product, SourceProduct } from "../types.js";
 
 // The site serves every product at /<sku-slug>, so no search request is
 // needed: "LINK 2.2 PUT" → https://www.2ndswing.com/link-2dot2-put
-export const buildProductUrl = (id: string): string =>
-  BASE_URL + id.trim().toLowerCase().replace(/\./g, "dot").replace(/\s+/g, "-");
+export const buildProductUrl = (sku: string): string =>
+  BASE_URL + sku.trim().toLowerCase().replace(/\./g, "dot").replace(/\s+/g, "-");
 
 // The page loads its photo gallery from a second, small JSON:
 // "PRO S4 STS" → https://www.2ndswing.com/gallery/PRO%20S4%20STS.json
-const buildGalleryUrl = (id: string): string => `${BASE_URL}gallery/${encodeURIComponent(id.trim())}.json`;
+const buildGalleryUrl = (sku: string): string => `${BASE_URL}gallery/${encodeURIComponent(sku.trim())}.json`;
 
 export async function scrapeProduct(source: SourceProduct): Promise<Product> {
   const start = performance.now();
-  const url = buildProductUrl(source.id);
+  const url = buildProductUrl(source.sku);
   const html = await fetchText(url);
   if (!html) throw new Error("product page not found (404)");
   const product = parseProduct(source, html);
-  const gallery = await fetchText(buildGalleryUrl(source.id)); // null (404) = no gallery
+  const gallery = await fetchText(buildGalleryUrl(source.sku)); // null (404) = no gallery
   return {
     ...product,
-    media: [...new Set([...product.media, ...(gallery ? parseGallery(gallery) : [])])],
+    media: {
+      images: [...new Set([...product.media.images, ...(gallery ? parseGallery(gallery) : [])])],
+      videos: product.media.videos,
+    },
     scraped_at: new Date().toISOString(),
     extraction_time_ms: roundMs(performance.now() - start),
   };

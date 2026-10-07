@@ -3,7 +3,7 @@
 //   pnpm explorer   →   http://localhost:4321
 // The page loads one product at a time from this API:
 //   GET /api/summary        run metrics, failures and one line per product
-//   GET /api/products/:id   the product's record, exactly as in output.json
+//   GET /api/products/:sku  the product's record, exactly as in output.json
 //   GET /api/variants/:sku  the product and options of a variant SKU (C4592868)
 
 import fs from "node:fs";
@@ -20,8 +20,8 @@ const TYPES: Record<string, string> = { ".html": "text/html", ".css": "text/css"
 function outputReader(outputDir: string) {
   const file = path.join(outputDir, "output.json");
   const reportFile = path.join(outputDir, "run-report.json");
-  type VariantHit = { id: string; sku: string; options: Record<string, string> };
-  let cache = { mtimeMs: -1, byId: new Map<string, Product>(), bySku: new Map<string, VariantHit>(), summary: "" };
+  type VariantHit = { product_sku: string; sku: string; options: Record<string, string> };
+  let cache = { mtimeMs: -1, products: new Map<string, Product>(), variants: new Map<string, VariantHit>(), summary: "" };
   return () => {
     if (!fs.existsSync(file)) throw new Error(`${file} not found: run the scraper first (make dev)`);
     const { mtimeMs } = fs.statSync(file);
@@ -32,19 +32,21 @@ function outputReader(outputDir: string) {
       run: report.metrics ?? null,
       failures: report.failures ?? [],
       products: products.map((p) => ({
-        id: p.id,
-        title: p.title,
+        sku: p.sku,
+        name: p.name,
         brand: p.brand,
         category: p.category,
         variants: p.variants.length,
         customizations: p.customizations.length,
-        media: p.media.length,
+        images: p.media.images.length,
       })),
     };
-    const bySku = new Map(
-      products.flatMap((p) => p.variants.map((v) => [v.sku.toUpperCase(), { id: p.id, sku: v.sku, options: v.options }] as const)),
+    const variants = new Map(
+      products.flatMap((p) =>
+        p.variants.map((v) => [v.sku.toUpperCase(), { product_sku: p.sku, sku: v.sku, options: v.options }] as const),
+      ),
     );
-    cache = { mtimeMs, byId: new Map(products.map((p) => [p.id, p])), bySku, summary: JSON.stringify(summary) };
+    cache = { mtimeMs, products: new Map(products.map((p) => [p.sku, p])), variants, summary: JSON.stringify(summary) };
     return cache;
   };
 }
@@ -59,14 +61,14 @@ export function createExplorer(outputDir: string = OUTPUT_DIR): http.Server {
     try {
       const { pathname } = new URL(req.url ?? "/", "http://localhost");
       if (pathname === "/api/summary") return send(200, "application/json", output().summary);
-      const id = pathname.match(/^\/api\/products\/(.+)$/)?.[1];
-      if (id !== undefined) {
-        const product = output().byId.get(decodeURIComponent(id));
+      const productSku = pathname.match(/^\/api\/products\/(.+)$/)?.[1];
+      if (productSku !== undefined) {
+        const product = output().products.get(decodeURIComponent(productSku));
         return product ? send(200, "application/json", JSON.stringify(product, null, 2)) : send(404, "text/plain", "Not found");
       }
       const sku = pathname.match(/^\/api\/variants\/(.+)$/)?.[1];
       if (sku !== undefined) {
-        const hit = output().bySku.get(decodeURIComponent(sku).trim().toUpperCase());
+        const hit = output().variants.get(decodeURIComponent(sku).trim().toUpperCase());
         return hit ? send(200, "application/json", JSON.stringify(hit)) : send(404, "text/plain", "Not found");
       }
       const file = pathname === "/" ? "index.html" : pathname.slice(1);

@@ -3,7 +3,7 @@
 // Stiff) without simulating clicks.
 
 import { roundToCents } from "../lib/money.js";
-import type { Attribute, Variant } from "../types.js";
+import type { ProductOption, Variant } from "../types.js";
 import type { SpConfig } from "./schemas.js";
 
 type SpAttribute = SpConfig["attributes"][string];
@@ -13,11 +13,11 @@ type SpAttribute = SpConfig["attributes"][string];
 export const sortAttributes = (spConfig: SpConfig | undefined): SpAttribute[] =>
   Object.values(spConfig?.attributes ?? {}).sort((a, b) => a.position - b.position);
 
-export const toOutputAttributes = (attributes: SpAttribute[]): Attribute[] =>
+export const toProductOptions = (attributes: SpAttribute[]): ProductOption[] =>
   attributes.map(({ code, label, options }) => ({
     code,
-    label,
-    options: options.map((o) => o.label),
+    name: label,
+    values: options.map((o) => o.label),
   }));
 
 export function parseVariants(
@@ -42,9 +42,9 @@ export function parseVariants(
     variants.push({
       sku: spConfig.sku?.[productId] ?? productId,
       options,
-      final_price: roundToCents(final),
+      price: roundToCents(final),
       regular_price: roundToCents(prices.oldPrice?.amount || final),
-      price_modifier: roundToCents(final - basePrice),
+      upcharge: roundToCents(final - basePrice),
     });
   }
   return variants;

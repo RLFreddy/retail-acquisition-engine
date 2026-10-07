@@ -1,4 +1,4 @@
-"id","name","sku","options","base_price","price_modifier","final_price","pricing_unit"
+"product_sku","product_name","sku","options","base_price","upcharge","price","pricing_unit"
 "M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613215","{""Dexterity"":""Left Handed"",""Club Length"":""32.0in""}","399.99","0","399.99","per_item"
 "M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613216","{""Dexterity"":""Right Handed"",""Club Length"":""32.0in""}","399.99","0","399.99","per_item"
 "M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613217","{""Dexterity"":""Left Handed"",""Club Length"":""32.5in""}","399.99","0","399.99","per_item"

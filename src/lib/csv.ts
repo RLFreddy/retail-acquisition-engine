@@ -12,11 +12,11 @@ export async function loadProducts(file: string): Promise<SourceProduct[]> {
 
   for await (const row of rows as AsyncIterable<Record<string, string>>) {
     const get = (key: string) => row[key]?.trim() ?? "";
-    const id = get("Parent Item") || get("Name");
-    if (!id || products.has(id)) continue;
-    products.set(id, {
-      id,
-      name: get("Name") || id,
+    const sku = get("Parent Item") || get("Name");
+    if (!sku || products.has(sku)) continue;
+    products.set(sku, {
+      sku,
+      name: get("Name") || sku,
       brand: get("Brand"),
       category: get("Category"),
       model: get("Model"),

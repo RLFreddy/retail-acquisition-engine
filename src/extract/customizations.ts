@@ -46,27 +46,20 @@ const readHtmlOptions = ($: CheerioAPI, groupId: string): GroupOption[] =>
     }))
     .get();
 
-export function parseCustomizations(
-  $: CheerioAPI,
-  options: IronsetOptions | undefined,
-  basePrice: number,
-): Customization[] {
+export function parseCustomizations($: CheerioAPI, options: IronsetOptions | undefined): Customization[] {
   const groups = options?.optionConfig ?? {};
   const labels = readGroupLabels($);
   const groupIds = [...new Set([...Object.keys(groups), ...labels.keys()])];
 
-  return sortByPageOrder(groupIds, [...labels.keys()]).flatMap((groupId) => {
-    const group = groups[groupId];
-    return (group ? readJsonOptions($, groupId, group) : readHtmlOptions($, groupId))
-      .filter((option) => option.name.trim())
-      .map((option) => {
-        const modifier = roundToCents(option.amount);
-        return {
-          category: labels.get(groupId) ?? groupId,
-          option_name: option.name.trim(),
-          price_modifier: modifier,
-          final_price: roundToCents(basePrice + modifier),
-        };
-      });
-  });
+  return sortByPageOrder(groupIds, [...labels.keys()])
+    .map((groupId) => {
+      const group = groups[groupId];
+      return {
+        name: labels.get(groupId) ?? groupId,
+        options: (group ? readJsonOptions($, groupId, group) : readHtmlOptions($, groupId))
+          .filter((option) => option.name.trim())
+          .map((option) => ({ name: option.name.trim(), upcharge: roundToCents(option.amount) })),
+      };
+    })
+    .filter((customization) => customization.options.length);
 }

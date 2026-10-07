@@ -19,18 +19,18 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 | --------------------- | -------------------------------------------------- |
 | Products captured     | **696 / 700** (the other 4 are not available on the site) |
 | Valid configurations  | **280,886**, each with its price                   |
-| Customization options | **39,838**, each with its price change             |
-| Details and media     | Description for all 696, specs table for 689, 4,093 photos (every gallery), 852 YouTube videos on 535 products |
+| Customization options | **39,838**, each with its upcharge                 |
+| Details and media     | Description for all 696, specs table for 689, 4,093 images (every gallery), 852 YouTube videos on 535 products |
 | Requests              | 1,396 (page + gallery per product), 0 retries, 0 blocks |
-| Runtime               | **1 min 55 s** with `CONCURRENCY=20 DELAY_MS=0` · 8 min 2 s with the defaults (before the gallery request) |
+| Runtime               | **1 min 52 s** with `CONCURRENCY=20 DELAY_MS=0` · 8 min 2 s with the defaults (before the gallery request) |
 
 ## Features
 
 - **Every valid configuration with its price**, including combinations that the
   site only reveals after several clicks
-- **Customization options with their price change**, grouped and ordered as the
+- **Customization options with their upcharge**, grouped and ordered as the
   site shows them, including those that only exist in the page's HTML form
-- **Product details and media:** description, specs table, every photo of the
+- **Product details and media:** description, specs table, every image of the
   gallery and the YouTube videos
 - **Iron sets:** per-club prices plus the price of the default set (4–PW)
 - **Explorer:** search the products by product or variant SKU, name or brand,
@@ -82,10 +82,10 @@ The console shows each product as it finishes, then a summary:
 
 ```text
 INFO  Scraper: Starting the scraper. {"input":"searchresults.csv","products":10,"concurrency":4,"state":"data/state/scraper.db"}
-INFO  Scraper: [1/10] M CRAFT X S3 PUT {"variants":26,"options":22,"ms":893}
+INFO  Scraper: [1/10] M CRAFT X S3 PUT {"variants":26,"options":22,"ms":1517}
 …
-INFO  Scraper: Finished! Total 10 products: 10 succeeded, 0 failed (10 requests, 5s).
-INFO  Scraper: Output saved: {"files":["data/output.json","data/run-report.json","data/variants.csv","data/customizations.csv","data/logs/run-2026-10-07T05-01-36.log"]}
+INFO  Scraper: Finished! Total 10 products: 10 succeeded, 0 failed (20 requests, 6s).
+INFO  Scraper: Output saved: {"files":["data/output.json","data/run-report.json","data/variants.csv","data/customizations.csv","data/logs/run-2026-10-07T22-10-16.log"]}
 ```
 
 Run `make dev` (no `LIMIT`) to scrape all the products in the CSV.
@@ -116,9 +116,9 @@ Everything goes to `data/` (`data_docker/` with Docker):
 
 | File                   | Content                                                    |
 | ---------------------- | ---------------------------------------------------------- |
-| `output.json`          | One record per product: details, media, variants, customizations |
+| `output.json`          | One record per product: details, media, options, variants, customizations |
 | `variants.csv`         | One row per valid configuration, with its price            |
-| `customizations.csv`   | One row per customization option, with its price change    |
+| `customizations.csv`   | One row per customization option, with its upcharge        |
 | `run-report.json`      | Run metrics and each failed product with the reason        |
 | `logs/run-<start>.log` | One file per run, one JSON line per event                  |
 | `state/scraper.db`     | Resume state (internal, not part of the results)           |
@@ -126,7 +126,7 @@ Everything goes to `data/` (`data_docker/` with Docker):
 A row of `variants.csv`:
 
 ```csv
-"id","name","sku","options","base_price","price_modifier","final_price","pricing_unit"
+"product_sku","product_name","sku","options","base_price","upcharge","price","pricing_unit"
 "M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613215","{""Dexterity"":""Left Handed"",""Club Length"":""32.0in""}","399.99","0","399.99","per_item"
 ```
 
@@ -155,7 +155,7 @@ Docker, and any variable can also be set on the command line
 | `USER_AGENT`       | a desktop Chrome    | User-Agent sent with every request                       |
 
 **Speed:** `DELAY_MS` limits speed more than `CONCURRENCY` does. The last full
-run used `CONCURRENCY=20 DELAY_MS=0`: 1 min 55 s for the 700 products and 1,396
+run used `CONCURRENCY=20 DELAY_MS=0`: 1 min 52 s for the 700 products and 1,396
 requests, without retries or blocks. The defaults stay conservative on purpose;
 see the [concurrency test](DOCUMENTATION.md#concurrency-test).
 
@@ -169,7 +169,7 @@ src/
 ├── extract/       parsing: variants, customizations, details, media, zod schemas
 └── lib/           HTTP client, CSV, SQLite state, logging, output files
 explorer/          web explorer: server.ts (API) + public/ (page, styles, script)
-test/              29 offline tests
+test/              30 offline tests
 results/           output of the full run (sample/ + full-results.zip)
 ```
 

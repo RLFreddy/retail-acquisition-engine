@@ -30,8 +30,8 @@ async function getJson(url) {
 
 // ---- Product list --------------------------------------------------------------
 
-const items = new Map(); // product id → its button in the list
-const loaded = new Map(); // product id → prepared product
+const items = new Map(); // product SKU → its button in the list
+const loaded = new Map(); // product SKU → prepared product
 let wanted = null; // the last product picked; a slower earlier load must not replace it
 
 function renderRun(run, failures) {
@@ -42,7 +42,7 @@ function renderRun(run, failures) {
     byId("stats").replaceChildren(...[
       `${int(run.ok)} of ${int(run.products)} products`,
       `${int(run.variants)} variants`,
-      `${int(run.customizations)} customizations`,
+      `${int(run.customization_options)} customization options`,
       `${int(run.http_requests)} requests`,
       `${Math.floor(seconds / 60)} min ${seconds % 60} s`,
     ].map((text) => h("span", { class: "stat" }, text)));
@@ -50,7 +50,7 @@ function renderRun(run, failures) {
   if (failures.length) {
     byId("failures").replaceChildren(
       h("summary", {}, `${failures.length} ${failures.length === 1 ? "product" : "products"} without data`),
-      h("ul", {}, failures.map((f) => h("li", {}, h("b", {}, f.id), `: ${f.reason}`))),
+      h("ul", {}, failures.map((f) => h("li", {}, h("b", {}, f.sku), `: ${f.reason}`))),
     );
     byId("failures").hidden = false;
   }
@@ -60,13 +60,13 @@ function renderList(products) {
   const categories = [...new Set(products.map((p) => p.category))].sort();
   byId("cat").append(...categories.map((c) => h("option", { value: c }, `${c} (${products.filter((p) => p.category === c).length})`)));
   byId("list").replaceChildren(...products.map((p) => {
-    const item = h("button", { class: "item", type: "button", onclick: () => select(p.id) },
-      h("span", { class: "item-title" }, p.title),
-      h("span", { class: "item-meta" }, `${p.category} · ${p.brand} · ${p.id}`),
-      h("span", { class: "item-meta" }, `${int(p.variants)} variants · ${int(p.customizations)} customizations · ${p.media} photos`));
-    item.dataset.text = `${p.id} ${p.title} ${p.brand} ${p.category}`.toLowerCase();
+    const item = h("button", { class: "item", type: "button", onclick: () => select(p.sku) },
+      h("span", { class: "item-title" }, p.name),
+      h("span", { class: "item-meta" }, `${p.category} · ${p.brand} · ${p.sku}`),
+      h("span", { class: "item-meta" }, `${int(p.variants)} variants · ${int(p.customizations)} customizations · ${p.images} images`));
+    item.dataset.text = `${p.sku} ${p.name} ${p.brand} ${p.category}`.toLowerCase();
     item.dataset.category = p.category;
-    items.set(p.id, item);
+    items.set(p.sku, item);
     return item;
   }));
 }
@@ -74,14 +74,21 @@ function renderList(products) {
 function filterList() {
   const q = byId("q").value.trim().toLowerCase();
   const cat = byId("cat").value;
-  let shown = 0;
-  for (const item of items.values()) {
+  const shown = [];
+  for (const [sku, item] of items) {
     item.hidden = Boolean((q && !item.dataset.text.includes(q)) || (cat && item.dataset.category !== cat));
-    if (!item.hidden) shown++;
+    if (!item.hidden) shown.push(sku);
   }
-  byId("list-count").textContent = `${int(shown)} of ${int(items.size)} products`;
+  byId("list-count").textContent = `${int(shown.length)} of ${int(items.size)} products`;
   clearTimeout(variantLookup);
-  if (!shown && /^[a-z0-9-]{5,}$/.test(q)) variantLookup = setTimeout(() => findVariant(q), 250);
+  if (q && shown.length === 1 && shown[0] !== wanted) select(shown[0]);
+  if (!shown.length && /^[a-z0-9-]{5,}$/.test(q)) variantLookup = setTimeout(() => findVariant(q), 250);
+}
+
+// Enter opens the first product of the list.
+function openFirst(e) {
+  const first = [...items].find(([, item]) => !item.hidden);
+  if (e.key === "Enter" && first) select(first[0]);
 }
 
 // Variant SKUs (C4592868) are not in the list: the server finds their product,
@@ -91,24 +98,24 @@ async function findVariant(sku) {
   try {
     const hit = await getJson(`api/variants/${encodeURIComponent(sku)}`);
     if (byId("q").value.trim().toLowerCase() !== sku) return; // the query changed meanwhile
-    items.get(hit.id).hidden = false;
-    byId("list-count").textContent = `Variant ${hit.sku} of ${hit.id}`;
-    await select(hit.id, hit.options);
+    items.get(hit.product_sku).hidden = false;
+    byId("list-count").textContent = `Variant ${hit.sku} of ${hit.product_sku}`;
+    await select(hit.product_sku, hit.options);
   } catch {
     // not a variant SKU either: the list stays empty
   }
 }
 
-async function select(id, options) {
-  wanted = id;
-  for (const [key, item] of items) item.setAttribute("aria-current", String(key === id));
-  history.replaceState(null, "", `#${slug(id)}`);
-  if (!loaded.has(id)) byId("product").replaceChildren(h("p", { class: "empty" }, `Loading ${id}…`));
+async function select(sku, choices) {
+  wanted = sku;
+  for (const [key, item] of items) item.setAttribute("aria-current", String(key === sku));
+  history.replaceState(null, "", `#${slug(sku)}`);
+  if (!loaded.has(sku)) byId("product").replaceChildren(h("p", { class: "empty" }, `Loading ${sku}…`));
   try {
-    if (!loaded.has(id)) loaded.set(id, prepare(await getJson(`api/products/${encodeURIComponent(id)}`)));
-    if (wanted === id) show(loaded.get(id), options);
+    if (!loaded.has(sku)) loaded.set(sku, prepare(await getJson(`api/products/${encodeURIComponent(sku)}`)));
+    if (wanted === sku) show(loaded.get(sku), choices);
   } catch (err) {
-    byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load ${id}: ${err.message}`));
+    byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load ${sku}: ${err.message}`));
   }
 }
 
@@ -117,13 +124,13 @@ async function select(id, options) {
 const state = { product: null, sel: [], custom: {}, clubs: new Set(), tab: "details" };
 const ui = {};
 
-// Each variant becomes [sku, price, option index per attribute], what the dropdowns filter on.
+// Each variant becomes [sku, price, value index per option], what the dropdowns filter on.
 const OPT = 2;
 function prepare(record) {
-  const index = record.attributes.map((a) => new Map(a.options.map((option, i) => [option, i])));
+  const index = record.options.map((o) => new Map(o.values.map((value, i) => [value, i])));
   return {
     ...record,
-    vs: record.variants.map((v) => [v.sku, v.final_price, ...record.attributes.map((a, k) => index[k].get(v.options[a.label]))]),
+    vs: record.variants.map((v) => [v.sku, v.price, ...record.options.map((o, k) => index[k].get(v.options[o.name]))]),
   };
 }
 
@@ -136,25 +143,18 @@ const matches = (v, upto) => {
 function optionsFor(k) {
   const seen = new Set();
   for (const v of state.product.vs) if (matches(v, k)) seen.add(v[OPT + k]);
-  return state.product.attributes[k].options.map((label, i) => [label, i]).filter(([, i]) => seen.has(i));
+  return state.product.options[k].values.map((value, i) => [value, i]).filter(([, i]) => seen.has(i));
 }
 
-// Customizations grouped as the site shows them; "Irons In Set" holds the clubs of a set.
-function groupsOf(p) {
-  const groups = [];
-  for (const c of p.customizations) {
-    let g = groups.find((x) => x.name === c.category);
-    if (!g) groups.push((g = { name: c.category, options: [], clubs: p.pricing_unit === "per_club" && /in set/i.test(c.category) }));
-    g.options.push(c);
-  }
-  return groups;
-}
+// "Irons In Set" holds the clubs of a set: checkboxes on the site, not a dropdown.
+const groupsOf = (p) =>
+  p.customizations.map((c) => ({ ...c, clubs: p.pricing_unit === "per_club" && /in set/i.test(c.name) }));
 
-// options: a variant's choices to pick ({ Dexterity: "Right Handed", … }), or none.
-function show(p, options) {
+// choices: a variant's options to pick ({ Dexterity: "Right Handed", … }), or none.
+function show(p, choices) {
   state.product = p;
-  state.sel = p.attributes.map((a) => {
-    const i = options ? a.options.indexOf(options[a.label]) : -1;
+  state.sel = p.options.map((o) => {
+    const i = choices ? o.values.indexOf(choices[o.name]) : -1;
     return i < 0 ? null : i;
   });
   state.custom = {};
@@ -167,11 +167,11 @@ function show(p, options) {
 function head(p) {
   return h("div", { class: "p-head" },
     h("div", { class: "p-title" },
-      h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.id}`),
-      h("h2", {}, p.title)),
+      h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.sku}`),
+      h("h2", {}, p.name)),
     h("div", { class: "p-actions" },
       h("a", { class: "btn-real", href: p.url, target: "_blank", rel: "noopener" }, "Open the live page ↗"),
-      h("a", { class: "mono", href: `api/products/${encodeURIComponent(p.id)}`, target: "_blank", rel: "noopener" }, "View the full JSON ↗"),
+      h("a", { class: "mono", href: `api/products/${encodeURIComponent(p.sku)}`, target: "_blank", rel: "noopener" }, "View the full JSON ↗"),
       h("span", { class: "mono muted" }, p.url)));
 }
 
@@ -182,7 +182,7 @@ function buyBox(p, groups) {
   ui.priceDetail = h("p", { class: "price-detail" });
   ui.count = h("p", { class: "count" });
   ui.total = h("div", { class: "total", "aria-live": "polite" });
-  ui.selects = p.attributes.map((a, k) => h("select", {
+  ui.selects = p.options.map((o, k) => h("select", {
     id: `attr-${k}`,
     onchange: (e) => {
       state.sel[k] = e.target.value === "" ? null : Number(e.target.value);
@@ -196,22 +196,22 @@ function buyBox(p, groups) {
     h("label", { for: `cust-${gi}` }, g.name),
     h("select", { id: `cust-${gi}`, onchange: (e) => { state.custom[gi] = e.target.value === "" ? null : Number(e.target.value); update(); } },
       h("option", { value: "" }, "-- Please Select --"),
-      g.options.map((o, oi) => h("option", { value: oi }, o.price_modifier > 0 ? `${o.option_name} + ${money(o.price_modifier)}` : o.option_name)))));
+      g.options.map((o, oi) => h("option", { value: oi }, o.upcharge > 0 ? `${o.name} + ${money(o.upcharge)}` : o.name)))));
 
   return h("section", { class: "panel" },
     h("p", { class: "label" }, "Buy box · as on the live page"),
     h("div", {}, h("div", { class: "price" }, ui.priceLabel, ui.priceValue, ui.priceUnit), ui.priceDetail),
     h("div", { class: "fields" },
-      p.attributes.map((a, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, a.label), ui.selects[k])),
+      p.options.map((o, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, o.name), ui.selects[k])),
       clubs ? clubsField(clubs) : null),
     ui.count,
-    h("p", { class: "source" }, "Variants: the page's spConfig JSON (attributes, index, optionPrices, sku)"),
+    h("p", { class: "source" }, "options, variants ← the page's spConfig JSON (attributes, index, optionPrices, sku)"),
     h("details", { class: "customize", open: true },
       h("summary", {}, "Customize"),
       h("div", { class: "cust-body" },
         h("p", { class: "count" }, "On the live page these show after clicking Customize; Standard hides and resets them."),
         customize.some(Boolean) ? customize : h("p", { class: "empty" }, "This product has no customizations."),
-        h("p", { class: "source" }, "Customizations: the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>"))),
+        h("p", { class: "source" }, "customizations ← the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>"))),
     ui.total);
 }
 
@@ -222,10 +222,10 @@ function clubsField(g) {
     h("div", { class: "clubs" }, g.options.map((o, oi) =>
       h("label", { for: `club-${oi}` },
         h("input", {
-          type: "checkbox", id: `club-${oi}`, checked: state.clubs.has(o.option_name),
-          onchange: (e) => { e.target.checked ? state.clubs.add(o.option_name) : state.clubs.delete(o.option_name); update(); },
+          type: "checkbox", id: `club-${oi}`, checked: state.clubs.has(o.name),
+          onchange: (e) => { e.target.checked ? state.clubs.add(o.name) : state.clubs.delete(o.name); update(); },
         }),
-        o.option_name))));
+        o.name))));
 }
 
 const TABS = [
@@ -246,7 +246,7 @@ function tabsPanel(p) {
 
   panels.details.append(
     p.description ? describe(p.description) : h("p", { class: "empty" }, "No description."),
-    h("p", { class: "source" }, "The page's Description tab (#details), one paragraph per line"));
+    h("p", { class: "source" }, "description ← the page's Description tab (#details), one paragraph per line"));
 
   const cols = [...new Set(p.specs.flatMap((row) => Object.keys(row)))];
   panels.specs.append(
@@ -255,27 +255,28 @@ function tabsPanel(p) {
           h("thead", {}, h("tr", {}, cols.map((c) => h("th", {}, c)))),
           h("tbody", {}, p.specs.map((row) => h("tr", {}, cols.map((c) => h("td", {}, row[c] ?? "")))))))
       : h("p", { class: "empty" }, "This product has no specs table."),
-    h("p", { class: "source" }, "The page's Specs tab (#specs table)"));
+    h("p", { class: "source" }, "specs ← the page's Specs tab (#specs table)"));
 
   const figure = (src, href, alt) => h("figure", {},
     h("a", { href, target: "_blank", rel: "noopener" }, h("img", { src, alt, loading: "lazy" })),
     h("figcaption", {}, h("a", { class: "mono", href, target: "_blank", rel: "noopener" }, href)));
+  const { images, videos } = p.media;
   panels.media.append(
-    h("p", { class: "label" }, `Photos (${p.media.length})`),
-    h("div", { class: "thumbs" }, p.media.map((url) => figure(url, url, p.title))),
-    h("p", { class: "label" }, `Videos (${p.videos.length})`),
-    p.videos.length
-      ? h("div", { class: "thumbs" }, p.videos.map((url) =>
+    h("p", { class: "label" }, `Images (${images.length})`),
+    h("div", { class: "thumbs" }, images.map((url) => figure(url, url, p.name))),
+    h("p", { class: "label" }, `Videos (${videos.length})`),
+    videos.length
+      ? h("div", { class: "thumbs" }, videos.map((url) =>
           figure(`https://i.ytimg.com/vi/${new URL(url).searchParams.get("v")}/mqdefault.jpg`, url, "YouTube video")))
       : h("p", { class: "empty" }, "No videos."),
-    h("p", { class: "source" }, "Photos: the product JSON and the /gallery/<SKU>.json gallery · Videos: the Videos tab (#video)"));
+    h("p", { class: "source" }, "media.images ← the product JSON and /gallery/<SKU>.json · media.videos ← the Videos tab (#video)"));
 
   ui.variantsInfo = h("p", { class: "count" });
   ui.variantsBody = h("tbody", {});
   panels.variants.append(
     ui.variantsInfo,
     h("div", { class: "table-wrap" }, h("table", {},
-      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.attributes.map((a) => h("th", {}, a.label)), h("th", {}, "Price"), h("th", {}, "vs. base"))),
+      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.options.map((o) => h("th", {}, o.name)), h("th", {}, "Price"), h("th", {}, "Upcharge"))),
       ui.variantsBody)));
 
   ui.json = h("pre", { class: "json" });
@@ -316,10 +317,10 @@ function update() {
     select.value = state.sel[k] == null ? "" : String(state.sel[k]);
   });
 
-  const matching = p.vs.filter((v) => matches(v, p.attributes.length));
+  const matching = p.vs.filter((v) => matches(v, p.options.length));
   const chosen = state.sel.every((s) => s != null) ? matching[0] : null;
   const unit = chosen ? chosen[1] : p.base_price;
-  const possible = p.attributes.reduce((acc, a) => acc * a.options.length, 1);
+  const possible = p.options.reduce((acc, o) => acc * o.values.length, 1);
   ui.priceLabel.textContent = chosen ? "Price" : "Starting At";
   ui.priceValue.textContent = money(unit);
   ui.priceUnit.hidden = p.pricing_unit !== "per_club";
@@ -329,7 +330,7 @@ function update() {
   ui.count.textContent = `${int(p.vs.length)} valid combinations of ${int(possible)} possible · ${int(matching.length)} match the choices`;
 
   const groups = groupsOf(p);
-  const mods = round(groups.reduce((sum, g, gi) => sum + (!g.clubs && state.custom[gi] != null ? g.options[state.custom[gi]].price_modifier : 0), 0));
+  const mods = round(groups.reduce((sum, g, gi) => sum + (!g.clubs && state.custom[gi] != null ? g.options[state.custom[gi]].upcharge : 0), 0));
   if (p.pricing_unit === "per_club") {
     const each = round(unit + mods);
     ui.total.replaceChildren(
@@ -347,7 +348,7 @@ function update() {
   ui.variantsInfo.textContent = `Showing ${int(shown.length)} of ${int(matching.length)} variants that match the choices (${int(p.vs.length)} in total).`;
   ui.variantsBody.replaceChildren(...shown.map((v) => h("tr", {},
     h("td", { class: "sku" }, v[0]),
-    p.attributes.map((a, k) => h("td", {}, a.options[v[OPT + k]])),
+    p.options.map((o, k) => h("td", {}, o.values[v[OPT + k]])),
     h("td", { class: "num" }, money(v[1])),
     h("td", { class: "num" }, v[1] > p.base_price ? `+${money(round(v[1] - p.base_price))}` : "—"))));
 }
@@ -355,6 +356,7 @@ function update() {
 // ---- Start -----------------------------------------------------------------
 
 byId("q").addEventListener("input", filterList);
+byId("q").addEventListener("keydown", openFirst);
 byId("cat").addEventListener("change", filterList);
 (async () => {
   try {
@@ -362,8 +364,8 @@ byId("cat").addEventListener("change", filterList);
     renderRun(run, failures);
     renderList(products);
     filterList();
-    const fromHash = products.find((p) => `#${slug(p.id)}` === location.hash);
-    if (products.length) await select((fromHash ?? products[0]).id);
+    const fromHash = products.find((p) => `#${slug(p.sku)}` === location.hash);
+    if (products.length) await select((fromHash ?? products[0]).sku);
   } catch (err) {
     byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load the data: ${err.message}`));
   }

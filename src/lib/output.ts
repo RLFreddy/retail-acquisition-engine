@@ -26,18 +26,19 @@ export function writeOutputs(
   fs.writeFileSync(files.json, JSON.stringify(products, null, 2));
   fs.writeFileSync(files.report, JSON.stringify({ metrics, failures }, null, 2));
 
+  // One row per variant and per customization option, led by their product.
   writeCsv(
     files.variants,
-    ["id", "name", "sku", "options", "base_price", "price_modifier", "final_price", "pricing_unit"],
+    ["product_sku", "product_name", "sku", "options", "base_price", "upcharge", "price", "pricing_unit"],
     products.flatMap((p) =>
       p.variants.map((v) => [
-        p.id,
+        p.sku,
         p.name,
         v.sku,
         JSON.stringify(v.options),
         p.base_price,
-        v.price_modifier,
-        v.final_price,
+        v.upcharge,
+        v.price,
         p.pricing_unit,
       ]),
     ),
@@ -45,17 +46,11 @@ export function writeOutputs(
 
   writeCsv(
     files.customizations,
-    ["id", "name", "category", "option_name", "price_modifier", "final_price", "pricing_unit"],
+    ["product_sku", "product_name", "customization", "option", "upcharge", "pricing_unit"],
     products.flatMap((p) =>
-      p.customizations.map((c) => [
-        p.id,
-        p.name,
-        c.category,
-        c.option_name,
-        c.price_modifier,
-        c.final_price,
-        p.pricing_unit,
-      ]),
+      p.customizations.flatMap((c) =>
+        c.options.map((o) => [p.sku, p.name, c.name, o.name, o.upcharge, p.pricing_unit]),
+      ),
     ),
   );
 

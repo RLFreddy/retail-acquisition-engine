@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 const sources: SourceProduct[] = Array.from({ length: 10 }, (_, i) => ({
-  id: `P${i}`,
+  sku: `P${i}`,
   name: `Product ${i}`,
   brand: "",
   category: "",
@@ -36,24 +36,24 @@ const product = (source: SourceProduct) =>
 test("keeps CSV order although workers finish out of order", async () => {
   // Earlier products take longer, so they finish last.
   const { products } = await scrapeAll(sources, async (s) => {
-    await sleep(50 - Number(s.id.slice(1)) * 5);
+    await sleep(50 - Number(s.sku.slice(1)) * 5);
     return product(s);
   });
-  assert.deepEqual(products.map((p) => p.id), sources.map((s) => s.id));
+  assert.deepEqual(products.map((p) => p.sku), sources.map((s) => s.sku));
 });
 
 test("a failed product does not stop the run", async () => {
   const { products, failures } = await scrapeAll(sources, async (s) => {
-    if (s.id === "P3") throw new Error("boom");
+    if (s.sku === "P3") throw new Error("boom");
     return product(s);
   });
   assert.equal(products.length, 9);
-  assert.deepEqual(failures.map((f) => [f.id, f.reason]), [["P3", "boom"]]);
+  assert.deepEqual(failures.map((f) => [f.sku, f.reason]), [["P3", "boom"]]);
 });
 
 test("stops and skips the rest when the site keeps blocking", async () => {
   const { products, failures } = await scrapeAll(sources, async (s) => {
-    throw new BlockedError(s.id);
+    throw new BlockedError(s.sku);
   });
   const skipped = failures.filter((f) => f.reason.startsWith("skipped"));
   assert.equal(products.length, 0);
@@ -63,13 +63,13 @@ test("stops and skips the rest when the site keeps blocking", async () => {
 
 test("resumes: a second run only scrapes what is missing and returns everything", async () => {
   await scrapeAll(sources, async (s) => {
-    if (s.id === "P3") throw new Error("boom");
+    if (s.sku === "P3") throw new Error("boom");
     return product(s);
   });
 
   const scraped: string[] = [];
   const { products, failures } = await scrapeAll(sources, async (s) => {
-    scraped.push(s.id);
+    scraped.push(s.sku);
     return product(s);
   });
   assert.deepEqual(scraped, ["P3"]);
@@ -79,7 +79,7 @@ test("resumes: a second run only scrapes what is missing and returns everything"
 
 test("abandons a product after MAX_ATTEMPTS failed runs", async () => {
   const failP3 = async (s: SourceProduct) => {
-    if (s.id === "P3") throw new Error("boom");
+    if (s.sku === "P3") throw new Error("boom");
     return product(s);
   };
   await scrapeAll(sources, failP3);
@@ -87,9 +87,9 @@ test("abandons a product after MAX_ATTEMPTS failed runs", async () => {
 
   const scraped: string[] = [];
   const { failures } = await scrapeAll(sources, async (s) => {
-    scraped.push(s.id);
+    scraped.push(s.sku);
     return product(s);
   });
   assert.deepEqual(scraped, []);
-  assert.deepEqual(failures.map((f) => [f.id, f.reason]), [["P3", "abandoned after 2 failed attempts"]]);
+  assert.deepEqual(failures.map((f) => [f.sku, f.reason]), [["P3", "abandoned after 2 failed attempts"]]);
 });

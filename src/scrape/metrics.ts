@@ -31,6 +31,6 @@ export function buildMetrics(products: Product[], failures: Failure[], startedAt
       max: percentile(times, 1),
     },
     variants: products.reduce((n, p) => n + p.variants.length, 0),
-    customizations: products.reduce((n, p) => n + p.customizations.length, 0),
+    customization_options: products.reduce((n, p) => n + p.customizations.reduce((m, c) => m + c.options.length, 0), 0),
   };
 }

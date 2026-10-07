@@ -4,7 +4,7 @@ import { GallerySchema, parseBlock, type ProviderItem } from "./schemas.js";
 
 const GALLERY_IMAGES = `${BASE_URL}images/representative/`;
 
-export function parseMedia(item: ProviderItem): string[] {
+export function parseImages(item: ProviderItem): string[] {
   const urls = [...item.images.map((image) => image.url), item.extension_attributes.ddg_image];
   // The same image is repeated once per widget size (?width=…); dropping the
   // query string collapses the repeats into one URL.

@@ -19,11 +19,12 @@ One record per product in `output.json`. The same data is flattened into
 
 ```mermaid
 erDiagram
-    PRODUCT ||--o{ ATTRIBUTE : "configurable axes"
+    PRODUCT ||--o{ OPTION : "dropdowns that pick the variant"
     PRODUCT ||--o{ VARIANT : "valid configurations"
-    PRODUCT ||--o{ CUSTOMIZATION : "add-on options"
+    PRODUCT ||--o{ CUSTOMIZATION : "Customize dropdowns"
+    CUSTOMIZATION ||--|{ CUSTOMIZATION_OPTION : "choices"
     PRODUCT {
-        string id "CSV Parent Item = site SKU"
+        string sku "site SKU = CSV Parent Item"
         string name
         string brand
         string category
@@ -32,53 +33,65 @@ erDiagram
         number default_set_price "iron sets: base x default clubs"
         string description "one paragraph per line"
         object_list specs "rows of the Specs table"
-        string_list media "every photo of the gallery"
-        string_list videos "YouTube URLs"
+        object media "images: every gallery image, videos: YouTube URLs"
     }
-    ATTRIBUTE {
-        string label "Dexterity, Shaft Flex..."
-        string_list options
+    OPTION {
+        string name "Dexterity, Shaft Flex..."
+        string_list values
     }
     VARIANT {
         string sku "real store SKU"
-        object options "attribute to value"
-        number final_price
-        number price_modifier "final - base"
+        object options "option name to value"
+        number price
+        number upcharge "price - base_price"
     }
     CUSTOMIZATION {
-        string category "Grips, Lie Angle..."
-        string option_name
-        number price_modifier "extra cost"
-        number final_price "base + modifier"
+        string name "Grips, Lie Angle..."
+    }
+    CUSTOMIZATION_OPTION {
+        string name
+        number upcharge "extra cost"
     }
 ```
 
 | Concept           | What it is                                         | Price rule                          |
 | ----------------- | -------------------------------------------------- | ----------------------------------- |
-| **Variant**       | A combination the store sells as its own SKU (hand × shaft × flex…) | Absolute price; `price_modifier = final_price − base_price` |
-| **Customization** | An add-on chosen on top (grip, lie, length…)       | Site gives the extra cost; `final_price = base_price + price_modifier` |
-| **Iron sets**     | `pricing_unit: "per_club"`                         | Both prices are per club; the site multiplies them by the clubs checked. `default_set_price` = `base_price` × the default clubs (4–PW) |
+| **Variant**       | A combination the store sells as its own SKU (hand × shaft × flex…) | Absolute `price`; `upcharge = price − base_price` |
+| **Customization** | A dropdown of the Customize section (grip, lie, length…) | Each option has an `upcharge`, added to the chosen variant's price |
+| **Iron sets**     | `pricing_unit: "per_club"`                         | Both are per club; the site multiplies them by the clubs checked. `default_set_price` = `base_price` × the default clubs (4–PW) |
+
+**Names follow the site.** The product's `sku` is the site's SKU (the CSV's
+`Parent Item`); `options` and their `values` are the dropdowns that pick a
+variant; `price` and `upcharge` are the price and the "+ $2.50" the site shows
+next to an option; `regular_price` is the price before a sale (the same as
+`price` for every variant in this run). Values are kept exactly as the site
+writes them. In the CSVs, `product_sku` and
+`product_name` say which product each row belongs to.
 
 A trimmed record (full examples in [`results/sample/output.json`](results/sample/output.json)):
 
 ```jsonc
 {
-  "id": "PRO S4 STS", "title": "Mizuno Pro S-4 Iron Set", "name": "Mizuno Pro S-4 Iron Set",
+  "sku": "PRO S4 STS", "name": "Mizuno Pro S-4 Iron Set",
   "brand": "Mizuno", "category": "Iron Set", "model": "Pro S-4",
   "url": "https://www.2ndswing.com/golf-clubs/iron-sets/mizuno-pro-s-4-iron-set/pro-s4-sts",
   "base_price": 215, "price_range": { "min": 215, "max": 275 }, "pricing_unit": "per_club",
   "included_clubs": ["4 Iron", "5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron", "PW"], "default_set_price": 1505,
   "description": "Who’s It For?\nDesigned for accomplished golfers who value the soft, responsive feel…",
-  "specs": [{ "Club": "4", "Loft": "24°", "Length": "38.75\"", "Bounce": "3°", "Hand": "RH/LH" }],
-  "media": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg",
-            "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_2.jpg"],
-  "videos": ["https://www.youtube.com/watch?v=1LNL-MUEc1Y"],
-  "attributes": [{ "label": "Dexterity", "options": ["Right Handed", "Left Handed"] }],
-  "variants": [{ "sku": "C4605039", "options": { "Dexterity": "Left Handed", "Shaft Flex": "Stiff" },
-                 "final_price": 275, "price_modifier": 60 }],
-  "customizations": [{ "category": "Ferrule", "option_name": "ICON (Black/Blue/White)",
-                       "price_modifier": 2.5, "final_price": 217.5 }],
-  "scraped_at": "2026-10-07T20:28:51.236Z", "extraction_time_ms": 2158.3
+  "specs": [{ "Club": "3", "Loft": "21°", "Length": "39.25\"", "Bounce": "3°", "Hand": "RH Only" }],
+  "media": {
+    "images": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg",
+               "https://www.2ndswing.com/images/representative/PRO%20S4%20STS.jpg"],
+    "videos": ["https://www.youtube.com/watch?v=1LNL-MUEc1Y"]
+  },
+  "options": [{ "code": "g2_dexterity", "name": "Dexterity", "values": ["Right Handed", "Left Handed"] }],
+  "variants": [{ "sku": "C4605039",
+                 "options": { "Dexterity": "Left Handed", "Shaft Material": "Graphite",
+                              "Shaft Flex": "Stiff", "Shaft Model": "Aerotech SteelFiber i110" },
+                 "price": 275, "regular_price": 275, "upcharge": 60 }],
+  "customizations": [{ "name": "Ferrule", "options": [{ "name": "Black Standard", "upcharge": 0 },
+                                                     { "name": "ICON (Black/Blue/White)", "upcharge": 2.5 }] }],
+  "scraped_at": "2026-10-07T22:04:53.766Z", "extraction_time_ms": 2242.7
 }
 ```
 
@@ -103,16 +116,16 @@ flowchart LR
 
 | Source in the page             | Gives                                                       |
 | ------------------------------ | ----------------------------------------------------------- |
-| `spConfig.attributes`          | Each configurable axis and its options                      |
+| `spConfig.attributes`          | `options`: each dropdown that picks the variant, and its values |
 | `spConfig.index`               | **Only the combinations that exist**: this is the conditional logic the page applies when you pick options |
 | `spConfig.optionPrices`, `sku` | Price and SKU of each combination                           |
-| `ironsetOptions.optionConfig`  | Customization options and their extra cost                  |
+| `ironsetOptions.optionConfig`  | Customization options and their upcharge                    |
 | HTML labels                    | Group names ("Grips") and display order (not in any JSON; GraphQL returns null for them) |
 | HTML `<select>` options        | Customization options on pages without `optionConfig` (66 products, mostly putters); each option's `price` attribute holds the same amount as the JSON |
 | `ironsetOptions.clubInformation` | The clubs an iron set includes by default (4–PW)          |
-| Description, Specs, Videos tabs | `description`, `specs`, `videos`                           |
+| Description, Specs, Videos tabs | `description`, `specs`, `media.videos`                     |
 | `<link rel="canonical">`       | `url`: the product page (the JSON's own url leads to the model's listing of new and used clubs for 533 of 696 products) |
-| `/gallery/<SKU>.json` (2nd request) | `media`: every photo of the page's gallery (the JSON in the page only has the first) |
+| `/gallery/<SKU>.json` (2nd request) | `media.images`: every image of the page's gallery (the JSON in the page only has the first) |
 
 **Example:** the OPUS SP wedge has ~700,000 theoretical combinations
 (6 bounces × 5 grinds × 9 lofts × 2 materials × 2 hands × 8 flexes × 81 shafts).
@@ -120,8 +133,8 @@ The index lists the **3,888** the store actually sells, and the output contains
 exactly those.
 
 **Accuracy checks:**
-- Attributes are sorted by their `position` field, so they keep the page's selection order.
-- A combination is kept only if it has a price and a value for every attribute.
+- Options are sorted by their `position` field, so they keep the page's selection order.
+- A combination is kept only if it has a price and a value for every option.
 - The SKU on the page must match the CSV, so a wrong product is never recorded.
 - Every JSON block is validated with zod: if the site changes a field, the product fails with `site data changed in …` instead of producing empty data.
 
@@ -136,7 +149,7 @@ rules:
 
 ## 3. Runtime
 
-**Result:** the last full run took **1 min 55 s** with `CONCURRENCY=20 DELAY_MS=0`:
+**Result:** the last full run took **1 min 52 s** with `CONCURRENCY=20 DELAY_MS=0`:
 696 of 700 captured, 1,396 requests (page + gallery), 0 retries, 0 blocks. With
 the defaults, the run before the gallery request took 8 min 2 s.
 
@@ -183,7 +196,7 @@ which also requests each gallery:
 | `CONCURRENCY=4`, `DELAY_MS=500`  | 8 min 3 s  | 87           | 2.4 s · 4.4 s           | 0 / 0 / 0              |
 | `CONCURRENCY=20`, `DELAY_MS=500` | 6 min 5 s  | 115          | 2.2 s · 4.1 s           | 0 / 0 / 0              |
 | `CONCURRENCY=20`, `DELAY_MS=0`   | **39 s**   | **1,074**    | 0.75 s · 2.8 s          | 0 / 0 / 0              |
-| `CONCURRENCY=20`, `DELAY_MS=0`, page + gallery | 1 min 55 s | 366 | 2.9 s · 5.5 s     | 0 / 0 / 0              |
+| `CONCURRENCY=20`, `DELAY_MS=0`, page + gallery | 1 min 52 s | 376 | 2.7 s · 5.6 s     | 0 / 0 / 0              |
 
 The pace (`DELAY_MS`) limits speed, not concurrency: 500 ms caps the run at
 120 products per minute. It is a single test (the last two runs overlapped by
@@ -222,9 +235,9 @@ needed a retry.
 | Iron set price for other club choices  | `default_set_price` covers the default set; any other selection costs the per-club price × the clubs checked |
 | Rules between customizations           | Only in the site's JavaScript (a non-standard length requires a grip; an upgrade shaft requires a tip), so the output lists every option without them |
 | Stock per configuration                | The stock field is empty in the JSON; availability is only per product  |
-| Media files                            | Captured as URLs, not downloaded: every photo of the gallery and the YouTube videos. No per-configuration images exist (colors are plain dropdowns) |
+| Media files                            | Captured as URLs, not downloaded: every image of the gallery and the YouTube videos. No per-configuration images exist (colors are plain dropdowns) |
 | Add-ons and shipping time              | The "Add On" box (e.g. Bridgestone Tour B XS balls, $19.99) is a separate product, and "Typically ships in 1 to 3 weeks" comes per variant in `spConfig.leadtimes`; neither is in the output |
-| Group headers in selects               | "STANDARD GRIPS" / "PREMIUM GRIPS" come in the HTML of every grip select; "STANDARD SHAFTS" / "CUSTOM SHAFTS" are drawn by the site's JavaScript in the Shaft Model dropdown. Both only mark whether an option costs extra (all 16,510 premium grips do, no standard one does), which `price_modifier` already says, so they are not stored |
+| Group headers in selects               | "STANDARD GRIPS" / "PREMIUM GRIPS" come in the HTML of every grip select; "STANDARD SHAFTS" / "CUSTOM SHAFTS" are drawn by the site's JavaScript in the Shaft Model dropdown. Both only mark whether an option costs extra (all 16,510 premium grips do, no standard one does), which `upcharge` already says, so they are not stored |
 | Specs of 7 products                    | 6 have no Specs tab; `20 AKA OM-5 NEW PUT` writes them as prose instead of a table |
 | Labels                                 | Kept as the site writes them, which varies by product (customizations "Grip", "Grips", "GripModel(InstallPriceIncluded)"; spec columns "Length", "LENGTH"); 24 products list the same option twice, as the site does |
 
@@ -244,7 +257,7 @@ flowchart LR
 | **Run**      | The Docker image as a one-off job (Cloud Run Jobs, ECS Fargate or cron) in a US region, which provides the US IP without a VPN. Settings via environment variables. |
 | **Monitor**  | Exit code 1 = bad run (nothing extracted or >10% failed). One JSON log file per run (`product_ok`, `product_failed`, `retry`, `run_stopped`…). `run-report.json` gives success rate, products/min and p95 to track over time. |
 | **Alert on** | `retry` / `run_stopped` events (site throttling or blocking) and `site data changed in …` errors (parser needs updating) |
-| **Maintain** | zod schemas pinpoint which field changed. 29 offline tests (`make test`, also run by CI) cover parsing, pricing, retries, resume, the quality check and the explorer. `make explorer` shows any product next to its live page for spot checks. Interrupted runs resume from `state/scraper.db`. |
+| **Maintain** | zod schemas pinpoint which field changed. 30 offline tests (`make test`, also run by CI) cover parsing, pricing, retries, resume, the quality check and the explorer. `make explorer` shows any product next to its live page for spot checks. Interrupted runs resume from `state/scraper.db`. |
 
 ## 6. Daily CSV pipeline (design)
 
@@ -269,7 +282,7 @@ flowchart TD
 | **Scrape**                       | Every SKU once a day at a gentle pace (e.g. `CONCURRENCY=1 DELAY_MS=10000`, ~2 h, fine for an unattended job). The run state is keyed by date, so a re-run the same day resumes instead of duplicating |
 | **Detect changes**               | SHA-256 of the normalized record (sorted keys, without `scraped_at` and `extraction_time_ms`). Same hash: nothing to write. Different: compare fields to classify the change (base price, variant price, variant added/removed, customization added/removed/re-priced, out of stock, gone). Changes are frequent: between two runs 13 h apart, 22,690 variant prices changed in 36 products |
 | **Store history**                | SCD Type 2 in PostgreSQL: a change closes the current row (`valid_to`, `is_current = false`) and inserts a new one. Only changes are stored, instead of ~280,000 near-identical rows a day |
-| **Flag changes**                 | One daily summary (Slack or email): new products, price changes (old → new, %; moves above 10% flagged for review), variants added or removed, products out of stock or gone |
+| **Flag changes**                 | One daily summary (Slack or email): new products, price changes (old → new, %; moves above 10% flagged for review), variants added or removed, products out of stock or gone. Also products the CSV marks active (`EOL` = No) that the site does not sell: all 4 failures of this run |
 | **Flag failures**                | Exit code 1, coverage drop, runtime above twice the usual, `site data changed in …`, repeated 406 (egress IP blocked or not in the US). Out-of-stock and not-found count as status changes, not failures |
 
 Tables:
@@ -278,6 +291,6 @@ Tables:
 | ---------------------- | --------------------------------------------------------------------------- |
 | `products`             | `sku` PK, name, brand, category, active, first_seen, last_seen              |
 | `product_versions`     | sku, content_hash, data JSONB, valid_from, valid_to, is_current             |
-| `variant_prices`       | variant_sku, product_sku, options JSONB, final_price, regular_price, valid_from, valid_to, is_current |
-| `customization_prices` | product_sku, category, option_name, price_modifier, valid_from, valid_to, is_current |
+| `variant_prices`       | sku, product_sku, options JSONB, price, regular_price, upcharge, valid_from, valid_to, is_current |
+| `customization_prices` | product_sku, customization, option, upcharge, valid_from, valid_to, is_current |
 | `runs`                 | run_id, started_at, finished_at, ok, failed, requests, status               |

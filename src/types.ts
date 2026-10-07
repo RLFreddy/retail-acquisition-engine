@@ -1,39 +1,38 @@
 // Output fields are snake_case on purpose: they are the file contract.
 
 export interface SourceProduct {
-  id: string; // "Parent Item" column, which is also the site's SKU
+  sku: string; // "Parent Item" column, which is the site's SKU
   name: string;
   brand: string;
   category: string;
   model: string;
 }
 
-export interface Attribute {
+// A dropdown that picks the variant, e.g. Dexterity: Left Handed, Right Handed.
+export interface ProductOption {
   code: string;
-  label: string;
-  options: string[];
+  name: string;
+  values: string[];
 }
 
 export interface Variant {
   sku: string;
-  options: Record<string, string>; // attribute label → option label
-  final_price: number;
+  options: Record<string, string>; // option name → value
+  price: number;
   regular_price: number;
-  price_modifier: number; // final_price − base_price
+  upcharge: number; // price − base_price
 }
 
+// A dropdown of the Customize section; its upcharge adds to the variant's price.
 export interface Customization {
-  category: string;
-  option_name: string;
-  price_modifier: number; // add-on amount; final_price = base_price + price_modifier
-  final_price: number;
+  name: string;
+  options: { name: string; upcharge: number }[];
 }
 
 // Fields grouped by topic: identity, price, content, media, configuration.
 export interface Product {
-  id: string;
-  title: string; // name on the site
-  name: string; // name in the CSV
+  sku: string;
+  name: string;
   brand: string;
   category: string;
   model: string;
@@ -45,9 +44,8 @@ export interface Product {
   default_set_price: number | null; // iron sets only: base_price × included clubs
   description: string; // one paragraph per line
   specs: Record<string, string>[]; // one row of the Specs table per entry
-  media: string[]; // image URLs
-  videos: string[]; // YouTube URLs
-  attributes: Attribute[];
+  media: { images: string[]; videos: string[] }; // image and YouTube URLs
+  options: ProductOption[];
   variants: Variant[];
   customizations: Customization[];
   scraped_at: string; // ISO 8601, UTC
@@ -55,7 +53,7 @@ export interface Product {
 }
 
 export interface Failure {
-  id: string;
+  sku: string;
   name: string;
   url: string;
   reason: string;

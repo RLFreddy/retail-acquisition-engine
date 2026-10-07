@@ -8,21 +8,21 @@ import { createExplorer } from "../explorer/server.js";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "rae-explorer-"));
 const product = {
-  id: "S3 PUT",
-  title: "Mizuno S3 Putter",
+  sku: "S3 PUT",
+  name: "Mizuno S3 Putter",
   brand: "Mizuno",
   category: "Putter",
-  media: ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg"],
+  media: { images: ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg"], videos: [] },
   variants: [
     { sku: "C4613215", options: { Dexterity: "Left Handed" } },
     { sku: "C4613216", options: { Dexterity: "Right Handed" } },
   ],
-  customizations: [{ option_name: "Standard" }],
+  customizations: [{ name: "Grips", options: [{ name: "Standard", upcharge: 0 }] }],
 };
 fs.writeFileSync(path.join(dir, "output.json"), JSON.stringify([product]));
 fs.writeFileSync(
   path.join(dir, "run-report.json"),
-  JSON.stringify({ metrics: { ok: 1 }, failures: [{ id: "KM2 PUT", reason: "product page not found (404)" }] }),
+  JSON.stringify({ metrics: { ok: 1 }, failures: [{ sku: "KM2 PUT", reason: "product page not found (404)" }] }),
 );
 
 const server = createExplorer(dir).listen(0);
@@ -39,13 +39,13 @@ test("serves the page, its script and its styles", async () => {
 });
 
 test("summary: one line per product, the run metrics and the failures", async () => {
-  type Summary = { products: unknown[]; run: unknown; failures: { id: string }[] };
+  type Summary = { products: unknown[]; run: unknown; failures: { sku: string }[] };
   const summary = (await (await fetch(`${base}/api/summary`)).json()) as Summary;
   assert.deepEqual(summary.products, [
-    { id: "S3 PUT", title: "Mizuno S3 Putter", brand: "Mizuno", category: "Putter", variants: 2, customizations: 1, media: 1 },
+    { sku: "S3 PUT", name: "Mizuno S3 Putter", brand: "Mizuno", category: "Putter", variants: 2, customizations: 1, images: 1 },
   ]);
   assert.deepEqual(summary.run, { ok: 1 });
-  assert.deepEqual(summary.failures.map((f) => f.id), ["KM2 PUT"]);
+  assert.deepEqual(summary.failures.map((f) => f.sku), ["KM2 PUT"]);
 });
 
 test("a product's full record by SKU; 404 for unknown products and other files", async () => {
@@ -55,7 +55,7 @@ test("a product's full record by SKU; 404 for unknown products and other files",
 });
 
 test("a variant SKU leads to its product and options, in any case", async () => {
-  const hit = { id: "S3 PUT", sku: "C4613216", options: { Dexterity: "Right Handed" } };
+  const hit = { product_sku: "S3 PUT", sku: "C4613216", options: { Dexterity: "Right Handed" } };
   assert.deepEqual(await (await fetch(`${base}/api/variants/C4613216`)).json(), hit);
   assert.deepEqual(await (await fetch(`${base}/api/variants/c4613216`)).json(), hit);
   assert.equal((await fetch(`${base}/api/variants/C0000000`)).status, 404);

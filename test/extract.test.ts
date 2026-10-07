@@ -4,7 +4,7 @@ import { parseGallery } from "../src/extract/media.js";
 import { parseProduct } from "../src/extract/parse-product.js";
 import { buildProductUrl } from "../src/scrape/scrape-product.js";
 
-const source = { id: "S3 PUT", name: "Mizuno S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };
+const source = { sku: "S3 PUT", name: "S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };
 const init = (json: object) => `<script type="text/x-magento-init">${JSON.stringify(json)}</script>`;
 const price = (amount: number) => ({ finalPrice: { amount }, oldPrice: { amount } });
 const option = (name: string, amount: number) => ({ name, prices: { finalPrice: { amount } } });
@@ -76,8 +76,8 @@ ${optionsJson ? init({
 
 const product = parseProduct(source, page());
 
-test("title from the provider JSON, URL from the canonical link (not the model listing)", () => {
-  assert.equal(product.title, "Mizuno S3 Putter");
+test("name from the provider JSON, URL from the canonical link (not the model listing)", () => {
+  assert.equal(product.name, "Mizuno S3 Putter");
   assert.equal(product.url, "https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put");
 });
 
@@ -85,30 +85,29 @@ test("product URL is the slugified SKU", () => {
   assert.equal(buildProductUrl("LINK 2.2 PUT"), "https://www.2ndswing.com/link-2dot2-put");
 });
 
-test("attributes follow position order", () => {
-  assert.deepEqual(product.attributes.map((a) => a.label), ["Dexterity", "Flex"]);
+test("options follow position order", () => {
+  assert.deepEqual(product.options, [
+    { code: "hand", name: "Dexterity", values: ["Right"] },
+    { code: "flex", name: "Flex", values: ["Stiff"] },
+  ]);
 });
 
-test("only priced variants, modifier = price − base", () => {
+test("only priced variants, upcharge = price − base price", () => {
   assert.deepEqual(product.variants, [
-    { sku: "SKU-1", options: { Dexterity: "Right", Flex: "Stiff" }, final_price: 450, regular_price: 450, price_modifier: 50 },
+    { sku: "SKU-1", options: { Dexterity: "Right", Flex: "Stiff" }, price: 450, regular_price: 450, upcharge: 50 },
   ]);
   assert.deepEqual(product.price_range, { min: 450, max: 450 });
 });
 
-const customizationRows = (p: typeof product) =>
-  p.customizations.map((c) => [c.category, c.option_name, c.price_modifier, c.final_price]);
-
-test("customizations: add-on pricing, page order and labels", () => {
-  assert.deepEqual(customizationRows(product), [
-    ["Grips", "B", 29.99, 429.99],
-    ["Grips", "A", 0, 400],
-    ["Lie Angle", "Standard", 0, 400],
+test("customizations: one per dropdown, labels, page order and upcharges", () => {
+  assert.deepEqual(product.customizations, [
+    { name: "Grips", options: [{ name: "B", upcharge: 29.99 }, { name: "A", upcharge: 0 }] },
+    { name: "Lie Angle", options: [{ name: "Standard", upcharge: 0 }] },
   ]);
 });
 
 test("customizations come from the HTML select when the page has no options JSON", () => {
-  assert.deepEqual(customizationRows(parseProduct(source, page({ optionsJson: false }))), customizationRows(product));
+  assert.deepEqual(parseProduct(source, page({ optionsJson: false })).customizations, product.customizations);
 });
 
 test("iron sets: default set price = per-club price × included clubs", () => {
@@ -126,8 +125,8 @@ test("description and specs from the page tabs", () => {
   ]);
 });
 
-test("media from the provider JSON: canonical, encoded, deduped", () => {
-  assert.deepEqual(product.media, [
+test("images from the provider JSON: canonical, encoded, deduped", () => {
+  assert.deepEqual(product.media.images, [
     "https://www.2ndswing.com/images/standard/S3%20PUT.jpg",
     "https://www.2ndswing.com/images/representative/S3%20PUT.jpg",
   ]);
@@ -142,7 +141,7 @@ test("gallery: one image per name, encoded like the site does", () => {
 });
 
 test("videos from the Videos tab", () => {
-  assert.deepEqual(product.videos, ["https://www.youtube.com/watch?v=abc123"]);
+  assert.deepEqual(product.media.videos, ["https://www.youtube.com/watch?v=abc123"]);
 });
 
 test("rejects a page for another SKU", () => {
