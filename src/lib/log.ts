@@ -1,6 +1,7 @@
 import path from "node:path";
 import { styleText } from "node:util";
-import apifyLog from "@apify/log";
+import apifyLog, { LoggerText, type LogLevel } from "@apify/log";
+import colors from "ansi-colors";
 import pino from "pino";
 import { LOG_STYLE, OUTPUT_DIR } from "../config.js";
 
@@ -43,9 +44,20 @@ const consoleStream = {
 
 type LogLine = { level: number; msg: string; data?: Record<string, unknown>; err?: { message?: string; stack?: string } };
 
-// Alternative: Crawlee's real logger. Note it always emits colors (it ignores
-// TTY and NO_COLOR) and prints INFO on stdout, WARN/ERROR on stderr.
-const crawleeLog = apifyLog.child({ prefix: "Scraper" });
+// Alternative: Crawlee's real logger, with its two gaps fixed:
+// - its colors (ansi-colors) only check FORCE_COLOR=0 → same rules as styleText;
+// - it prints INFO on stdout and WARN/ERROR on stderr → everything on stderr.
+colors.enabled = process.env.FORCE_COLOR
+  ? process.env.FORCE_COLOR !== "0"
+  : !process.env.NO_COLOR && process.stderr.isTTY === true;
+
+class StderrLoggerText extends LoggerText {
+  override _outputWithConsole(_level: LogLevel, line: string): void {
+    process.stderr.write(`${line}\n`);
+  }
+}
+
+const crawleeLog = apifyLog.child({ prefix: "Scraper", logger: new StderrLoggerText() });
 const crawleeStream = {
   write(line: string) {
     const { level, msg, data, err } = JSON.parse(line) as LogLine;
