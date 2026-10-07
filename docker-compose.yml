@@ -1,0 +1,11 @@
+services:
+  scraper:
+    build: .
+    image: retail-acquisition-engine
+    env_file: .env
+    environment:
+      # Single base for ALL output (files, errors, SQLite state): everything
+      # lands inside the bind mount ./data_docker on the host.
+      BASE_DIR: /app/data
+    volumes:
+      - ./data_docker:/app/data
