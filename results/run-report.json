@@ -1,21 +1,31 @@
 {
   "metrics": {
-    "started_at": "2026-10-07T22:04:51.466Z",
-    "finished_at": "2026-10-07T22:06:43.035Z",
-    "total_ms": 111569,
+    "started_at": "2026-10-07T22:56:36.601Z",
+    "finished_at": "2026-10-07T22:57:23.550Z",
+    "total_ms": 46949.9,
     "concurrency": 20,
+    "delay_ms": 0,
     "products": 700,
     "ok": 696,
     "failed": 4,
+    "resumed": 0,
     "http_requests": 1396,
-    "products_per_minute": 376.4,
+    "products_per_minute": 894.6,
     "product_ms": {
-      "p50": 2727.4,
-      "p95": 5617.2,
-      "max": 24877.8
+      "p50": 1089.6,
+      "p95": 2529.8,
+      "max": 8297.3
     },
     "variants": 280886,
-    "customization_options": 39838
+    "customization_options": 38983,
+    "coverage": {
+      "variants": 696,
+      "customizations": 650,
+      "description": 696,
+      "specs": 689,
+      "images": 696,
+      "videos": 535
+    }
   },
   "failures": [
     {

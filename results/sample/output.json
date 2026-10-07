@@ -12,6 +12,7 @@
       "max": 399.99
     },
     "pricing_unit": "per_item",
+    "clubs": [],
     "included_clubs": [],
     "default_set_price": null,
     "description": "Who’s It For?\nDesigned for golfers who appreciate the classic look and feel of a premium putter but want the flexibility to fine-tune performance, the Mizuno M.Craft X S3 Putter blends traditional craftsmanship with modern adjustability. Its precision-forged construction delivers exceptional feel and feedback, while the fully adjustable design allows players to customize the putter to match their stroke and preferences. Ideal for golfers seeking a balance of refined aesthetics, personalization, and performance on the greens, it offers both confidence at address and consistency in putting results.\nThe Tech Story\nThe Mizuno M.Craft X S3 Putter is engineered to combine the precision feel of a traditional blade with the forgiveness and stability of a modern mallet. Its dynamically shallow center of gravity creates the controlled, responsive swing sensation preferred by skilled players, while the larger head profile and adjustable weighting system increase MOI and deliver exceptional stability on off-center strikes. At its core is a forged 1025 carbon steel body that provides the soft, responsive feel Mizuno is known for, paired with a CNC-milled face that promotes consistent roll, speed control, and accuracy across the hitting surface. A lightweight milled aluminum back section strategically redistributes mass to enhance forgiveness and improve overall stability without sacrificing the premium feedback and craftsmanship that define the M.Craft lineup.\nFacts and Figures\nHead Style: Mallet\nNeck Type: Slant Neck\nAlignment: Single Back Cavity Line\nMaterial: Forged 1025 Steel face section with CNC-milled aluminum back\nFinish: Sleek Black\nHeadcover: M Craft X Black\nStock Shafts and Grips\nStock Shaft: Black KBS CT Tour 120\nStock Grip: Lamkin Sink Fit\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
@@ -25,7 +26,6 @@
     ],
     "media": {
       "images": [
-        "https://www.2ndswing.com/images/standard/M%20CRAFT%20X%20S3%20PUT.jpg",
         "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT.jpg",
         "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT_2.jpg",
         "https://www.2ndswing.com/images/representative/M%20CRAFT%20X%20S3%20PUT_3.jpg",
@@ -327,6 +327,7 @@
     "customizations": [
       {
         "name": "Grips",
+        "required": false,
         "options": [
           {
             "name": "Lamkin Deep Etched Gray Cord",
@@ -380,6 +381,7 @@
       },
       {
         "name": "Lie Angle Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -405,6 +407,7 @@
       },
       {
         "name": "Loft Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -429,8 +432,8 @@
         ]
       }
     ],
-    "scraped_at": "2026-10-07T22:04:54.189Z",
-    "extraction_time_ms": 2704.1
+    "scraped_at": "2026-10-07T22:56:37.922Z",
+    "extraction_time_ms": 1303.7
   },
   {
     "sku": "EXOTICS MILLED WGS",
@@ -445,6 +448,7 @@
       "max": 119.99
     },
     "pricing_unit": "per_item",
+    "clubs": [],
     "included_clubs": [],
     "default_set_price": null,
     "description": "Who’s It For?\nDesigned for golfers who want to sharpen their short game performance and gain greater confidence around the greens, the Tour Edge Exotics Milled Wedge is ideal for players focused on precision, versatility, and control. Engineered to optimize contact, trajectory, and spin, it caters to golfers who demand consistent results on everything from full approach shots to delicate finesse shots, helping them execute a wider variety of scoring shots with confidence and accuracy.\nThe Tech Story\nThe Tour Edge Exotics Milled Wedge is engineered to deliver exceptional short game precision through a combination of advanced sole geometry, spin-enhancing face technology, and premium materials. At its core is a versatile Tri-Grind sole featuring a carefully designed leading edge that resists digging for cleaner turf interaction, a flatter center sole with reduced camber for crisp and consistent contact, and trailing-edge relief that allows the face to open easily for enhanced shot-making versatility around the greens. Precision CNC-milled Superspin™ grooves utilize steeper groove walls, advanced face texturing, and tighter edge tolerances to maximize friction at impact, generating exceptional spin and control on scoring shots. New groove geometry and increased groove volume across the face further promote consistent spin performance in both wet and dry conditions, helping golfers produce predictable results regardless of playing environment. Crafted from soft 304 stainless steel, the wedge delivers responsive feedback and a premium feel, while a durable triple-chrome finish minimizes glare at address and helps preserve groove integrity over time for long-lasting performance.\nBounce Options\nLow Bounce (LB): Firm turf, tight lies, and shallow attack angles.\nMid Bounce (MB): Mixed course conditions and neutral swing deliveries.\nHigh Bounce (HB): Soft turf, fluffy sand, and steeper attack angles to help resist digging\nStock Shaft and Grip\nStock Shaft: KBS Hi-Rev 2.0 Wedge\nStock Grip: Golf Pride Tour Velvet 360 Black\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
@@ -564,7 +568,6 @@
     ],
     "media": {
       "images": [
-        "https://www.2ndswing.com/images/standard/EXOTICS%20MILLED%20WGS.jpg",
         "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS.jpg",
         "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_2.jpg",
         "https://www.2ndswing.com/images/representative/EXOTICS%20MILLED%20WGS_3.jpg",
@@ -870,6 +873,7 @@
     "customizations": [
       {
         "name": "Length",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -943,6 +947,7 @@
       },
       {
         "name": "Grips",
+        "required": false,
         "options": [
           {
             "name": "Golf Pride Tour Velvet 360°",
@@ -1268,6 +1273,7 @@
       },
       {
         "name": "InstallGrips/GripSize",
+        "required": false,
         "options": [
           {
             "name": "Standard (1 Wrap)",
@@ -1305,6 +1311,7 @@
       },
       {
         "name": "Lie Angle",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -1338,6 +1345,7 @@
       },
       {
         "name": "Loft Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -1362,8 +1370,8 @@
         ]
       }
     ],
-    "scraped_at": "2026-10-07T22:04:55.284Z",
-    "extraction_time_ms": 3761.4
+    "scraped_at": "2026-10-07T22:56:39.096Z",
+    "extraction_time_ms": 2440.8
   },
   {
     "sku": "PRO S4 STS",
@@ -1378,6 +1386,16 @@
       "max": 275
     },
     "pricing_unit": "per_club",
+    "clubs": [
+      "3 Iron",
+      "4 Iron",
+      "5 Iron",
+      "6 Iron",
+      "7 Iron",
+      "8 Iron",
+      "9 Iron",
+      "PW"
+    ],
     "included_clubs": [
       "4 Iron",
       "5 Iron",
@@ -1449,7 +1467,6 @@
     ],
     "media": {
       "images": [
-        "https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg",
         "https://www.2ndswing.com/images/representative/PRO%20S4%20STS.jpg",
         "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_2.jpg",
         "https://www.2ndswing.com/images/representative/PRO%20S4%20STS_3.jpg",
@@ -3376,6 +3393,7 @@
     "customizations": [
       {
         "name": "Length",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -3441,6 +3459,7 @@
       },
       {
         "name": "Ferrule",
+        "required": false,
         "options": [
           {
             "name": "Black Standard",
@@ -3454,6 +3473,7 @@
       },
       {
         "name": "Grips",
+        "required": false,
         "options": [
           {
             "name": "Golf Pride MCC Plus 4 Blue Standard",
@@ -3667,6 +3687,7 @@
       },
       {
         "name": "Install Grips / Grip Size",
+        "required": false,
         "options": [
           {
             "name": "Standard (1 Wrap)",
@@ -3704,6 +3725,7 @@
       },
       {
         "name": "Lie Angle Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -3745,6 +3767,7 @@
       },
       {
         "name": "Loft Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -3767,47 +3790,10 @@
             "upcharge": 0
           }
         ]
-      },
-      {
-        "name": "Irons In Set",
-        "options": [
-          {
-            "name": "3 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "4 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "5 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "6 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "7 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "8 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "9 Iron",
-            "upcharge": 0
-          },
-          {
-            "name": "PW",
-            "upcharge": 0
-          }
-        ]
       }
     ],
-    "scraped_at": "2026-10-07T22:04:53.766Z",
-    "extraction_time_ms": 2242.7
+    "scraped_at": "2026-10-07T22:56:39.165Z",
+    "extraction_time_ms": 2508.2
   },
   {
     "sku": "ZXI RKT HYG",
@@ -3822,6 +3808,7 @@
       "max": 529.99
     },
     "pricing_unit": "per_item",
+    "clubs": [],
     "included_clubs": [],
     "default_set_price": null,
     "description": "Who’s It For?\nDesigned for golfers who want the versatility and control of a compact hybrid without sacrificing speed or forgiveness, the Srixon ZXi RKT Hybrid is ideal for players seeking a reliable long-game option from a variety of lies. Its tour-validated shaping appeals to golfers who prefer a more compact, confidence-inspiring profile, while the advanced adjustability system allows precise tuning of swing weight and distance gapping. With optimized lofts that promote easy launch from the fairway, rough, or even fairway bunkers, it is a strong fit for players looking for consistent performance and shot-making versatility throughout the course.\nThe Tech Story\nThe Srixon ZXi RKT Hybrid is built around the innovative RKT Face, a technology platform that combines the company’s most advanced ball speed, face flex, and roll characteristics into a single, highly optimized design engineered to produce faster ball speeds and greater accuracy across the hitting area. Its Tour-Driven Shaping was developed through extensive prototype refinement and on-tour testing, resulting in a compact, confidence-inspiring profile that aligns with the visual and performance preferences of elite players while delivering exceptional control and stability. Adding a new level of customization, the ZXi RKT Hybrid introduces Player-Focused Adjustability through the combined use of an Adjustable Sole Weight and Adjustable Hosel Sleeve, allowing golfers to precisely fine-tune launch conditions, swing weight, and distance gapping to achieve ideal performance throughout the bag. Together, these technologies create a versatile hybrid that blends speed, precision, and personalized fitting capabilities for optimized long-game performance.\nFacts and Figures\nDesired Ball Flight: High MOI\nLaunch: Mid\nSpin: Mid\nWeight Adjustability: Backweight\nStock Shafts and Grips\nStock Shafts: Mitsubishi MMT HYB 60 (SR, R), Mitsubishi MMT HYB 80 (S, X), Mitsubishi Bassara PL 40 Women’s (Ladies)\nStock Grip: Golf Pride Tour Velvet 360 Std., Golf Pride Fine Line Women’s Std.\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: https://www.2ndswing.com/golf-club-fittings.",
@@ -3901,7 +3888,6 @@
     ],
     "media": {
       "images": [
-        "https://www.2ndswing.com/images/standard/ZXI%20RKT%20HYG.jpg",
         "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG.jpg",
         "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_2.jpg",
         "https://www.2ndswing.com/images/representative/ZXI%20RKT%20HYG_3.jpg",
@@ -8731,6 +8717,7 @@
     "customizations": [
       {
         "name": "Grips",
+        "required": false,
         "options": [
           {
             "name": "Golf Pride MCC Blue Midsize",
@@ -9020,6 +9007,7 @@
       },
       {
         "name": "Install Grips / Grip Size",
+        "required": false,
         "options": [
           {
             "name": "Standard (1 Wrap)",
@@ -9069,6 +9057,7 @@
       },
       {
         "name": "Length Adjustment",
+        "required": false,
         "options": [
           {
             "name": "Standard",
@@ -9141,8 +9130,8 @@
         ]
       }
     ],
-    "scraped_at": "2026-10-07T22:04:56.378Z",
-    "extraction_time_ms": 4853.5
+    "scraped_at": "2026-10-07T22:56:39.484Z",
+    "extraction_time_ms": 2826.6
   },
   {
     "sku": "SHOGUN RED DST",
@@ -9157,6 +9146,7 @@
       "max": 375
     },
     "pricing_unit": "per_item",
+    "clubs": [],
     "included_clubs": [],
     "default_set_price": null,
     "description": "Who’s It For?\nThe Accra Shogun Red Driver Shaft is designed for golfers with aggressive swings who prioritize stability and a smooth feel. It lives up to the legacy of the \"GOAT\" ACCRA shaft, the SE 80, and is built for stability from top to bottom. This shaft is a great option for those seeking a highly stable shaft without sacrificing the signature smooth feel that ACCRA is known for.\nThe Tech Story\nThe 2024 Accra Shogun driver shaft series represents a significant leap in golf shaft technology, designed to optimize launch conditions, increase clubhead speed, and promote more consistent center strikes. The line features a constant taper design across three unique profiles, which allows for precise club fitting to optimize a golfer's low point for improved accuracy and ball speed. At the heart of its construction is the new \"ACCelaron MX\" material, an ultra-lightweight 5K composite from Toray Japan that combines high modulus and high elasticity. This material ensures rapid recovery and minimizes ovaling, which leads to exceptional speed, stability, and feel. Additionally, the shaft incorporates \"Tornado Material Stabilization\" (TMS), a manufacturing process that evenly distributes the composite material's strength around the shaft's circumference. This technology stabilizes the shaft's performance at all swing speeds, resulting in unparalleled consistency. The Shogun shafts were developed using S3 analytics and advanced composite materials, showcasing a creative design process focused on delivering a high-performance golf shaft.\nFacts and Figures\nLaunch: Low\nSpin: Low\nGet Fit\n2nd Swing offers award-winning club fitting services at each of our store locations and through the 2nd Swing Online Fitting and Support team on 2ndswing.com. Make sure your equipment is fit for your game and schedule your award-winning fitting experience by calling (612) 216-4152 or by visiting the 2nd Swing fitting website: 2ndswing.com/golf-fittings.",
@@ -9219,7 +9209,6 @@
     ],
     "media": {
       "images": [
-        "https://www.2ndswing.com/images/standard/SHOGUN%20RED%20DST.jpg",
         "https://www.2ndswing.com/images/representative/SHOGUN%20RED%20DST.jpg"
       ],
       "videos": [
@@ -9289,6 +9278,7 @@
     "customizations": [
       {
         "name": "Length",
+        "required": true,
         "options": [
           {
             "name": "Playing Length 43\"",
@@ -9362,6 +9352,7 @@
       },
       {
         "name": "Grip Install",
+        "required": true,
         "options": [
           {
             "name": "Standard (1 Wrap)",
@@ -9399,6 +9390,7 @@
       },
       {
         "name": "GripModel(InstallPriceIncluded)",
+        "required": true,
         "options": [
           {
             "name": "Leave Ungripped",
@@ -9472,6 +9464,7 @@
       },
       {
         "name": "TipAdapter",
+        "required": true,
         "options": [
           {
             "name": "LH Cobra DS Adapt",
@@ -9544,7 +9537,7 @@
         ]
       }
     ],
-    "scraped_at": "2026-10-07T22:05:44.289Z",
-    "extraction_time_ms": 3378.8
+    "scraped_at": "2026-10-07T22:57:00.000Z",
+    "extraction_time_ms": 958.4
   }
 ]
