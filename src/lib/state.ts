@@ -9,7 +9,8 @@ import Sqlite, { type Database } from "better-sqlite3";
 import { OUTPUT_DIR } from "../config.js";
 import type { Product } from "../types.js";
 
-export const DB_PATH = path.join(OUTPUT_DIR, "scraper.db");
+// Internal state, kept apart from the results.
+export const DB_PATH = path.join(OUTPUT_DIR, "state", "scraper.db");
 
 type ProductState = { status: "pending" | "done" | "failed"; attempts: number };
 

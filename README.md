@@ -67,7 +67,7 @@ results/
 input CSV, output folder, concurrency, delays, retries and thresholds. One
 `.env` works for both `make dev` and Docker.
 
-**Resuming:** progress is saved per product in `data/scraper.db` (SQLite). If a
+**Resuming:** progress is saved per product in `data/state/scraper.db` (SQLite). If a
 run is interrupted (Ctrl+C, VPN drop), running it again continues where it
 stopped; the output files are rebuilt from that state at the end, so nothing
 already scraped is lost. `make reset` deletes all output to start from scratch.
@@ -85,7 +85,8 @@ failures.
 | `variants.csv`       | One row per valid configuration, for spreadsheets               |
 | `customizations.csv` | One row per customization option, for spreadsheets              |
 | `run-report.json`    | Run metrics and the list of failed products with the reason     |
-| `logs/run.log`       | One JSON line per event (start, product, retry, failure, end)   |
+| `logs/run-<start>.log` | One file per run; one JSON line per event (start, product, retry, failure, end) |
+| `state/scraper.db`   | Resume state (SQLite); internal, not part of the results        |
 
 A product record in `output.json`:
 
@@ -243,7 +244,7 @@ settings come from environment variables. Output files go to object storage.
 
 - Exit code 1 means a bad run (nothing extracted, or >10% failed); the scheduler
   alerts on it.
-- `logs/run.log` is structured JSON (one event per line: `product_ok`,
+- `logs/run-<start>.log` is structured JSON (one event per line: `product_ok`,
   `product_failed`, `retry`, `run_stopped`…), ready for a log platform.
 - `run-report.json` gives the metrics to track over time: success rate,
   products per minute, p95, requests.

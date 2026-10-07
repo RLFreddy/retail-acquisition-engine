@@ -3,7 +3,9 @@ import { styleText } from "node:util";
 import pino from "pino";
 import { OUTPUT_DIR } from "../config.js";
 
-export const LOG_FILE = path.join(OUTPUT_DIR, "logs", "run.log");
+// One log file per run, named by its start time: logs/run-2026-10-07T04-04-47.log
+const runStamp = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
+export const LOG_FILE = path.join(OUTPUT_DIR, "logs", `run-${runStamp}.log`);
 
 type LogLine = { level: number; msg?: string; data?: unknown; err?: { stack?: string } };
 
@@ -29,7 +31,7 @@ function formatLine({ level, msg = "", data, err }: LogLine): string {
 }
 
 // Usage: log.info({ event, data }, message). The console (stderr) shows the
-// message plus `data` in gray; run.log gets every field as one JSON line.
+// message plus `data` in gray; the run's log file gets every field as one JSON line.
 export const log = pino(
   { level: "debug" },
   pino.multistream([
