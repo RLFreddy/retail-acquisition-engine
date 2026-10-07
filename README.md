@@ -6,14 +6,21 @@ shaft, flex, loft…) and every customization option (grips, lie, length…), ea
 with its price.
 
 It uses plain HTTP requests and reads the JSON that the store (Magento 2) embeds
-in each product page. No headless browser, one request per product. It resumes
+in each product page: no headless browser, one request per product. It resumes
 after interruptions, retries when the site pushes back, and stops on its own if
 it keeps getting blocked.
 
-**Full run of 700 products:** 696 captured (the other 4 are not available on the
-site), 280,886 configurations and 39,703 customization options with their
-prices, in 8 minutes with the default settings and no blocks. The results are
-in [`results/`](results/).
+## Results
+
+Full run of the 700 products in `searchresults.csv` (output in [`results/`](results/)):
+
+| Metric                | Value                                              |
+| --------------------- | -------------------------------------------------- |
+| Products captured     | **696 / 700** (the other 4 are not available on the site) |
+| Valid configurations  | **280,886**, each with its price                   |
+| Customization options | **39,703**, each with its price change             |
+| Requests              | 700 (one per product), 0 retries, 0 blocks         |
+| Runtime               | **8 min 3 s** with the defaults · 39 s with `DELAY_MS=0` (one test) |
 
 ## Features
 
@@ -30,12 +37,28 @@ in [`results/`](results/).
 - **Ready for schedulers:** JSON and CSV output, a run report, one log file per
   run, and exit code 1 when a run goes wrong
 
+## How it works
+
+```mermaid
+flowchart LR
+    A["searchresults.csv"] --> B["Queue<br/>4 in parallel, polite pace"]
+    B --> C["GET product page<br/>retries with backoff"]
+    C --> D["Parse embedded JSON<br/>validated with zod"]
+    D --> E[("state/scraper.db<br/>resume")]
+    E --> F["output.json<br/>variants.csv<br/>customizations.csv<br/>run-report.json"]
+```
+
+Each product's page already contains every valid configuration and its price,
+so one request is enough. Details in
+[Conditional-option discovery](DOCUMENTATION.md#2-conditional-option-discovery).
+
 ## Requirements
 
 > [!IMPORTANT]
 > The scraper needs a **US IP address**. From other countries the site answers
-> HTTP 406 to every product page, and the run stops after 3 blocked products. Outside the US, use a
-> US VPN; Docker uses the host's network, so the VPN covers it too.
+> HTTP 406 to every product page, and the run stops after 3 blocked products.
+> Outside the US, use a US VPN; Docker uses the host's network, so the VPN
+> covers it too.
 
 - Node.js 24 and pnpm 10 (run `corepack enable` to get pnpm), or Docker
 - `make` is optional: every target maps to a `pnpm` script
@@ -99,7 +122,7 @@ A row of `variants.csv`:
 ```
 
 The full record format is described in the
-[documentation](DOCUMENTATION.md#data-model). A 5-product sample is in
+[documentation](DOCUMENTATION.md#1-data-model). A 5-product sample is in
 [`results/sample/`](results/sample/).
 
 ## Configuration
@@ -125,17 +148,32 @@ Docker, and any variable can also be set on the command line
 **Speed:** `DELAY_MS` limits speed more than `CONCURRENCY` does. In a test with
 the same 700 products, `CONCURRENCY=20` and `DELAY_MS=0` took 39 s instead of
 8 min, without blocks. The defaults stay conservative on purpose; see the
-[concurrency test](DOCUMENTATION.md#runtime-and-trade-offs).
+[concurrency test](DOCUMENTATION.md#concurrency-test).
+
+## Project structure
+
+```text
+src/
+├── main.ts        entry point: run, report, exit code
+├── config.ts      settings from environment variables
+├── scrape/        queue, resume, metrics
+├── extract/       parsing: variants, customizations, media, zod schemas
+└── lib/           HTTP client, CSV, SQLite state, logging, output files
+test/              21 offline tests
+results/           output of the full run (sample/ + full-results.zip)
+```
 
 ## Documentation
 
-[DOCUMENTATION.md](DOCUMENTATION.md) covers the details:
+[DOCUMENTATION.md](DOCUMENTATION.md) answers the challenge questions, with
+diagrams and tables:
 
-- Data model and pricing rules
-- How conditional options are discovered
-- Runtime trade-offs and the concurrency test
-- Data that could not be captured
-- How to run it in production, and a design for a daily CSV pipeline
+1. [Data model](DOCUMENTATION.md#1-data-model)
+2. [Conditional-option discovery](DOCUMENTATION.md#2-conditional-option-discovery)
+3. [Runtime: trade-offs, measurement, improvements](DOCUMENTATION.md#3-runtime)
+4. [Data that could not be captured](DOCUMENTATION.md#4-data-that-could-not-be-captured-reliably)
+5. [Production: run, monitor, maintain](DOCUMENTATION.md#5-production)
+6. [Daily CSV pipeline design](DOCUMENTATION.md#6-daily-csv-pipeline-design)
 
 ## License
 

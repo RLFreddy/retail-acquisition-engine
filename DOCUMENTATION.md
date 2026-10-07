@@ -1,220 +1,141 @@
 # retail-acquisition-engine — Documentation
 
-Full write-up of the scraper: results, data model, how conditional options are
-discovered, runtime trade-offs, known gaps, and the production and daily-pipeline
-designs. For a short overview and the quick start, see the [README](README.md).
+Answers to the challenge questions. For the quick start and configuration, see
+the [README](README.md).
 
-Scraper for [2ndswing.com](https://www.2ndswing.com) that takes the products in
-`searchresults.csv` and captures, for each one, its details, images, every valid
-configuration (hand, shaft, flex, loft…) with its price, and every
-customization option (grips, lie, loft…) with its price change. It uses plain
-HTTP requests and the JSON that the store (Magento 2) embeds in each product
-page: no headless browser, one request per product.
+| # | Question                                                        | Section                                                       |
+| - | --------------------------------------------------------------- | ------------------------------------------------------------- |
+| 1 | Data model                                                      | [Data model](#1-data-model)                                   |
+| 2 | Conditional-option discovery                                    | [Conditional options](#2-conditional-option-discovery)        |
+| 3 | Runtime: trade-offs, how it was measured, where to improve      | [Runtime](#3-runtime)                                         |
+| 4 | Data that could not be captured reliably                        | [Not captured](#4-data-that-could-not-be-captured-reliably)   |
+| 5 | Run, monitor and maintain in production                         | [Production](#5-production)                                   |
+| 6 | Daily CSV: new products, changes, history, flags                | [Daily pipeline](#6-daily-csv-pipeline-design)                |
 
-## Results
+## 1. Data model
 
-Full run of the 700 products in the CSV (output in [`results/`](results/)):
+One record per product in `output.json`. The same data is flattened into
+`variants.csv` and `customizations.csv` for spreadsheets.
 
-| Metric                  | Value                                         |
-| ----------------------- | --------------------------------------------- |
-| Products captured       | **696 / 700** (99.4%)                         |
-| Valid configurations    | 280,886 variants, each with its price         |
-| Customization options   | 39,703, each with its price change            |
-| HTTP requests           | 700 (one per product), 0 retries, 0 blocks    |
-| Runtime                 | 8 min 3 s, ~87 products/min, concurrency 4    |
-| Time per product        | median 2.4 s · p95 4.4 s · max 20 s           |
-
-Measured from a home connection (WSL) through a US VPN; times vary with the
-network. The 4 products not captured are not available on the site (see
-[Data that could not be captured](#data-that-could-not-be-captured-reliably)).
-
-## How to run
-
-**Requirements:** Node 24, pnpm 10 (bundled with Node: run `corepack enable`),
-and a **US IP address**. The site only serves its catalog to US visitors: from
-other countries every product page answers HTTP 406. Outside the US, use a US
-VPN; Docker uses the host's network, so the VPN covers it too. `make` is
-optional: every target maps to a `pnpm` script.
-
-```bash
-make install      # or: pnpm install
-make dev          # scrape all products (or: pnpm dev)
-make dev LIMIT=10 # quick test with the first 10 products
-make test         # typecheck + 21 tests (no network needed)
-make              # list every command
+```mermaid
+erDiagram
+    PRODUCT ||--o{ ATTRIBUTE : "configurable axes"
+    PRODUCT ||--o{ VARIANT : "valid configurations"
+    PRODUCT ||--o{ CUSTOMIZATION : "add-on options"
+    PRODUCT {
+        string id "CSV Parent Item = site SKU"
+        string name
+        string brand
+        string category
+        number base_price "Starting at price"
+        string pricing_unit "per_item or per_club"
+        string_list media "image URLs"
+    }
+    ATTRIBUTE {
+        string label "Dexterity, Shaft Flex..."
+        string_list options
+    }
+    VARIANT {
+        string sku "real store SKU"
+        object options "attribute to value"
+        number final_price
+        number price_modifier "final - base"
+    }
+    CUSTOMIZATION {
+        string category "Grips, Lie Angle..."
+        string option_name
+        number price_modifier "extra cost"
+        number final_price "base + modifier"
+    }
 ```
 
-With Docker (no local Node needed):
+| Concept           | What it is                                         | Price rule                          |
+| ----------------- | -------------------------------------------------- | ----------------------------------- |
+| **Variant**       | A combination the store sells as its own SKU (hand × shaft × flex…) | Absolute price; `price_modifier = final_price − base_price` |
+| **Customization** | An add-on chosen on top (grip, lie, length…)       | Site gives the extra cost; `final_price = base_price + price_modifier` |
+| **Iron sets**     | `pricing_unit: "per_club"`                         | Both prices are per club            |
 
-```bash
-make docker-build
-make docker-run            # or: docker compose run --rm scraper
-make docker-run LIMIT=10
-```
-
-**Output** goes to `data/` (`data_docker/` with Docker). The folder is
-git-ignored because `output.json` is ~110 MB. The results of the run above
-are in [`results/`](results/), so nothing has to be run to see them:
-
-```
-results/
-├── run-report.json    metrics of the full run: dates, time, success rate, failures
-├── full-results.zip   the complete extraction (4.4 MB): output.json, variants.csv,
-│                      customizations.csv, run-report.json and run.log
-└── sample/            5 products of different types, same files and format
-    ├── output.json
-    ├── variants.csv
-    └── customizations.csv
-```
-
-**Configuration** is optional: copy `.env.example` to `.env`. It covers the
-input CSV, output folder, concurrency, delays, retries and thresholds. One
-`.env` works for both `make dev` and Docker.
-
-**Resuming:** progress is saved per product in `data/state/scraper.db` (SQLite). If a
-run is interrupted (Ctrl+C, VPN drop), running it again continues where it
-stopped; the output files are rebuilt from that state at the end, so nothing
-already scraped is lost. `make reset` deletes all output to start from scratch.
-
-**Exit code:** 0 on success; 1 if nothing was extracted or more than 10% of
-products failed, so a scheduler or CI notices a bad run. A run stopped because
-the site keeps blocking also exits 1: the products it never reached count as
-failures.
-
-## Data model
-
-| File                 | Content                                                         |
-| -------------------- | --------------------------------------------------------------- |
-| `output.json`        | One record per product (main deliverable)                       |
-| `variants.csv`       | One row per valid configuration, for spreadsheets               |
-| `customizations.csv` | One row per customization option, for spreadsheets              |
-| `run-report.json`    | Run metrics and the list of failed products with the reason     |
-| `logs/run-<start>.log` | One file per run; one JSON line per event (start, product, retry, failure, end) |
-| `state/scraper.db`   | Resume state (SQLite); internal, not part of the results        |
-
-A product record in `output.json`:
+A trimmed record (full examples in [`results/sample/output.json`](results/sample/output.json)):
 
 ```jsonc
 {
-  "id": "PRO S4 STS",                 // CSV "Parent Item" = the site's SKU
-  "name": "Mizuno Pro S-4 Iron Set", "brand": "Mizuno",
-  "category": "Iron Set", "model": "Pro S-4",
-  "url": "https://www.2ndswing.com/golf-clubs/iron-sets/…/pro-s4-sts",
-  "title": "Mizuno Pro S-4 Iron Set",
-  "base_price": 215,
-  "pricing_unit": "per_club",         // iron sets are priced per club
+  "id": "PRO S4 STS", "name": "Mizuno Pro S-4 Iron Set", "brand": "Mizuno",
+  "base_price": 215, "pricing_unit": "per_club",
   "price_range": { "min": 215, "max": 275 },
-  "included_clubs": ["4 Iron", "5 Iron", "…", "PW"],
-  "media": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg", "…"],
-  "attributes": [                     // configurable axes, in selection order
-    { "code": "g2_dexterity", "label": "Dexterity", "options": ["Right Handed", "Left Handed"] },
-    "… Shaft Material, Shaft Flex, Shaft Model"
-  ],
-  "variants": [                       // every valid configuration
-    {
-      "sku": "C4605039",
-      "options": { "Dexterity": "Left Handed", "Shaft Material": "Graphite",
-                   "Shaft Flex": "Stiff", "Shaft Model": "Aerotech SteelFiber i110" },
-      "final_price": 275, "regular_price": 275,
-      "price_modifier": 60            // final_price − base_price
-    }
-  ],
-  "customizations": [                 // add-ons on top of the configuration
-    { "category": "Ferrule", "option_name": "ICON (Black/Blue/White)",
-      "price_modifier": 2.5, "final_price": 217.5 }
-  ],
-  "extraction_time_ms": 2222,
-  "scraped_at": "2026-10-07T04:03:47.966Z"
+  "media": ["https://www.2ndswing.com/images/standard/PRO%20S4%20STS.jpg"],
+  "attributes": [{ "label": "Dexterity", "options": ["Right Handed", "Left Handed"] }],
+  "variants": [{ "sku": "C4605039", "options": { "Dexterity": "Left Handed", "Shaft Flex": "Stiff" },
+                 "final_price": 275, "price_modifier": 60 }],
+  "customizations": [{ "category": "Ferrule", "option_name": "ICON (Black/Blue/White)",
+                       "price_modifier": 2.5, "final_price": 217.5 }],
+  "extraction_time_ms": 2222, "scraped_at": "2026-10-07T04:03:47.966Z"
 }
 ```
 
-**Base price.** `base_price` is the price the site shows as "Starting at" for
-the product; both kinds of options are priced against it.
+## 2. Conditional-option discovery
 
-**Variants vs customizations.** A variant is a real SKU the store sells (a
-combination of the configurable attributes); its price is absolute, so
-`price_modifier = final_price − base_price`. A customization is an add-on
-chosen on top (grip, wrap, lie, loft, length…); the site gives its extra cost,
-so `final_price = base_price + price_modifier`. For iron sets (`per_club`), both
-prices are per club.
+The site (Magento 2) builds its dropdowns in the browser from JSON embedded in
+the page. The scraper reads that JSON directly, so one request returns every
+valid combination, with no clicking.
 
-## Conditional-option discovery
+```mermaid
+flowchart LR
+    A["GET /sku-slug<br/>(1 request)"] --> B["JSON embedded in the page<br/>(x-magento-init)"]
+    B --> C["spConfig.index<br/>only combinations that exist"]
+    B --> D["spConfig.optionPrices + sku<br/>price and SKU of each"]
+    B --> E["ironsetOptions<br/>customization prices"]
+    A --> F["HTML<br/>group names and order"]
+    C & D --> V[variants]
+    E & F --> K[customizations]
+```
 
-Magento builds the option dropdowns in the browser from JSON embedded in the
-page (`<script type="text/x-magento-init">`). The scraper reads that JSON
-directly, so it gets every valid combination at once, without clicking through
-the UI:
+| Source in the page             | Gives                                                       |
+| ------------------------------ | ----------------------------------------------------------- |
+| `spConfig.attributes`          | Each configurable axis and its options                      |
+| `spConfig.index`               | **Only the combinations that exist**: this is the conditional logic the page applies when you pick options |
+| `spConfig.optionPrices`, `sku` | Price and SKU of each combination                           |
+| `ironsetOptions.optionConfig`  | Customization options and their extra cost                  |
+| HTML labels                    | Group names ("Grips") and display order (not in any JSON; GraphQL returns null for them) |
 
-- `spConfig.attributes` (`spConfig` is Magento's configurable-product data):
-  each configurable axis and its options.
-- `spConfig.index`: **only the combinations that exist**, as
-  `simple product id → { attribute → option }`.
-- `spConfig.optionPrices` and `spConfig.sku`: each combination's price and SKU.
+**Example:** the OPUS SP wedge has ~700,000 theoretical combinations
+(6 bounces × 5 grinds × 9 lofts × 2 materials × 2 hands × 8 flexes × 81 shafts).
+The index lists the **3,888** the store actually sells, and the output contains
+exactly those.
 
-As the user picks options, the page filters each later dropdown against this
-index; that is why options appear or change based on earlier selections. The
-scraper enumerates the index directly instead. For example, the OPUS SP wedge has
-6 bounces × 5 grinds × 9 lofts × 2 materials × 2 hands × 8 flexes × 81 shafts,
-which is ~700,000 theoretical combinations; the index lists the **3,888** the
-store actually sells, and the output contains exactly those.
+**Accuracy checks:**
+- Attributes are sorted by their `position` field, so they keep the page's selection order.
+- A combination is kept only if it has a price and a value for every attribute.
+- The SKU on the page must match the CSV, so a wrong product is never recorded.
+- Every JSON block is validated with zod: if the site changes a field, the product fails with `site data changed in …` instead of producing empty data.
 
-Two details matter for accuracy. Attribute IDs are numeric strings ("626",
-"632"), which JavaScript orders numerically rather than as on the page, so
-attributes are sorted by their `position` field to keep the selection order. And a combination is only kept if it has a price and a value for every
-attribute.
+Customizations are not conditional: the JSON exposes no dependency between them.
 
-Customization options come from a second block (`ironsetOptions.optionConfig`).
-They are not conditional: the JSON exposes no dependency between them, so they
-apply to any configuration.
+## 3. Runtime
 
-## Runtime and trade-offs
+**Result:** 700 products in **8 min 3 s** with the defaults: 696 captured,
+0 retries, 0 blocks.
 
-**Approach: HTTP + embedded JSON, no browser.** One GET per product returns
-everything, including combinations that a browser would only reveal after
-several clicks. A headless browser would add seconds and hundreds of MB of RAM
-per page and gain nothing here. The trade-off is that the scraper depends on
-Magento's JSON shape. To make that safe, every block is validated with zod (a schema-validation library); if
-the site changes a field, the product fails with
-`site data changed in spConfig: …` instead of producing silently empty data.
-Of the page HTML, only the option-group names ("Grips", "Lie Angle") and their
-display order are read, because the site exposes them nowhere else (GraphQL was
-checked and returns null for these custom option types).
+### Trade-offs
 
-**Direct product URL instead of the site search.** The CSV's `Parent Item` is
-the store SKU, and every product lives at `/<sku-slug>`
-(lowercase, `.` → `dot`, spaces → `-`: `LINK 2.2 PUT` → `/link-2dot2-put`). That avoids the search page, which is
-disallowed in `robots.txt`, started answering HTTP 406 after ~30 searches in
-an early test, and often needs a second request. The parent SKU on the page is
-checked against the CSV, so the scraper never records the wrong product.
+| Decision                              | Why                                                    | Cost                                         |
+| ------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
+| HTTP + embedded JSON, no browser      | One request per product returns everything; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
+| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, answered 406 after ~30 searches, often needs 2 requests | Relies on the site's URL convention (SKU checked on the page) |
+| 4 in parallel, 1 new product every 500 ms | Considerate pace with no blocks                       | Slower than the site can take (see the test below) |
+| Retries with backoff (5 s → 40 s), stop after 3 blocked products | Survives throttling without hammering the site | A blocked run ends early (and resumes later)  |
+| Ignoring `Crawl-delay: 10` for this single run | Honoring it means ~2 hours for 700 pages        | The daily pipeline honors it                 |
 
-**Politeness vs speed.** Four requests run in parallel, at most one new product
-starts every 500 ms, connections are reused (keep-alive), and requests that get
-406, 429 or 5xx are retried with exponential backoff (5 s, 10 s, 20 s, 40 s). If
-the site blocks three products in a row, the run stops instead of pressing on.
-`robots.txt` asks for `Crawl-delay: 10`; honoring it would make the run ~2 hours
-for 700 pages. For a single run of 700 requests, the current pace (8 minutes,
-no errors or blocks from the site) was judged considerate enough. A daily
-production job should honor it instead (see the pipeline design). Requests use
-a browser-like User-Agent; nothing else is done to avoid blocks: no proxies, and
-the run stops when blocked.
+### How it was measured
 
-**How runtime was measured.** `performance.now()` around each product (download
-and parse) gives `extraction_time_ms`. The whole run is timed the same way, and
-`run-report.json` reports the total, products per minute and p50/p95/max per
-product.
+`performance.now()` around each product (download + parse) gives
+`extraction_time_ms`. The whole run is timed the same way, and
+`run-report.json` reports the total, products per minute and p50 / p95 / max
+per product.
 
-**Where it could be faster:**
+### Concurrency test
 
-- **Download size dominates.** Pages with many combinations are large: the OPUS
-  wedge page is 2.6 MB (1.1 s to download, 0.5 s to parse), and the largest
-  product (26,400 variants) took 20 s. Raising concurrency and lowering the
-  pace cuts wall-clock time, at the cost of more load on the site (see the
-  concurrency test below).
-- **Output is built in memory.** `output.json` is written at the end (~110 MB).
-  Streaming it as JSON Lines would keep memory flat for much larger catalogs.
-
-**Concurrency test.** The same 700 products, three settings, from the same
-connection through a US VPN:
+The same 700 products from the same connection; all three captured identical
+data:
 
 | Setting                          | Time       | Products/min | Per product (p50 · p95) | 406 / retries / blocks |
 | -------------------------------- | ---------- | ------------ | ----------------------- | ---------------------- |
@@ -222,165 +143,91 @@ connection through a US VPN:
 | `CONCURRENCY=20`, `DELAY_MS=500` | 6 min 5 s  | 115          | 2.2 s · 4.1 s           | 0 / 0 / 0              |
 | `CONCURRENCY=20`, `DELAY_MS=0`   | **39 s**   | **1,074**    | 0.75 s · 2.8 s          | 0 / 0 / 0              |
 
-All three captured the same data (696/700 products, 280,886 variants, 39,703
-customizations, the same 4 failures). What limits speed is `DELAY_MS`, not
-`CONCURRENCY`: at 500 ms at most 120 products start per minute, so going from
-4 to 20 parallel requests only helps with the slow pages, and the run sits just
-under that ceiling. With no delay, 20 parallel requests reached ~18 requests
-per second and the site did not reject any. That is one 39-second test, not
-proof the site tolerates that pace every day; the defaults stay conservative,
-and something in between (for example `CONCURRENCY=10`, `DELAY_MS=100`, about
-10 requests per second) is a reasonable faster setting. The last two runs
-overlapped by about 10 seconds.
+The pace (`DELAY_MS`) limits speed, not concurrency: 500 ms caps the run at
+120 products per minute. It is a single test (the last two runs overlapped by
+~10 s), so the defaults stay conservative.
 
-## Data that could not be captured reliably
+### Where to improve
 
-**4 products**, all unavailable on the site, listed with the reason in
-`run-report.json`:
+| Improvement                                                  | Expected gain                                    |
+| ------------------------------------------------------------ | ------------------------------------------------ |
+| Faster pace, e.g. `CONCURRENCY=10`, `DELAY_MS=100`           | ~1.5 min instead of 8 (about 10 requests/s)      |
+| Stream `output.json` as JSON Lines                           | Flat memory (today it is built in memory, ~110 MB) |
+| Daily runs: skip unchanged records by content hash           | Less storage and processing, not fewer requests  |
 
-| SKU                    | Reason                                                       |
-| ---------------------- | ------------------------------------------------------------ |
-| `2026 HL MAX D WGS`    | Out of stock: the site shows $0.00 and no configurations     |
-| `2026 HL MAX D FWG`    | Out of stock: same as above                                  |
-| `KM2 PUT`              | No product page (404); a manual site search finds nothing    |
-| `STAFF MOD TG NEW WGS` | Redirects to a generic model page with no product data       |
+Large pages dominate the time: the OPUS wedge page is 2.6 MB (1.1 s to
+download, 0.5 s to parse), and the largest product (26,400 variants) took 20 s.
+
+## 4. Data that could not be captured reliably
+
+**4 of 700 products**, listed with the reason in `run-report.json`:
+
+| SKU                    | Reason                                                     |
+| ---------------------- | ---------------------------------------------------------- |
+| `2026 HL MAX D WGS`    | Out of stock: the site shows $0.00 and no configurations   |
+| `2026 HL MAX D FWG`    | Out of stock: same as above                                |
+| `KM2 PUT`              | No product page (404); the site search finds nothing       |
+| `STAFF MOD TG NEW WGS` | Redirects to a generic model page with no product data     |
 
 **Not captured, or only partially:**
 
-- **Total price of an iron set.** Prices are per club; the number of clubs is a
-  separate choice ("Irons In Set"), so the set total is left to the consumer
-  (`included_clubs` lists the default set).
-- **Dependencies between customization options** (for example, grip size per
-  grip model): the site's JSON does not expose them.
-- **Stock per configuration:** the stock field in the JSON is empty on the
-  pages checked, so availability is only known per product.
-- **Used inventory:** the site also sells individual used clubs (separate SKUs
-  such as `D-92649563653`). Only the parent products in the CSV were in scope.
-- **Media:** the site has one product image per SKU (two renditions,
-  `standard` and `representative`); there are no per-configuration images.
+| Data                                   | Why                                                                     |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| Total price of an iron set             | Prices are per club and the number of clubs is a separate choice; `included_clubs` lists the default set |
+| Dependencies between customizations    | Not in the site's JSON (e.g. grip size per grip model)                  |
+| Stock per configuration                | The stock field is empty in the JSON; availability is only per product  |
+| Media files                            | Captured as image URLs, not downloaded. One image per SKU (`standard` and `representative`); no per-configuration images exist |
 
-## Running it in production
+## 5. Production
 
-**Run.** The Docker image runs as a one-off job (Cloud Run Jobs, ECS Fargate or
-a cron host) in a US region, which provides the US IP without a VPN. All
-settings come from environment variables. Output files go to object storage.
-
-**Monitor.**
-
-- Exit code 1 means a bad run (nothing extracted, or >10% failed); the scheduler
-  alerts on it.
-- `logs/run-<start>.log` is structured JSON (one event per line: `product_ok`,
-  `product_failed`, `retry`, `run_stopped`…), ready for a log platform.
-- `run-report.json` gives the metrics to track over time: success rate,
-  products per minute, p95, requests.
-- Signals worth an alert: `retry` and `run_stopped` events (the site is
-  throttling or blocking), and `site data changed in …` errors (the parser
-  needs updating).
-
-**Maintain.**
-
-- zod schemas pinpoint exactly which field changed when the site evolves.
-- 21 offline tests cover parsing, pricing, retries, resume and the quality
-  check (`make test`). CI runs the typecheck and build on every push; the tests
-  run locally.
-- Re-check `robots.txt` periodically and keep dependencies up to date.
-
-## Daily CSV pipeline (design)
-
-An outline, not implemented. It builds on what the scraper already has: the
-SQLite run state, `scraped_at` on every record, the zod schema checks and the
-quality-check exit code.
-
-```
-Scheduler (daily, US region)
-        │
-        ▼
-Diff today's CSV against yesterday's ──► new / removed / kept SKUs
-        │
-        ▼
-Scrape new SKUs and refresh kept ones
-        │
-        ▼
-Hash each record and compare it with the current version
-        │
-        ▼
-Store the history in PostgreSQL (versioned, see History)
-        │
-        ▼
-Daily report and alerts (Slack / email)
+```mermaid
+flowchart LR
+    S["Scheduler<br/>(cron / Cloud Scheduler)"] --> J["Docker job<br/>US region"]
+    J --> O["Object storage<br/>output + run-report"]
+    J --> L["Log platform<br/>JSON logs"]
+    J -- "exit code 1" --> A["Alert"]
+    L -- "retry / run_stopped / site data changed" --> A
 ```
 
-### 1. New and removed products
+| Area         | How                                                                         |
+| ------------ | --------------------------------------------------------------------------- |
+| **Run**      | The Docker image as a one-off job (Cloud Run Jobs, ECS Fargate or cron) in a US region, which provides the US IP without a VPN. Settings via environment variables. |
+| **Monitor**  | Exit code 1 = bad run (nothing extracted or >10% failed). One JSON log file per run (`product_ok`, `product_failed`, `retry`, `run_stopped`…). `run-report.json` gives success rate, products/min and p95 to track over time. |
+| **Alert on** | `retry` / `run_stopped` events (site throttling or blocking) and `site data changed in …` errors (parser needs updating) |
+| **Maintain** | zod schemas pinpoint which field changed. 21 offline tests (`make test`) cover parsing, pricing, retries, resume and the quality check. Interrupted runs resume from `state/scraper.db`. |
 
-The CSV is keyed by `Parent Item` (the site SKU). Each day's file is compared
-with the previous one:
+## 6. Daily CSV pipeline (design)
 
-- **New SKUs** are scraped and inserted.
-- **Removed SKUs** are marked inactive, never deleted, so their history stays.
-- **Kept SKUs** are refreshed daily, at the pace `robots.txt` asks for
-  (`Crawl-delay: 10`, ~2 hours for 700 products), which suits an unattended job:
-  `CONCURRENCY=1 DELAY_MS=10000`.
+An outline, not implemented.
 
-Today's `scraper.db` already skips finished products within a run. The daily
-version keys that state by run date, so every SKU is refreshed once per day and
-re-running the same day resumes instead of starting over or duplicating rows.
-
-### 2. Detecting changes
-
-Each record gets a **content hash**: SHA-256 of the normalized JSON, with keys
-sorted and volatile fields (`extraction_time_ms`, `scraped_at`) removed. If the
-hash matches the current version, nothing is written except `last_seen`. If it
-differs, the fields are compared to classify the change:
-
-- base price changed;
-- variant price changed (by variant SKU);
-- variant added or removed (a configuration appeared or disappeared);
-- customization option added, removed or re-priced;
-- product out of stock, or no longer found on the site.
-
-Out-of-stock and not-found products are recorded as status changes, not as
-failures (unlike the current single run, which lists them as failed), so a
-wave of stock-outs does not fail the daily run. The failure rate only counts
-errors: HTTP errors, blocks and parsing failures.
-
-### 3. History (SCD Type 2)
-
-Changes are stored as versions (Slowly Changing Dimension Type 2, the usual
-data-warehouse pattern): a change closes the current row (`valid_to`, `is_current = false`)
-and inserts a new one. Any past price can be queried, and the current state is
-`is_current = true`.
-
-```
-products         (sku PK, name, brand, category, active, first_seen, last_seen)
-product_versions (sku, content_hash, data JSONB, valid_from, valid_to, is_current)
-variant_prices   (variant_sku, product_sku, options JSONB, final_price,
-                  regular_price, valid_from, valid_to, is_current)
-customization_prices (product_sku, category, option_name, price_modifier,
-                      valid_from, valid_to, is_current)
-runs             (run_id, started_at, finished_at, ok, failed, requests, status)
+```mermaid
+flowchart TD
+    A["Daily CSV"] --> B{"Diff against<br/>yesterday's CSV"}
+    B -- new SKUs --> C["Scrape and insert"]
+    B -- kept SKUs --> D["Scrape again"]
+    B -- removed SKUs --> E["Mark inactive<br/>(keep history)"]
+    C & D --> F{"Content hash<br/>changed?"}
+    F -- no --> G["Update last_seen only"]
+    F -- yes --> H["Close current version,<br/>insert new one (SCD Type 2)"]
+    H --> I["Daily report:<br/>changes + failures"]
+    G --> I
 ```
 
-An append-only table (one row per variant per day) is simpler, but it would
-add ~280,000 mostly identical rows a day (~100 million a year). Versioning only
-stores what actually changed.
+| Question                         | Answer                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------- |
+| **Identify new products**        | Compare today's CSV with yesterday's by `Parent Item`: new SKUs are scraped and inserted; removed SKUs are marked inactive, never deleted |
+| **Scrape**                       | Every SKU once a day, honoring `Crawl-delay: 10` (`CONCURRENCY=1 DELAY_MS=10000`, ~2 h, fine for an unattended job). The run state is keyed by date, so a re-run the same day resumes instead of duplicating |
+| **Detect changes**               | SHA-256 of the normalized record (sorted keys, without `scraped_at` and `extraction_time_ms`). Same hash: nothing to write. Different: compare fields to classify the change (base price, variant price, variant added/removed, customization added/removed/re-priced, out of stock, gone) |
+| **Store history**                | SCD Type 2 in PostgreSQL: a change closes the current row (`valid_to`, `is_current = false`) and inserts a new one. Only changes are stored, instead of ~280,000 near-identical rows a day |
+| **Flag changes**                 | One daily summary (Slack or email): new products, price changes (old → new, %; moves above 10% flagged for review), variants added or removed, products out of stock or gone |
+| **Flag failures**                | Exit code 1, coverage drop, runtime above twice the usual, `site data changed in …`, repeated 406 (egress IP blocked or not in the US). Out-of-stock and not-found count as status changes, not failures |
 
-### 4. Flagging changes and failures
+Tables:
 
-One **daily summary** goes to Slack or email, linking to the run report:
-
-- **Changes:** new products, price changes (old → new price, % change, URL;
-  moves above 10% are flagged for review), variants added or removed, products
-  out of stock or gone.
-- **Failures:**
-  - the run exits with code 1 (nothing extracted, or more than 10% failed);
-  - coverage drops (share of the CSV scraped);
-  - runtime exceeds twice the usual;
-  - zod reports `site data changed in …`, meaning the site's JSON changed and
-    the parser needs maintenance;
-  - repeated HTTP 406, meaning the egress IP is blocked or not in the US.
-
-### 5. Scheduling
-
-Same setup as [Running it in production](#running-it-in-production), triggered
-daily by a scheduler (cron, Cloud Scheduler or EventBridge). The history goes to
-managed PostgreSQL.
+| Table                  | Columns                                                                     |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `products`             | `sku` PK, name, brand, category, active, first_seen, last_seen              |
+| `product_versions`     | sku, content_hash, data JSONB, valid_from, valid_to, is_current             |
+| `variant_prices`       | variant_sku, product_sku, options JSONB, final_price, regular_price, valid_from, valid_to, is_current |
+| `customization_prices` | product_sku, category, option_name, price_modifier, valid_from, valid_to, is_current |
+| `runs`                 | run_id, started_at, finished_at, ok, failed, requests, status               |
