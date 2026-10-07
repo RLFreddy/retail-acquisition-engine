@@ -36,8 +36,8 @@ export class BlockedError extends Error {
   }
 }
 
-// Returns null on 404 (product gone).
-export async function fetchHtml(url: string): Promise<string | null> {
+// GET with retries; returns the body as text, or null on 404.
+export async function fetchText(url: string): Promise<string | null> {
   for (let attempt = 0; ; attempt++) {
     requestCount++;
     try {

@@ -10,7 +10,7 @@ import { after, test } from "node:test";
 process.env.OUTPUT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "rae-http-"));
 process.env.RETRIES = "2";
 process.env.RETRY_DELAY_MS = "1";
-const { BlockedError, fetchHtml } = await import("../src/lib/http.js");
+const { BlockedError, fetchText } = await import("../src/lib/http.js");
 
 const hits: Record<string, number> = {};
 const server = http.createServer((req, res) => {
@@ -26,25 +26,25 @@ const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 after(() => server.close());
 
 test("returns the HTML on 200", async () => {
-  assert.equal(await fetchHtml(`${base}/ok`), "<html>/ok</html>");
+  assert.equal(await fetchText(`${base}/ok`), "<html>/ok</html>");
 });
 
 test("returns null on 404 without retrying", async () => {
-  assert.equal(await fetchHtml(`${base}/missing`), null);
+  assert.equal(await fetchText(`${base}/missing`), null);
   assert.equal(hits["/missing"], 1);
 });
 
 test("retries transient errors until it succeeds", async () => {
-  assert.equal(await fetchHtml(`${base}/flaky`), "<html>/flaky</html>");
+  assert.equal(await fetchText(`${base}/flaky`), "<html>/flaky</html>");
   assert.equal(hits["/flaky"], 3);
 });
 
 test("throws BlockedError when 406 survives every retry", async () => {
-  await assert.rejects(fetchHtml(`${base}/blocked`), BlockedError);
+  await assert.rejects(fetchText(`${base}/blocked`), BlockedError);
   assert.equal(hits["/blocked"], 3); // 1 attempt + RETRIES
 });
 
 test("does not retry other client errors", async () => {
-  await assert.rejects(fetchHtml(`${base}/bad`));
+  await assert.rejects(fetchText(`${base}/bad`));
   assert.equal(hits["/bad"], 1);
 });

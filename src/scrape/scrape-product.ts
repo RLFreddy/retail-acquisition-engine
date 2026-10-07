@@ -1,6 +1,7 @@
 import { BASE_URL } from "../config.js";
-import { fetchHtml } from "../lib/http.js";
+import { fetchText } from "../lib/http.js";
 import { roundMs } from "../lib/time.js";
+import { parseGallery } from "../extract/media.js";
 import { parseProduct } from "../extract/parse-product.js";
 import type { Product, SourceProduct } from "../types.js";
 
@@ -9,14 +10,21 @@ import type { Product, SourceProduct } from "../types.js";
 export const buildProductUrl = (id: string): string =>
   BASE_URL + id.trim().toLowerCase().replace(/\./g, "dot").replace(/\s+/g, "-");
 
+// The page loads its photo gallery from a second, small JSON:
+// "PRO S4 STS" → https://www.2ndswing.com/gallery/PRO%20S4%20STS.json
+const buildGalleryUrl = (id: string): string => `${BASE_URL}gallery/${encodeURIComponent(id.trim())}.json`;
+
 export async function scrapeProduct(source: SourceProduct): Promise<Product> {
   const start = performance.now();
   const url = buildProductUrl(source.id);
-  const html = await fetchHtml(url);
+  const html = await fetchText(url);
   if (!html) throw new Error("product page not found (404)");
+  const product = parseProduct(source, html);
+  const gallery = await fetchText(buildGalleryUrl(source.id)); // null (404) = no gallery
   return {
-    ...parseProduct(source, html),
-    extraction_time_ms: roundMs(performance.now() - start),
+    ...product,
+    media: [...new Set([...product.media, ...(gallery ? parseGallery(gallery) : [])])],
     scraped_at: new Date().toISOString(),
+    extraction_time_ms: roundMs(performance.now() - start),
   };
 }

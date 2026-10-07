@@ -60,6 +60,9 @@ export const ProviderSchema = z.object({
   }),
 });
 
+// /gallery/<SKU>.json, which the page loads for its photo gallery.
+export const GallerySchema = z.object({ imageNames: z.array(z.string()) });
+
 export type SpConfig = z.infer<typeof SpConfigSchema>;
 export type IronsetOptions = z.infer<typeof IronsetOptionsSchema>;
 export type ProviderItem = z.infer<typeof ProviderSchema>["data"]["items"][string];

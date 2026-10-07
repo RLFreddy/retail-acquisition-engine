@@ -29,24 +29,29 @@ export interface Customization {
   final_price: number;
 }
 
+// Fields grouped by topic: identity, price, content, media, configuration.
 export interface Product {
   id: string;
-  name: string;
+  title: string; // name on the site
+  name: string; // name in the CSV
   brand: string;
   category: string;
   model: string;
   url: string;
-  title: string;
   base_price: number;
-  pricing_unit: "per_item" | "per_club"; // iron sets are priced per club
   price_range: { min: number; max: number };
+  pricing_unit: "per_item" | "per_club"; // iron sets are priced per club
   included_clubs: string[]; // iron sets only
-  media: string[];
+  default_set_price: number | null; // iron sets only: base_price × included clubs
+  description: string; // one paragraph per line
+  specs: Record<string, string>[]; // one row of the Specs table per entry
+  media: string[]; // image URLs
+  videos: string[]; // YouTube URLs
   attributes: Attribute[];
   variants: Variant[];
   customizations: Customization[];
-  extraction_time_ms: number;
   scraped_at: string; // ISO 8601, UTC
+  extraction_time_ms: number;
 }
 
 export interface Failure {

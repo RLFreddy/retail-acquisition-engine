@@ -16,7 +16,7 @@ export const RETRIES = readIntEnv("RETRIES", 4);
 export const MAX_ATTEMPTS = readIntEnv("MAX_ATTEMPTS", 5); // failed runs before a product is abandoned
 export const MAX_FAILURE_RATE = Number(process.env.MAX_FAILURE_RATE || 0.1); // above this the run exits with code 1
 export const RETRY_DELAY_MS = readIntEnv("RETRY_DELAY_MS", 5_000); // doubled on each retry
-export const TIMEOUT_MS = readIntEnv("TIMEOUT_MS", 20_000);
+export const TIMEOUT_MS = readIntEnv("TIMEOUT_MS", 60_000); // the largest page (11.9 MB) takes ~20 s
 
 export const USER_AGENT =
   process.env.USER_AGENT ||

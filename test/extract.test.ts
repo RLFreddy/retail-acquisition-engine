@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { parseGallery } from "../src/extract/media.js";
 import { parseProduct } from "../src/extract/parse-product.js";
 import { buildProductUrl } from "../src/scrape/scrape-product.js";
 
@@ -10,11 +11,18 @@ const option = (name: string, amount: number) => ({ name, prices: { finalPrice: 
 
 // Minimal page shaped like the live site: attributes out of position order,
 // one unpriced variant, option groups out of page order, an empty stub block.
-const page = ({ sku = "S3 PUT", available = true } = {}) => `
+const page = ({ sku = "S3 PUT", available = true, optionsJson = true, ironset = false } = {}) => `
+<link rel="canonical" href="https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put" />
 <label class="label" for="select_10"><span>Grips</span></label>
-<select name="options[10]"><option value="">--</option><option value="102">B</option><option value="101">A</option></select>
+<select name="options[10]"><option value="">--</option><option value="102" price="29.99">B +
+  $29.99</option><option value="101" price="0">A </option></select>
 <label class="label" for="select_20"><span>Lie Angle</span></label>
-<select name="options[20]"><option value="201">Standard</option></select>
+<select name="options[20]"><option value="201" price="0">Standard</option></select>
+<div id="details"><div class="row"><p><p><strong>Who’s It For?</strong></p><p>Golfers who <span>putt</span>.<br>Often.</p>
+<ul><li>Forged</li></ul></div></div>
+<div id="specs"><table><tr><td>Club</td><td>Loft</td></tr><tr><td>4</td><td>24°</td></tr><tr><td>5</td><td>27°</td></tr></table></div>
+<div id="video"><div class="video-container youtube-player" data-id="abc123">
+<noscript><iframe src="//www.youtube.com/embed/abc123"></iframe></noscript></div></div>
 ${init({
   "#product_addtocart_form": {
     configurable: {
@@ -39,7 +47,7 @@ ${init({
         items: {
           "9": {
             name: "Mizuno S3 Putter",
-            url: "https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put",
+            url: "https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter", // the model listing
             is_available: available,
             images: [
               { url: "https://www.2ndswing.com/images/standard/S3 PUT.jpg?width=250&height=250" },
@@ -55,18 +63,20 @@ ${init({
     },
   },
 })}
-${init({
+${optionsJson ? init({
   "#product_addtocart_form": {
     ironsetOptions: {
       basePrice: 400,
+      isIronsetProduct: ironset ? 1 : 0,
+      clubInformation: { included_clubs: ["7 Iron", "8 Iron", "9 Iron"] },
       optionConfig: { "20": { "201": option("Standard", 0) }, "10": { "101": option("A ", 0), "102": option("B", 29.99) } },
     },
   },
-})}`;
+}) : ""}`;
 
 const product = parseProduct(source, page());
 
-test("identity comes from the provider JSON", () => {
+test("title from the provider JSON, URL from the canonical link (not the model listing)", () => {
   assert.equal(product.title, "Mizuno S3 Putter");
   assert.equal(product.url, "https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put");
 });
@@ -86,15 +96,34 @@ test("only priced variants, modifier = price − base", () => {
   assert.deepEqual(product.price_range, { min: 450, max: 450 });
 });
 
+const customizationRows = (p: typeof product) =>
+  p.customizations.map((c) => [c.category, c.option_name, c.price_modifier, c.final_price]);
+
 test("customizations: add-on pricing, page order and labels", () => {
-  assert.deepEqual(
-    product.customizations.map((c) => [c.category, c.option_name, c.price_modifier, c.final_price]),
-    [
-      ["Grips", "B", 29.99, 429.99],
-      ["Grips", "A", 0, 400],
-      ["Lie Angle", "Standard", 0, 400],
-    ],
-  );
+  assert.deepEqual(customizationRows(product), [
+    ["Grips", "B", 29.99, 429.99],
+    ["Grips", "A", 0, 400],
+    ["Lie Angle", "Standard", 0, 400],
+  ]);
+});
+
+test("customizations come from the HTML select when the page has no options JSON", () => {
+  assert.deepEqual(customizationRows(parseProduct(source, page({ optionsJson: false }))), customizationRows(product));
+});
+
+test("iron sets: default set price = per-club price × included clubs", () => {
+  const ironset = parseProduct(source, page({ ironset: true }));
+  assert.equal(ironset.pricing_unit, "per_club");
+  assert.equal(ironset.default_set_price, 1200);
+  assert.equal(product.default_set_price, null);
+});
+
+test("description and specs from the page tabs", () => {
+  assert.equal(product.description, "Who’s It For?\nGolfers who putt.\nOften.\nForged");
+  assert.deepEqual(product.specs, [
+    { Club: "4", Loft: "24°" },
+    { Club: "5", Loft: "27°" },
+  ]);
 });
 
 test("media from the provider JSON: canonical, encoded, deduped", () => {
@@ -102,6 +131,18 @@ test("media from the provider JSON: canonical, encoded, deduped", () => {
     "https://www.2ndswing.com/images/standard/S3%20PUT.jpg",
     "https://www.2ndswing.com/images/representative/S3%20PUT.jpg",
   ]);
+});
+
+test("gallery: one image per name, encoded like the site does", () => {
+  assert.deepEqual(parseGallery('{"imageNames":["S3 PUT.jpg","S3 PUT_2.jpg"]}'), [
+    "https://www.2ndswing.com/images/representative/S3%20PUT.jpg",
+    "https://www.2ndswing.com/images/representative/S3%20PUT_2.jpg",
+  ]);
+  assert.throws(() => parseGallery("<html>blocked</html>"), /site data changed in gallery/);
+});
+
+test("videos from the Videos tab", () => {
+  assert.deepEqual(product.videos, ["https://www.youtube.com/watch?v=abc123"]);
 });
 
 test("rejects a page for another SKU", () => {
