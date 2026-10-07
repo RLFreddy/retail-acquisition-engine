@@ -1,4 +1,4 @@
-import { CONCURRENCY } from "../config.js";
+import { CONCURRENCY, MAX_FAILURE_RATE } from "../config.js";
 import { getRequestCount } from "../lib/http.js";
 import { roundMs } from "../lib/time.js";
 import type { Failure, Product } from "../types.js";
@@ -6,6 +6,11 @@ import type { Failure, Product } from "../types.js";
 // Nearest-rank percentile over an ascending-sorted list, p in 0..1.
 const percentile = (sorted: number[], p: number): number =>
   roundMs(sorted[Math.max(0, Math.ceil(p * sorted.length) - 1)] ?? 0);
+
+// A run fails when nothing was extracted or too many products failed
+// (blocked IP, site layout changed…), so schedulers and CI notice it.
+export const passesQualityCheck = (ok: number, failed: number, maxFailureRate = MAX_FAILURE_RATE): boolean =>
+  ok > 0 && failed / (ok + failed) <= maxFailureRate;
 
 export function buildMetrics(products: Product[], failures: Failure[], totalMs: number) {
   const total = products.length + failures.length;

@@ -5,7 +5,7 @@ import { log, LOG_FILE } from "./lib/log.js";
 import { writeOutputs } from "./lib/output.js";
 import { closeState, DB_PATH, initState } from "./lib/state.js";
 import { formatDuration } from "./lib/time.js";
-import { buildMetrics } from "./scrape/metrics.js";
+import { buildMetrics, passesQualityCheck } from "./scrape/metrics.js";
 import { scrapeAll } from "./scrape/scrape-all.js";
 
 // Ctrl+C: every finished product is already saved, so just close the state
@@ -44,6 +44,15 @@ async function main(): Promise<void> {
       `${products.length} succeeded, ${failures.length} failed (${getRequestCount()} requests, ${formatDuration(totalMs)}).`,
   );
   log.info({ data: { files: [...files, LOG_FILE] } }, "Output saved:");
+
+  if (!passesQualityCheck(products.length, failures.length)) {
+    const total = products.length + failures.length;
+    log.error(
+      { event: "quality_check_failed", data: { ok: products.length, failed: failures.length } },
+      `Run failed the quality check: ${failures.length} of ${total} products failed.`,
+    );
+    process.exitCode = 1;
+  }
 }
 
 main()

@@ -46,6 +46,7 @@ export interface Product {
   variants: Variant[];
   customizations: Customization[];
   extraction_time_ms: number;
+  scraped_at: string; // ISO 8601, UTC
 }
 
 export interface Failure {

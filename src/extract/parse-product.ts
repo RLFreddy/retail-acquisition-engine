@@ -6,7 +6,7 @@ import { readProductConfigs } from "./magento.js";
 import { parseMedia } from "./media.js";
 import { parseVariants, sortAttributes, toOutputAttributes } from "./variants.js";
 
-export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms"> {
+export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms" | "scraped_at"> {
   const $ = cheerio.load(html);
   const { product, spConfig, options } = readProductConfigs($);
 

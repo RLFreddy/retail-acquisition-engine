@@ -17,5 +17,6 @@ export async function scrapeProduct(source: SourceProduct): Promise<Product> {
   return {
     ...parseProduct(source, html),
     extraction_time_ms: roundMs(performance.now() - start),
+    scraped_at: new Date().toISOString(),
   };
 }

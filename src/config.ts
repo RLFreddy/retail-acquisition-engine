@@ -14,6 +14,7 @@ export const CONCURRENCY = Math.max(1, readIntEnv("CONCURRENCY", 4));
 export const DELAY_MS = readIntEnv("DELAY_MS", 500); // at most one product starts every DELAY_MS
 export const RETRIES = readIntEnv("RETRIES", 4);
 export const MAX_ATTEMPTS = readIntEnv("MAX_ATTEMPTS", 5); // failed runs before a product is abandoned
+export const MAX_FAILURE_RATE = Number(process.env.MAX_FAILURE_RATE || 0.1); // above this the run exits with code 1
 export const RETRY_DELAY_MS = readIntEnv("RETRY_DELAY_MS", 5_000); // doubled on each retry
 export const TIMEOUT_MS = readIntEnv("TIMEOUT_MS", 20_000);
 
