@@ -24,7 +24,7 @@ function h(tag, attrs, ...kids) {
 
 async function getJson(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`${url} respondió ${res.status}`);
+  if (!res.ok) throw new Error(`${url} answered ${res.status}`);
   return res.json();
 }
 
@@ -36,20 +36,20 @@ let wanted = null; // the last product picked; a slower earlier load must not re
 
 function renderRun(run, failures) {
   if (run) {
-    const date = new Intl.DateTimeFormat("es", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(new Date(run.started_at));
+    const date = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(new Date(run.started_at));
     const seconds = Math.round(run.total_ms / 1000);
-    byId("run").textContent = `Scraper de 2ndswing.com · corrida del ${date} UTC`;
+    byId("run").textContent = `2ndswing.com scraper · run of ${date} UTC`;
     byId("stats").replaceChildren(...[
-      `${int(run.ok)} de ${int(run.products)} productos`,
-      `${int(run.variants)} variantes`,
-      `${int(run.customizations)} personalizaciones`,
-      `${int(run.http_requests)} peticiones`,
+      `${int(run.ok)} of ${int(run.products)} products`,
+      `${int(run.variants)} variants`,
+      `${int(run.customizations)} customizations`,
+      `${int(run.http_requests)} requests`,
       `${Math.floor(seconds / 60)} min ${seconds % 60} s`,
     ].map((text) => h("span", { class: "stat" }, text)));
   }
   if (failures.length) {
     byId("failures").replaceChildren(
-      h("summary", {}, `${failures.length} ${failures.length === 1 ? "producto" : "productos"} sin datos`),
+      h("summary", {}, `${failures.length} ${failures.length === 1 ? "product" : "products"} without data`),
       h("ul", {}, failures.map((f) => h("li", {}, h("b", {}, f.id), `: ${f.reason}`))),
     );
     byId("failures").hidden = false;
@@ -63,7 +63,7 @@ function renderList(products) {
     const item = h("button", { class: "item", type: "button", onclick: () => select(p.id) },
       h("span", { class: "item-title" }, p.title),
       h("span", { class: "item-meta" }, `${p.category} · ${p.brand} · ${p.id}`),
-      h("span", { class: "item-meta" }, `${int(p.variants)} variantes · ${int(p.customizations)} personalizaciones · ${p.media} fotos`));
+      h("span", { class: "item-meta" }, `${int(p.variants)} variants · ${int(p.customizations)} customizations · ${p.media} photos`));
     item.dataset.text = `${p.id} ${p.title} ${p.brand} ${p.category}`.toLowerCase();
     item.dataset.category = p.category;
     items.set(p.id, item);
@@ -79,19 +79,19 @@ function filterList() {
     item.hidden = Boolean((q && !item.dataset.text.includes(q)) || (cat && item.dataset.category !== cat));
     if (!item.hidden) shown++;
   }
-  byId("list-count").textContent = `${int(shown)} de ${int(items.size)} productos`;
+  byId("list-count").textContent = `${int(shown)} of ${int(items.size)} products`;
 }
 
 async function select(id) {
   wanted = id;
   for (const [key, item] of items) item.setAttribute("aria-current", String(key === id));
   history.replaceState(null, "", `#${slug(id)}`);
-  if (!loaded.has(id)) byId("product").replaceChildren(h("p", { class: "empty" }, `Cargando ${id}…`));
+  if (!loaded.has(id)) byId("product").replaceChildren(h("p", { class: "empty" }, `Loading ${id}…`));
   try {
     if (!loaded.has(id)) loaded.set(id, prepare(await getJson(`api/products/${encodeURIComponent(id)}`)));
     if (wanted === id) show(loaded.get(id));
   } catch (err) {
-    byId("product").replaceChildren(h("p", { class: "empty" }, `No se pudo cargar ${id}: ${err.message}`));
+    byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load ${id}: ${err.message}`));
   }
 }
 
@@ -149,8 +149,8 @@ function head(p) {
       h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.id}`),
       h("h2", {}, p.title)),
     h("div", { class: "p-actions" },
-      h("a", { class: "btn-real", href: p.url, target: "_blank", rel: "noopener" }, "Abrir la ficha real ↗"),
-      h("a", { class: "mono", href: `api/products/${encodeURIComponent(p.id)}`, target: "_blank", rel: "noopener" }, "Ver el JSON completo ↗"),
+      h("a", { class: "btn-real", href: p.url, target: "_blank", rel: "noopener" }, "Open the live page ↗"),
+      h("a", { class: "mono", href: `api/products/${encodeURIComponent(p.id)}`, target: "_blank", rel: "noopener" }, "View the full JSON ↗"),
       h("span", { class: "mono muted" }, p.url)));
 }
 
@@ -178,19 +178,19 @@ function buyBox(p, groups) {
       g.options.map((o, oi) => h("option", { value: oi }, o.price_modifier > 0 ? `${o.option_name} + ${money(o.price_modifier)}` : o.option_name)))));
 
   return h("section", { class: "panel" },
-    h("p", { class: "label" }, "Compra · como en la ficha"),
+    h("p", { class: "label" }, "Buy box · as on the live page"),
     h("div", {}, h("div", { class: "price" }, ui.priceLabel, ui.priceValue, ui.priceUnit), ui.priceDetail),
     h("div", { class: "fields" },
       p.attributes.map((a, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, a.label), ui.selects[k])),
       clubs ? clubsField(clubs) : null),
     ui.count,
-    h("p", { class: "source" }, "Variantes: JSON spConfig de la página (attributes, index, optionPrices, sku)"),
+    h("p", { class: "source" }, "Variants: the page's spConfig JSON (attributes, index, optionPrices, sku)"),
     h("details", { class: "customize", open: true },
       h("summary", {}, "Customize"),
       h("div", { class: "cust-body" },
-        h("p", { class: "count" }, "En la ficha aparecen al pulsar Customize; con Standard se ocultan y se reinician."),
-        customize.some(Boolean) ? customize : h("p", { class: "empty" }, "Esta ficha no ofrece personalizaciones."),
-        h("p", { class: "source" }, "Personalizaciones: JSON ironsetOptions.optionConfig o, si la página no lo trae, el <select> del HTML"))),
+        h("p", { class: "count" }, "On the live page these show after clicking Customize; Standard hides and resets them."),
+        customize.some(Boolean) ? customize : h("p", { class: "empty" }, "This product has no customizations."),
+        h("p", { class: "source" }, "Customizations: the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>"))),
     ui.total);
 }
 
@@ -211,7 +211,7 @@ const TABS = [
   ["details", "Description"],
   ["specs", "Specs"],
   ["media", "Media"],
-  ["variants", "Variantes"],
+  ["variants", "Variants"],
   ["json", "JSON"],
 ];
 
@@ -224,8 +224,8 @@ function tabsPanel(p) {
   }
 
   panels.details.append(
-    p.description ? describe(p.description) : h("p", { class: "empty" }, "Sin descripción."),
-    h("p", { class: "source" }, "Pestaña Description de la ficha (#details), un párrafo por línea"));
+    p.description ? describe(p.description) : h("p", { class: "empty" }, "No description."),
+    h("p", { class: "source" }, "The page's Description tab (#details), one paragraph per line"));
 
   const cols = [...new Set(p.specs.flatMap((row) => Object.keys(row)))];
   panels.specs.append(
@@ -233,34 +233,34 @@ function tabsPanel(p) {
       ? h("div", { class: "table-wrap" }, h("table", {},
           h("thead", {}, h("tr", {}, cols.map((c) => h("th", {}, c)))),
           h("tbody", {}, p.specs.map((row) => h("tr", {}, cols.map((c) => h("td", {}, row[c] ?? "")))))))
-      : h("p", { class: "empty" }, "Esta ficha no tiene tabla de specs."),
-    h("p", { class: "source" }, "Pestaña Specs de la ficha (#specs table)"));
+      : h("p", { class: "empty" }, "This product has no specs table."),
+    h("p", { class: "source" }, "The page's Specs tab (#specs table)"));
 
   const figure = (src, href, alt) => h("figure", {},
     h("a", { href, target: "_blank", rel: "noopener" }, h("img", { src, alt, loading: "lazy" })),
     h("figcaption", {}, h("a", { class: "mono", href, target: "_blank", rel: "noopener" }, href)));
   panels.media.append(
-    h("p", { class: "label" }, `Fotos (${p.media.length})`),
+    h("p", { class: "label" }, `Photos (${p.media.length})`),
     h("div", { class: "thumbs" }, p.media.map((url) => figure(url, url, p.title))),
     h("p", { class: "label" }, `Videos (${p.videos.length})`),
     p.videos.length
       ? h("div", { class: "thumbs" }, p.videos.map((url) =>
-          figure(`https://i.ytimg.com/vi/${new URL(url).searchParams.get("v")}/mqdefault.jpg`, url, "Video de YouTube")))
-      : h("p", { class: "empty" }, "Sin videos."),
-    h("p", { class: "source" }, "Fotos: JSON del producto y la galería /gallery/<SKU>.json · Videos: pestaña Videos (#video)"));
+          figure(`https://i.ytimg.com/vi/${new URL(url).searchParams.get("v")}/mqdefault.jpg`, url, "YouTube video")))
+      : h("p", { class: "empty" }, "No videos."),
+    h("p", { class: "source" }, "Photos: the product JSON and the /gallery/<SKU>.json gallery · Videos: the Videos tab (#video)"));
 
   ui.variantsInfo = h("p", { class: "count" });
   ui.variantsBody = h("tbody", {});
   panels.variants.append(
     ui.variantsInfo,
     h("div", { class: "table-wrap" }, h("table", {},
-      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.attributes.map((a) => h("th", {}, a.label)), h("th", {}, "Precio"), h("th", {}, "vs. base"))),
+      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.attributes.map((a) => h("th", {}, a.label)), h("th", {}, "Price"), h("th", {}, "vs. base"))),
       ui.variantsBody)));
 
   ui.json = h("pre", { class: "json" });
-  panels.json.append(h("p", { class: "count" }, "El registro de output.json, con las variantes recortadas a las 5 primeras. \"Ver el JSON completo\", arriba, lo abre entero."), ui.json);
+  panels.json.append(h("p", { class: "count" }, "The output.json record, with variants cut to the first 5. \"View the full JSON\", above, opens all of it."), ui.json);
 
-  return h("section", { class: "panel" }, h("p", { class: "label" }, "Pestañas de la ficha y datos del scraper"), tablist, Object.values(panels));
+  return h("section", { class: "panel" }, h("p", { class: "label" }, "Page tabs and scraper data"), tablist, Object.values(panels));
 }
 
 function describe(text) {
@@ -279,7 +279,7 @@ function selectTab(key) {
   }
   if (key === "json" && !ui.json.textContent) {
     const { vs, variants, ...record } = state.product;
-    const shown = variants.length > 5 ? [...variants.slice(0, 5), `… ${int(variants.length - 5)} variantes más`] : variants;
+    const shown = variants.length > 5 ? [...variants.slice(0, 5), `… ${int(variants.length - 5)} more variants`] : variants;
     ui.json.textContent = JSON.stringify({ ...record, variants: shown }, null, 2);
   }
 }
@@ -299,31 +299,31 @@ function update() {
   const chosen = state.sel.every((s) => s != null) ? matching[0] : null;
   const unit = chosen ? chosen[1] : p.base_price;
   const possible = p.attributes.reduce((acc, a) => acc * a.options.length, 1);
-  ui.priceLabel.textContent = chosen ? "Precio" : "Starting At";
+  ui.priceLabel.textContent = chosen ? "Price" : "Starting At";
   ui.priceValue.textContent = money(unit);
   ui.priceUnit.hidden = p.pricing_unit !== "per_club";
   ui.priceDetail.textContent = chosen
-    ? `SKU ${chosen[0]} · +${money(round(chosen[1] - p.base_price))} sobre el precio base`
-    : `${int(p.vs.length)} variantes, de ${money(p.price_range.min)} a ${money(p.price_range.max)}`;
-  ui.count.textContent = `${int(p.vs.length)} combinaciones válidas de ${int(possible)} posibles · ${int(matching.length)} coinciden con lo elegido`;
+    ? `SKU ${chosen[0]} · +${money(round(chosen[1] - p.base_price))} over the base price`
+    : `${int(p.vs.length)} variants, from ${money(p.price_range.min)} to ${money(p.price_range.max)}`;
+  ui.count.textContent = `${int(p.vs.length)} valid combinations of ${int(possible)} possible · ${int(matching.length)} match the choices`;
 
   const groups = groupsOf(p);
   const mods = round(groups.reduce((sum, g, gi) => sum + (!g.clubs && state.custom[gi] != null ? g.options[state.custom[gi]].price_modifier : 0), 0));
   if (p.pricing_unit === "per_club") {
     const each = round(unit + mods);
     ui.total.replaceChildren(
-      h("span", {}, "Por palo: ", h("b", {}, money(unit)), " + ", h("b", {}, money(mods)), " en personalizaciones = ", h("b", {}, money(each))),
-      h("span", {}, "Palos marcados: ", h("b", {}, state.clubs.size)),
-      h("span", { class: "big" }, `Total del set: ${money(round(each * state.clubs.size))}`),
-      h("span", { class: "muted" }, `Como el sitio: (precio por palo + personalizaciones) × palos. default_set_price del scraper: ${money(p.default_set_price ?? 0)}`));
+      h("span", {}, "Per club: ", h("b", {}, money(unit)), " + ", h("b", {}, money(mods)), " in customizations = ", h("b", {}, money(each))),
+      h("span", {}, "Clubs checked: ", h("b", {}, state.clubs.size)),
+      h("span", { class: "big" }, `Set total: ${money(round(each * state.clubs.size))}`),
+      h("span", { class: "muted" }, `As on the site: (per-club price + customizations) × clubs. The scraper's default_set_price: ${money(p.default_set_price ?? 0)}`));
   } else {
     ui.total.replaceChildren(
-      h("span", {}, "Precio ", h("b", {}, money(unit)), " + personalizaciones ", h("b", {}, money(mods))),
+      h("span", {}, "Price ", h("b", {}, money(unit)), " + customizations ", h("b", {}, money(mods))),
       h("span", { class: "big" }, `Total: ${money(round(unit + mods))}`));
   }
 
   const shown = matching.slice(0, 200);
-  ui.variantsInfo.textContent = `Mostrando ${int(shown.length)} de ${int(matching.length)} variantes que coinciden con lo elegido (${int(p.vs.length)} en total).`;
+  ui.variantsInfo.textContent = `Showing ${int(shown.length)} of ${int(matching.length)} variants that match the choices (${int(p.vs.length)} in total).`;
   ui.variantsBody.replaceChildren(...shown.map((v) => h("tr", {},
     h("td", { class: "sku" }, v[0]),
     p.attributes.map((a, k) => h("td", {}, a.options[v[OPT + k]])),
@@ -344,6 +344,6 @@ byId("cat").addEventListener("change", filterList);
     const fromHash = products.find((p) => `#${slug(p.id)}` === location.hash);
     if (products.length) await select((fromHash ?? products[0]).id);
   } catch (err) {
-    byId("product").replaceChildren(h("p", { class: "empty" }, `No se pudieron cargar los datos: ${err.message}`));
+    byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load the data: ${err.message}`));
   }
 })();
