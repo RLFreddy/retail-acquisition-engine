@@ -2,6 +2,7 @@ node_modules/
 dist/
 data/
 data_docker/
+analysis/
 .env
 *.db
 *.db-wal
