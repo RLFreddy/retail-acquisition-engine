@@ -1,5 +1,7 @@
 {
   "metrics": {
+    "started_at": "2026-10-07T04:04:47.296Z",
+    "finished_at": "2026-10-07T04:12:29.773Z",
     "total_ms": 482735.1,
     "concurrency": 4,
     "products": 700,

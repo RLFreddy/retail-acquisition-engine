@@ -52,13 +52,16 @@ make docker-run LIMIT=10
 git-ignored because `output.json` is ~110 MB. The results of the run above
 are in [`results/`](results/), so nothing has to be run to see them:
 
-| File                          | Content                                                        |
-| ----------------------------- | -------------------------------------------------------------- |
-| `sample-output.json`          | 5 products of different types, same format as the full output |
-| `sample-variants.csv`         | Their variants                                                 |
-| `sample-customizations.csv`   | Their customization options                                    |
-| `run-report.json`             | Metrics and failures of the full run                           |
-| `full-results.zip` (4.4 MB)   | The complete extraction: all files above for every product, plus the log |
+```
+results/
+├── run-report.json    metrics of the full run: dates, time, success rate, failures
+├── full-results.zip   the complete extraction (4.4 MB): output.json, variants.csv,
+│                      customizations.csv, run-report.json and run.log
+└── sample/            5 products of different types, same files and format
+    ├── output.json
+    ├── variants.csv
+    └── customizations.csv
+```
 
 **Configuration** is optional: copy `.env.example` to `.env`. It covers the
 input CSV, output folder, concurrency, delays, retries and thresholds. One
