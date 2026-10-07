@@ -146,10 +146,6 @@ function optionsFor(k) {
   return state.product.options[k].values.map((value, i) => [value, i]).filter(([, i]) => seen.has(i));
 }
 
-// "Irons In Set" holds the clubs of a set: checkboxes on the site, not a dropdown.
-const groupsOf = (p) =>
-  p.customizations.map((c) => ({ ...c, clubs: p.pricing_unit === "per_club" && /in set/i.test(c.name) }));
-
 // choices: a variant's options to pick ({ Dexterity: "Right Handed", … }), or none.
 function show(p, choices) {
   state.product = p;
@@ -159,7 +155,7 @@ function show(p, choices) {
   });
   state.custom = {};
   state.clubs = new Set(p.included_clubs);
-  byId("product").replaceChildren(head(p), h("div", { class: "cols" }, buyBox(p, groupsOf(p)), tabsPanel(p)));
+  byId("product").replaceChildren(head(p), h("div", { class: "cols" }, buyBox(p), tabsPanel(p)));
   update();
   selectTab(state.tab);
 }
@@ -175,7 +171,7 @@ function head(p) {
       h("span", { class: "mono muted" }, p.url)));
 }
 
-function buyBox(p, groups) {
+function buyBox(p) {
   ui.priceLabel = h("span", { class: "price-label" });
   ui.priceValue = h("span", { class: "price-value" });
   ui.priceUnit = h("span", { class: "price-unit" }, "Per Club");
@@ -191,41 +187,43 @@ function buyBox(p, groups) {
     },
   }));
 
-  const clubs = groups.find((g) => g.clubs);
-  const customize = groups.map((g, gi) => g.clubs ? null : h("div", { class: "field" },
-    h("label", { for: `cust-${gi}` }, g.name),
-    h("select", { id: `cust-${gi}`, onchange: (e) => { state.custom[gi] = e.target.value === "" ? null : Number(e.target.value); update(); } },
+  const customize = p.customizations.map((c, ci) => h("div", { class: "field" },
+    h("label", { for: `cust-${ci}` }, c.required ? `${c.name} *` : c.name),
+    h("select", { id: `cust-${ci}`, onchange: (e) => { state.custom[ci] = e.target.value === "" ? null : Number(e.target.value); update(); } },
       h("option", { value: "" }, "-- Please Select --"),
-      g.options.map((o, oi) => h("option", { value: oi }, o.upcharge > 0 ? `${o.name} + ${money(o.upcharge)}` : o.name)))));
+      c.options.map((o, oi) => h("option", { value: oi }, o.upcharge > 0 ? `${o.name} + ${money(o.upcharge)}` : o.name)))));
 
   return h("section", { class: "panel" },
     h("p", { class: "label" }, "Buy box · as on the live page"),
     h("div", {}, h("div", { class: "price" }, ui.priceLabel, ui.priceValue, ui.priceUnit), ui.priceDetail),
     h("div", { class: "fields" },
       p.options.map((o, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, o.name), ui.selects[k])),
-      clubs ? clubsField(clubs) : null),
+      p.clubs.length ? clubsField(p) : null),
     ui.count,
     h("p", { class: "source" }, "options, variants ← the page's spConfig JSON (attributes, index, optionPrices, sku)"),
+    p.clubs.length ? h("p", { class: "source" }, "clubs, included_clubs ← the ironsetOptions JSON (Irons In Set)") : null,
     h("details", { class: "customize", open: true },
       h("summary", {}, "Customize"),
       h("div", { class: "cust-body" },
-        h("p", { class: "count" }, "On the live page these show after clicking Customize; Standard hides and resets them."),
-        customize.some(Boolean) ? customize : h("p", { class: "empty" }, "This product has no customizations."),
+        h("p", { class: "count" }, p.customizations.some((c) => c.required)
+          ? "The site keeps Customize on for this product: every dropdown (*) is required."
+          : "On the live page these show after clicking Customize; Standard hides and resets them."),
+        customize.length ? customize : h("p", { class: "empty" }, "This product has no customizations."),
         h("p", { class: "source" }, "customizations ← the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>"))),
     ui.total);
 }
 
 // Irons In Set: checkboxes under the dropdowns, outside Customize, as on the site.
-function clubsField(g) {
+function clubsField(p) {
   return h("div", { class: "field" },
-    h("span", {}, g.name),
-    h("div", { class: "clubs" }, g.options.map((o, oi) =>
-      h("label", { for: `club-${oi}` },
+    h("span", {}, "Irons In Set"),
+    h("div", { class: "clubs" }, p.clubs.map((club, i) =>
+      h("label", { for: `club-${i}` },
         h("input", {
-          type: "checkbox", id: `club-${oi}`, checked: state.clubs.has(o.name),
-          onchange: (e) => { e.target.checked ? state.clubs.add(o.name) : state.clubs.delete(o.name); update(); },
+          type: "checkbox", id: `club-${i}`, checked: state.clubs.has(club),
+          onchange: (e) => { e.target.checked ? state.clubs.add(club) : state.clubs.delete(club); update(); },
         }),
-        o.name))));
+        club))));
 }
 
 const TABS = [
@@ -329,8 +327,7 @@ function update() {
     : `${int(p.vs.length)} variants, from ${money(p.price_range.min)} to ${money(p.price_range.max)}`;
   ui.count.textContent = `${int(p.vs.length)} valid combinations of ${int(possible)} possible · ${int(matching.length)} match the choices`;
 
-  const groups = groupsOf(p);
-  const mods = round(groups.reduce((sum, g, gi) => sum + (!g.clubs && state.custom[gi] != null ? g.options[state.custom[gi]].upcharge : 0), 0));
+  const mods = round(p.customizations.reduce((sum, c, ci) => sum + (state.custom[ci] != null ? c.options[state.custom[ci]].upcharge : 0), 0));
   if (p.pricing_unit === "per_club") {
     const each = round(unit + mods);
     ui.total.replaceChildren(

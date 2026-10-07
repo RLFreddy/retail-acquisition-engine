@@ -12,6 +12,10 @@ import type { Product } from "../types.js";
 // Internal state, kept apart from the results.
 export const DB_PATH = path.join(OUTPUT_DIR, "state", "scraper.db");
 
+// Bump when the Product record changes: a state saved in an older format is
+// dropped instead of mixing old records into the output.
+const STATE_VERSION = 1;
+
 type ProductState = { status: "pending" | "done" | "failed"; attempts: number };
 
 let db: Database;
@@ -21,6 +25,10 @@ export function initState(dbPath: string = DB_PATH): void {
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   db = new Sqlite(dbPath);
   db.pragma("journal_mode = WAL");
+  if (db.pragma("user_version", { simple: true }) !== STATE_VERSION) {
+    db.exec("DROP TABLE IF EXISTS products");
+    db.pragma(`user_version = ${STATE_VERSION}`);
+  }
   db.exec(`CREATE TABLE IF NOT EXISTS products (
     id TEXT PRIMARY KEY,
     status TEXT NOT NULL DEFAULT 'pending',

@@ -1,23 +1,34 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
-import { parseGallery } from "../src/extract/media.js";
-import { parseProduct } from "../src/extract/parse-product.js";
-import { buildProductUrl } from "../src/scrape/scrape-product.js";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { after, test } from "node:test";
+
+// Config is read at import time, and scrape-product opens the run's log file:
+// point OUTPUT_DIR at a temp dir first, then import the modules.
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-extract-"));
+process.env.OUTPUT_DIR = tmp;
+const { mergeImages, parseGallery } = await import("../src/extract/media.js");
+const { parseProduct } = await import("../src/extract/parse-product.js");
+const { buildProductUrl } = await import("../src/scrape/scrape-product.js");
+after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 const source = { sku: "S3 PUT", name: "S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };
 const init = (json: object) => `<script type="text/x-magento-init">${JSON.stringify(json)}</script>`;
 const price = (amount: number) => ({ finalPrice: { amount }, oldPrice: { amount } });
-const option = (name: string, amount: number) => ({ name, prices: { finalPrice: { amount } } });
+const option = (name: string, amount: number, option_type = "select") => ({ name, option_type, prices: { finalPrice: { amount } } });
 
 // Minimal page shaped like the live site: attributes out of position order,
 // one unpriced variant, option groups out of page order, an empty stub block.
-const page = ({ sku = "S3 PUT", available = true, optionsJson = true, ironset = false } = {}) => `
+const page = ({ sku = "S3 PUT", available = true, optionsJson = true, ironset = false, forceRequire = false } = {}) => `
 <link rel="canonical" href="https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put" />
 <label class="label" for="select_10"><span>Grips</span></label>
 <select name="options[10]"><option value="">--</option><option value="102" price="29.99">B +
   $29.99</option><option value="101" price="0">A </option></select>
 <label class="label" for="select_20"><span>Lie Angle</span></label>
 <select name="options[20]"><option value="201" price="0">Standard</option></select>
+<label class="label" for="select_30"><span>Irons In Set</span></label>
+<input type="checkbox" name="options[30][]" value="301" price="0"><input type="checkbox" name="options[30][]" value="302" price="0">
 <div id="details"><div class="row"><p><p><strong>Who’s It For?</strong></p><p>Golfers who <span>putt</span>.<br>Often.</p>
 <ul><li>Forged</li></ul></div></div>
 <div id="specs"><table><tr><td>Club</td><td>Loft</td></tr><tr><td>4</td><td>24°</td></tr><tr><td>5</td><td>27°</td></tr></table></div>
@@ -68,8 +79,13 @@ ${optionsJson ? init({
     ironsetOptions: {
       basePrice: 400,
       isIronsetProduct: ironset ? 1 : 0,
+      forceRequireOptions: forceRequire,
       clubInformation: { included_clubs: ["7 Iron", "8 Iron", "9 Iron"] },
-      optionConfig: { "20": { "201": option("Standard", 0) }, "10": { "101": option("A ", 0), "102": option("B", 29.99) } },
+      optionConfig: {
+        "20": { "201": option("Standard", 0) },
+        "10": { "101": option("A ", 0, "grips"), "102": option("B", 29.99, "grips") },
+        "30": { "301": option("7 Iron", 0, "clubs"), "302": option("PW", 0, "clubs") },
+      },
     },
   },
 }) : ""}`;
@@ -101,9 +117,14 @@ test("only priced variants, upcharge = price − base price", () => {
 
 test("customizations: one per dropdown, labels, page order and upcharges", () => {
   assert.deepEqual(product.customizations, [
-    { name: "Grips", options: [{ name: "B", upcharge: 29.99 }, { name: "A", upcharge: 0 }] },
-    { name: "Lie Angle", options: [{ name: "Standard", upcharge: 0 }] },
+    { name: "Grips", required: false, options: [{ name: "B", upcharge: 29.99 }, { name: "A", upcharge: 0 }] },
+    { name: "Lie Angle", required: false, options: [{ name: "Standard", upcharge: 0 }] },
   ]);
+});
+
+test("customizations are required where the site forces them", () => {
+  const forced = parseProduct(source, page({ forceRequire: true }));
+  assert.deepEqual(forced.customizations.map((c) => c.required), [true, true]);
 });
 
 test("customizations come from the HTML select when the page has no options JSON", () => {
@@ -115,6 +136,12 @@ test("iron sets: default set price = per-club price × included clubs", () => {
   assert.equal(ironset.pricing_unit, "per_club");
   assert.equal(ironset.default_set_price, 1200);
   assert.equal(product.default_set_price, null);
+});
+
+test("iron sets: Irons In Set gives the clubs, not a customization", () => {
+  const ironset = parseProduct(source, page({ ironset: true }));
+  assert.deepEqual(ironset.clubs, ["7 Iron", "PW"]);
+  assert.deepEqual(ironset.customizations.map((c) => c.name), ["Grips", "Lie Angle"]);
 });
 
 test("description and specs from the page tabs", () => {
@@ -130,6 +157,13 @@ test("images from the provider JSON: canonical, encoded, deduped", () => {
     "https://www.2ndswing.com/images/standard/S3%20PUT.jpg",
     "https://www.2ndswing.com/images/representative/S3%20PUT.jpg",
   ]);
+});
+
+test("images: the gallery's copy of the main photo replaces the /standard/ one", () => {
+  const page = ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg", "https://www.2ndswing.com/images/representative/S3%20PUT.jpg"];
+  const gallery = ["https://www.2ndswing.com/images/representative/S3%20PUT.jpg", "https://www.2ndswing.com/images/representative/S3%20PUT_2.jpg"];
+  assert.deepEqual(mergeImages(page, gallery), gallery);
+  assert.deepEqual(mergeImages(page.slice(0, 1), []), page.slice(0, 1)); // kept when it is the only copy
 });
 
 test("gallery: one image per name, encoded like the site does", () => {

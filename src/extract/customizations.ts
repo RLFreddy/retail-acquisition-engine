@@ -46,20 +46,35 @@ const readHtmlOptions = ($: CheerioAPI, groupId: string): GroupOption[] =>
     }))
     .get();
 
+// Irons In Set, the checkboxes that pick the clubs of an iron set, shares the
+// optionConfig of the Customize dropdowns; the site marks it option_type "clubs".
+const isClubs = (group: OptionGroup | undefined): boolean =>
+  Object.values(group ?? {}).some((option) => option.option_type === "clubs");
+
 export function parseCustomizations($: CheerioAPI, options: IronsetOptions | undefined): Customization[] {
   const groups = options?.optionConfig ?? {};
   const labels = readGroupLabels($);
-  const groupIds = [...new Set([...Object.keys(groups), ...labels.keys()])];
+  const groupIds = [...new Set([...Object.keys(groups), ...labels.keys()])].filter((id) => !isClubs(groups[id]));
 
   return sortByPageOrder(groupIds, [...labels.keys()])
     .map((groupId) => {
       const group = groups[groupId];
       return {
         name: labels.get(groupId) ?? groupId,
+        required: options?.forceRequireOptions ?? false,
         options: (group ? readJsonOptions($, groupId, group) : readHtmlOptions($, groupId))
           .filter((option) => option.name.trim())
           .map((option) => ({ name: option.name.trim(), upcharge: roundToCents(option.amount) })),
       };
     })
     .filter((customization) => customization.options.length);
+}
+
+// Every club an iron set can include; each one checked adds the per-club price.
+export function parseClubs($: CheerioAPI, options: IronsetOptions | undefined): string[] {
+  const [groupId, group] = Object.entries(options?.optionConfig ?? {}).find(([, g]) => isClubs(g)) ?? [];
+  if (!groupId || !group) return [];
+  return readJsonOptions($, groupId, group)
+    .map((club) => club.name.trim())
+    .filter(Boolean);
 }

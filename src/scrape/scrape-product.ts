@@ -1,7 +1,7 @@
 import { BASE_URL } from "../config.js";
 import { fetchText } from "../lib/http.js";
 import { roundMs } from "../lib/time.js";
-import { parseGallery } from "../extract/media.js";
+import { mergeImages, parseGallery } from "../extract/media.js";
 import { parseProduct } from "../extract/parse-product.js";
 import type { Product, SourceProduct } from "../types.js";
 
@@ -16,17 +16,13 @@ const buildGalleryUrl = (sku: string): string => `${BASE_URL}gallery/${encodeURI
 
 export async function scrapeProduct(source: SourceProduct): Promise<Product> {
   const start = performance.now();
-  const url = buildProductUrl(source.sku);
-  const html = await fetchText(url);
+  const html = await fetchText(buildProductUrl(source.sku));
   if (!html) throw new Error("product page not found (404)");
   const product = parseProduct(source, html);
   const gallery = await fetchText(buildGalleryUrl(source.sku)); // null (404) = no gallery
   return {
     ...product,
-    media: {
-      images: [...new Set([...product.media.images, ...(gallery ? parseGallery(gallery) : [])])],
-      videos: product.media.videos,
-    },
+    media: { ...product.media, images: mergeImages(product.media.images, gallery ? parseGallery(gallery) : []) },
     scraped_at: new Date().toISOString(),
     extraction_time_ms: roundMs(performance.now() - start),
   };

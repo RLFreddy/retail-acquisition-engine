@@ -7,7 +7,8 @@ import path from "node:path";
 import { after, test } from "node:test";
 
 // Config is read at import time: set it first, then import the module.
-process.env.OUTPUT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "rae-http-"));
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-http-"));
+process.env.OUTPUT_DIR = tmp;
 process.env.RETRIES = "2";
 process.env.RETRY_DELAY_MS = "1";
 const { BlockedError, fetchText } = await import("../src/lib/http.js");
@@ -23,7 +24,10 @@ const server = http.createServer((req, res) => {
 });
 await new Promise<void>((resolve) => server.listen(0, resolve));
 const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-after(() => server.close());
+after(() => {
+  server.close();
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
 
 test("returns the HTML on 200", async () => {
   assert.equal(await fetchText(`${base}/ok`), "<html>/ok</html>");

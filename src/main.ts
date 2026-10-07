@@ -1,4 +1,4 @@
-import { CONCURRENCY, INPUT_CSV, LIMIT, OUTPUT_DIR } from "./config.js";
+import { CONCURRENCY, DELAY_MS, INPUT_CSV, LIMIT, OUTPUT_DIR } from "./config.js";
 import { loadProducts } from "./lib/csv.js";
 import { getRequestCount } from "./lib/http.js";
 import { log, LOG_FILE } from "./lib/log.js";
@@ -26,7 +26,7 @@ async function main(): Promise<void> {
   log.info(
     {
       event: "run_started",
-      data: { input: INPUT_CSV, products: sources.length, concurrency: CONCURRENCY, state: DB_PATH },
+      data: { input: INPUT_CSV, products: sources.length, concurrency: CONCURRENCY, delay_ms: DELAY_MS, state: DB_PATH },
     },
     "Starting the scraper.",
   );

@@ -28,7 +28,10 @@ fs.writeFileSync(
 const server = createExplorer(dir).listen(0);
 await new Promise((resolve) => server.once("listening", resolve));
 const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-after(() => server.close());
+after(() => {
+  server.close();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
 
 test("serves the page, its script and its styles", async () => {
   for (const [url, type] of [["/", "text/html"], ["/app.js", "text/javascript"], ["/style.css", "text/css"]] as const) {

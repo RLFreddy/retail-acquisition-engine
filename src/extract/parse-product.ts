@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { roundToCents } from "../lib/money.js";
 import type { Product, SourceProduct } from "../types.js";
-import { parseCustomizations } from "./customizations.js";
+import { parseClubs, parseCustomizations } from "./customizations.js";
 import { parseDescription, parseSpecs } from "./details.js";
 import { readProductConfigs } from "./magento.js";
 import { parseImages, parseVideos } from "./media.js";
@@ -38,6 +38,7 @@ export function parseProduct(source: SourceProduct, html: string): Omit<Product,
     base_price: basePrice,
     price_range: { min: Math.min(...prices), max: Math.max(...prices) },
     pricing_unit: options?.isIronsetProduct ? "per_club" : "per_item",
+    clubs: parseClubs($, options),
     included_clubs: includedClubs,
     default_set_price:
       options?.isIronsetProduct && includedClubs.length ? roundToCents(basePrice * includedClubs.length) : null,

@@ -46,10 +46,10 @@ export function writeOutputs(
 
   writeCsv(
     files.customizations,
-    ["product_sku", "product_name", "customization", "option", "upcharge", "pricing_unit"],
+    ["product_sku", "product_name", "customization", "required", "option", "upcharge", "pricing_unit"],
     products.flatMap((p) =>
       p.customizations.flatMap((c) =>
-        c.options.map((o) => [p.sku, p.name, c.name, o.name, o.upcharge, p.pricing_unit]),
+        c.options.map((o) => [p.sku, p.name, c.name, c.required, o.name, o.upcharge, p.pricing_unit]),
       ),
     ),
   );

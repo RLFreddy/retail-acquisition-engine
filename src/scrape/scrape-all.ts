@@ -70,17 +70,18 @@ export async function scrapeAll(
       markDone(product);
       consecutiveBlocks = 0;
       const { variants, customizations, extraction_time_ms: ms } = product;
-      const options = customizations.reduce((n, c) => n + c.options.length, 0);
+      const customizationOptions = customizations.reduce((n, c) => n + c.options.length, 0);
       log.info(
         {
           event: "product_ok",
           sku: source.sku,
-          data: { variants: variants.length, options, ms: Math.round(ms) },
+          data: { variants: variants.length, customization_options: customizationOptions, ms: Math.round(ms) },
         },
         `${nextProgress()} ${source.sku}`,
       );
     } catch (err) {
-      markFailed(source.sku);
+      // A blocked IP says nothing about the product: it stays pending for the next run.
+      if (!(err instanceof BlockedError)) markFailed(source.sku);
       const failure = toFailure(source, err instanceof Error ? err.message : String(err));
       failures.push(failure);
       log.error(

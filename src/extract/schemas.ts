@@ -32,11 +32,13 @@ export const SpConfigSchema = z.object({
 export const IronsetOptionsSchema = z.object({
   basePrice: z.coerce.number(),
   isIronsetProduct: z.coerce.number().default(0),
+  forceRequireOptions: z.boolean().default(false), // every Customize dropdown is required
   clubInformation: z.object({ included_clubs: z.array(z.string()) }).optional(),
   optionConfig: phpRecord(
     phpRecord(
       z.object({
         name: z.string(),
+        option_type: z.string().optional(), // "select" or "grips"; "clubs" for Irons In Set
         prices: z.object({ finalPrice: AmountSchema }), // an add-on amount, not a total price
       }),
     ),

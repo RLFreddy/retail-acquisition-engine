@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { beforeEach, test } from "node:test";
+import { after, beforeEach, test } from "node:test";
+import Sqlite from "better-sqlite3";
 import type { Product, SourceProduct } from "../src/types.js";
 
 // Config is read at import time: set it first, then import the modules.
@@ -12,7 +13,7 @@ process.env.CONCURRENCY = "2";
 process.env.DELAY_MS = "0";
 process.env.MAX_ATTEMPTS = "2";
 const { BlockedError } = await import("../src/lib/http.js");
-const { closeState, initState } = await import("../src/lib/state.js");
+const { closeState, initState, productState } = await import("../src/lib/state.js");
 const { scrapeAll } = await import("../src/scrape/scrape-all.js");
 
 // Every test starts from an empty state.
@@ -20,6 +21,10 @@ let run = 0;
 beforeEach(() => {
   closeState();
   initState(path.join(tmp, `state-${++run}.db`));
+});
+after(() => {
+  closeState();
+  fs.rmSync(tmp, { recursive: true, force: true });
 });
 
 const sources: SourceProduct[] = Array.from({ length: 10 }, (_, i) => ({
@@ -59,6 +64,28 @@ test("stops and skips the rest when the site keeps blocking", async () => {
   assert.equal(products.length, 0);
   assert.equal(failures.length, sources.length);
   assert.ok(skipped.length > 0, "the queue should stop before trying every product");
+});
+
+test("a blocked IP does not count as a failed attempt", async () => {
+  const blocked = async (s: SourceProduct): Promise<Product> => {
+    throw new BlockedError(s.sku);
+  };
+  await scrapeAll(sources, blocked);
+  await scrapeAll(sources, blocked); // as many blocked runs as MAX_ATTEMPTS
+  const { products, failures } = await scrapeAll(sources, async (s) => product(s));
+  assert.equal(products.length, 10);
+  assert.deepEqual(failures, []);
+});
+
+test("drops a resume state saved by an older version", () => {
+  const file = path.join(tmp, "old-version.db");
+  const old = new Sqlite(file);
+  old.exec("CREATE TABLE products (id TEXT PRIMARY KEY, status TEXT, attempts INTEGER, data TEXT)");
+  old.prepare(`INSERT INTO products VALUES ('P0', 'done', 0, '{"id":"P0"}')`).run();
+  old.close();
+  closeState();
+  initState(file);
+  assert.deepEqual(productState("P0"), { status: "pending", attempts: 0 });
 });
 
 test("resumes: a second run only scrapes what is missing and returns everything", async () => {

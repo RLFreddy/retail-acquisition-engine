@@ -3,6 +3,7 @@ import { BASE_URL } from "../config.js";
 import { GallerySchema, parseBlock, type ProviderItem } from "./schemas.js";
 
 const GALLERY_IMAGES = `${BASE_URL}images/representative/`;
+const fileName = (url: string): string => url.slice(url.lastIndexOf("/") + 1);
 
 export function parseImages(item: ProviderItem): string[] {
   const urls = [...item.images.map((image) => image.url), item.extension_attributes.ddg_image];
@@ -23,6 +24,15 @@ export function parseGallery(json: string): string[] {
     // left null: parseBlock reports it as a site change
   }
   return parseBlock("gallery", GallerySchema, data).imageNames.map((name) => GALLERY_IMAGES + encodeURIComponent(name));
+}
+
+// The page's JSON has the main photo twice: in /images/standard/ (watermarked
+// "Actual Image") and in /images/representative/ (watermarked "Representative
+// Photo", as in the page's gallery). Keeps the gallery's copy of each photo.
+export function mergeImages(page: string[], gallery: string[]): string[] {
+  const urls = [...new Set([...page, ...gallery])];
+  const inGallery = new Set(urls.filter((url) => url.includes("/representative/")).map(fileName));
+  return urls.filter((url) => !url.includes("/standard/") || !inGallery.has(fileName(url)));
 }
 
 // The Videos tab holds YouTube players by id; their iframes only exist in <noscript>.
