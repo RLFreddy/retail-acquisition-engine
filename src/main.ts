@@ -27,7 +27,7 @@ async function main(): Promise<void> {
     `Finished! Total ${products.length + failures.length} products: ` +
       `${products.length} succeeded, ${failures.length} failed (${getRequestCount()} requests, ${formatDuration(totalMs)}).`,
   );
-  log.info({ data: [...files, LOG_FILE] }, "Output saved:");
+  log.info({ data: { files: [...files, LOG_FILE] } }, "Output saved:");
 }
 
 main().catch((err) => {

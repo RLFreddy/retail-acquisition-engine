@@ -8,6 +8,8 @@ const readIntEnv = (name: string, fallback: number): number => {
 
 export const INPUT_CSV = process.env.INPUT_CSV || "searchresults.csv";
 export const OUTPUT_DIR = process.env.OUTPUT_DIR || "data";
+// Console logger: "clone" (ours, Crawlee-like) or "crawlee" (Crawlee's own @apify/log).
+export const LOG_STYLE = process.env.LOG_STYLE === "crawlee" ? "crawlee" : "clone";
 export const LIMIT = readIntEnv("LIMIT", 0); // 0 = all products
 
 export const CONCURRENCY = Math.max(1, readIntEnv("CONCURRENCY", 4));

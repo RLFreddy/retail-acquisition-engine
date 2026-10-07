@@ -1,7 +1,8 @@
 import path from "node:path";
 import { styleText } from "node:util";
+import apifyLog from "@apify/log";
 import pino from "pino";
-import { OUTPUT_DIR } from "../config.js";
+import { LOG_STYLE, OUTPUT_DIR } from "../config.js";
 
 export const LOG_FILE = path.join(OUTPUT_DIR, "logs", "run.log");
 
@@ -40,12 +41,27 @@ const consoleStream = {
   },
 };
 
+type LogLine = { level: number; msg: string; data?: Record<string, unknown>; err?: { message?: string; stack?: string } };
+
+// Alternative: Crawlee's real logger. Note it always emits colors (it ignores
+// TTY and NO_COLOR) and prints INFO on stdout, WARN/ERROR on stderr.
+const crawleeLog = apifyLog.child({ prefix: "Scraper" });
+const crawleeStream = {
+  write(line: string) {
+    const { level, msg, data, err } = JSON.parse(line) as LogLine;
+    if (err) crawleeLog.exception(Object.assign(new Error(err.message), { stack: err.stack }), msg, data);
+    else if (level >= 50) crawleeLog.error(msg, data);
+    else if (level >= 40) crawleeLog.warning(msg, data);
+    else crawleeLog.info(msg, data);
+  },
+};
+
 // Usage: log.info({ event, data }, message). The console shows the message
 // plus `data` in gray; run.log gets every field as one JSON line.
 export const log = pino(
   { level: "debug" },
   pino.multistream([
-    { level: "info", stream: consoleStream },
+    { level: "info", stream: LOG_STYLE === "crawlee" ? crawleeStream : consoleStream },
     { level: "debug", stream: pino.destination({ dest: LOG_FILE, mkdir: true, sync: true }) },
   ]),
 );
