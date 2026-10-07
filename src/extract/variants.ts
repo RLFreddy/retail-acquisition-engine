@@ -2,7 +2,7 @@
 // That is how conditional options are captured (e.g. a shaft only sold in
 // Stiff) without simulating clicks.
 
-import { money } from "../lib/money.js";
+import { roundToCents } from "../lib/money.js";
 import type { Attribute, Variant } from "../types.js";
 import type { SpConfig } from "./schemas.js";
 
@@ -10,7 +10,7 @@ type SpAttribute = SpConfig["attributes"][string];
 
 // Sorted by `position` because JS reorders numeric object keys ("626" before
 // "632"), losing the page's selection order.
-export const sortedAttributes = (spConfig: SpConfig | undefined): SpAttribute[] =>
+export const sortAttributes = (spConfig: SpConfig | undefined): SpAttribute[] =>
   Object.values(spConfig?.attributes ?? {}).sort((a, b) => a.position - b.position);
 
 export const toOutputAttributes = (attributes: SpAttribute[]): Attribute[] =>
@@ -42,9 +42,9 @@ export function parseVariants(
     variants.push({
       sku: spConfig.sku?.[productId] ?? productId,
       options,
-      final_price: money(final),
-      regular_price: money(prices.oldPrice?.amount || final),
-      price_modifier: money(final - basePrice),
+      final_price: roundToCents(final),
+      regular_price: roundToCents(prices.oldPrice?.amount || final),
+      price_modifier: roundToCents(final - basePrice),
     });
   }
   return variants;

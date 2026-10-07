@@ -1,5 +1,5 @@
 import { CONCURRENCY } from "../config.js";
-import { requestsSent } from "../lib/http.js";
+import { getRequestCount } from "../lib/http.js";
 import { roundMs } from "../lib/time.js";
 import type { Failure, Product } from "../types.js";
 
@@ -16,7 +16,7 @@ export function buildMetrics(products: Product[], failures: Failure[], totalMs: 
     products: total,
     ok: products.length,
     failed: failures.length,
-    http_requests: requestsSent(),
+    http_requests: getRequestCount(),
     products_per_minute: roundMs((total / totalMs) * 60_000),
     product_ms: {
       p50: percentile(times, 0.5),

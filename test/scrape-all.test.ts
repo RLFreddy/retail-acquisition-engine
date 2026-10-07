@@ -10,7 +10,7 @@ process.env.OUTPUT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "rae-run-"));
 process.env.CONCURRENCY = "2";
 process.env.DELAY_MS = "0";
 const { BlockedError } = await import("../src/lib/http.js");
-const { run } = await import("../src/scrape/run.js");
+const { scrapeAll } = await import("../src/scrape/scrape-all.js");
 
 const sources: SourceProduct[] = Array.from({ length: 10 }, (_, i) => ({
   id: `P${i}`,
@@ -25,7 +25,7 @@ const product = (source: SourceProduct) =>
 
 test("keeps CSV order although workers finish out of order", async () => {
   // Earlier products take longer, so they finish last.
-  const { products } = await run(sources, async (s) => {
+  const { products } = await scrapeAll(sources, async (s) => {
     await sleep(50 - Number(s.id.slice(1)) * 5);
     return product(s);
   });
@@ -33,7 +33,7 @@ test("keeps CSV order although workers finish out of order", async () => {
 });
 
 test("a failed product does not stop the run", async () => {
-  const { products, failures } = await run(sources, async (s) => {
+  const { products, failures } = await scrapeAll(sources, async (s) => {
     if (s.id === "P3") throw new Error("boom");
     return product(s);
   });
@@ -42,7 +42,7 @@ test("a failed product does not stop the run", async () => {
 });
 
 test("stops and skips the rest when the site keeps blocking", async () => {
-  const { products, failures } = await run(sources, async (s) => {
+  const { products, failures } = await scrapeAll(sources, async (s) => {
     throw new BlockedError(s.id);
   });
   const skipped = failures.filter((f) => f.reason.startsWith("skipped"));

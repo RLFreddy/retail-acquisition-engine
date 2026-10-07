@@ -1,14 +1,14 @@
 import * as cheerio from "cheerio";
-import { money } from "../lib/money.js";
+import { roundToCents } from "../lib/money.js";
 import type { Product, SourceProduct } from "../types.js";
 import { parseCustomizations } from "./customizations.js";
-import { productConfigs } from "./magento.js";
+import { readProductConfigs } from "./magento.js";
 import { parseMedia } from "./media.js";
-import { parseVariants, sortedAttributes, toOutputAttributes } from "./variants.js";
+import { parseVariants, sortAttributes, toOutputAttributes } from "./variants.js";
 
 export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms"> {
   const $ = cheerio.load(html);
-  const { product, spConfig, options } = productConfigs($);
+  const { product, spConfig, options } = readProductConfigs($);
 
   const pageSku = product.extension_attributes.ddg_sku;
   if (pageSku.toUpperCase() !== source.id.toUpperCase()) {
@@ -16,10 +16,10 @@ export function parseProduct(source: SourceProduct, html: string): Omit<Product,
   }
   if (!product.is_available) throw new Error("out of stock (site shows no price)");
 
-  const basePrice = money(options?.basePrice ?? spConfig?.prices?.finalPrice.amount ?? 0);
+  const basePrice = roundToCents(options?.basePrice ?? spConfig?.prices?.finalPrice.amount ?? 0);
   if (!basePrice) throw new Error("base price not found");
 
-  const attributes = sortedAttributes(spConfig);
+  const attributes = sortAttributes(spConfig);
   const variants = parseVariants(spConfig, attributes, basePrice);
   const prices = variants.length ? variants.map((v) => v.final_price) : [basePrice];
 

@@ -3,11 +3,11 @@ import path from "node:path";
 import type { Failure, Product } from "../types.js";
 
 // Every cell quoted and inner quotes doubled (RFC 4180).
-const csvRow = (cells: unknown[]): string =>
+const toCsvRow = (cells: unknown[]): string =>
   cells.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",");
 
 const writeCsv = (file: string, header: string[], rows: unknown[][]): void =>
-  fs.writeFileSync(file, [header, ...rows].map(csvRow).join("\n"));
+  fs.writeFileSync(file, [header, ...rows].map(toCsvRow).join("\n"));
 
 export function writeOutputs(
   dir: string,

@@ -19,7 +19,7 @@ const PROVIDER = "Magento_Catalog/js/product/view/provider";
 
 type Block = Record<string, Record<string, unknown> | undefined>;
 
-function magentoBlocks($: CheerioAPI): Block[] {
+function parseMagentoBlocks($: CheerioAPI): Block[] {
   return $('script[type="text/x-magento-init"]')
     .toArray()
     .flatMap((script) => {
@@ -31,22 +31,22 @@ function magentoBlocks($: CheerioAPI): Block[] {
     });
 }
 
-const components = (blocks: Block[], selector: string, name: string): unknown[] =>
+const findComponents = (blocks: Block[], selector: string, name: string): unknown[] =>
   blocks.map((block) => block[selector]?.[name]).filter((config) => config !== undefined);
 
 const hasKey = (value: unknown, key: string): boolean =>
   typeof value === "object" && value !== null && key in value;
 
-export function productConfigs($: CheerioAPI): {
+export function readProductConfigs($: CheerioAPI): {
   product: ProviderItem;
   spConfig?: SpConfig;
   options?: IronsetOptions;
 } {
-  const blocks = magentoBlocks($);
-  const configurable = components(blocks, FORM, "configurable").find((c) => hasKey(c, "spConfig"));
+  const blocks = parseMagentoBlocks($);
+  const configurable = findComponents(blocks, FORM, "configurable").find((c) => hasKey(c, "spConfig"));
   // ironsetOptions appears twice: an empty stub and the real config.
-  const options = components(blocks, FORM, "ironsetOptions").find((c) => hasKey(c, "optionConfig"));
-  const [provider] = components(blocks, "*", PROVIDER);
+  const options = findComponents(blocks, FORM, "ironsetOptions").find((c) => hasKey(c, "optionConfig"));
+  const [provider] = findComponents(blocks, "*", PROVIDER);
 
   // Missing on generic model pages the site redirects some retired SKUs to.
   if (!provider) throw new Error("not a product page (no provider block)");

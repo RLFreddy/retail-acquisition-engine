@@ -2,16 +2,16 @@
 // exposes (x-magento-init or GraphQL); they only exist in the HTML form.
 
 import type { CheerioAPI } from "cheerio";
-import { money } from "../lib/money.js";
+import { roundToCents } from "../lib/money.js";
 import type { Customization } from "../types.js";
 import type { IronsetOptions } from "./schemas.js";
 
-const byPageOrder = (ids: string[], order: string[]): string[] => {
+const sortByPageOrder = (ids: string[], order: string[]): string[] => {
   const rank = (id: string) => (order.includes(id) ? order.indexOf(id) : Infinity);
   return [...ids].sort((a, b) => rank(a) - rank(b));
 };
 
-function groupLabels($: CheerioAPI): Map<string, string> {
+function readGroupLabels($: CheerioAPI): Map<string, string> {
   const labels = new Map<string, string>();
   $('label[for^="select_"]').each((_, label) => {
     const id = $(label).attr("for")!.replace("select_", "");
@@ -20,7 +20,7 @@ function groupLabels($: CheerioAPI): Map<string, string> {
   return labels;
 }
 
-const optionOrder = ($: CheerioAPI, groupId: string): string[] =>
+const readOptionOrder = ($: CheerioAPI, groupId: string): string[] =>
   $(`select[name="options[${groupId}]"] option[value!=""]`)
     .map((_, option) => $(option).attr("value"))
     .get();
@@ -31,20 +31,20 @@ export function parseCustomizations(
   basePrice: number,
 ): Customization[] {
   const groups = options?.optionConfig ?? {};
-  const labels = groupLabels($);
+  const labels = readGroupLabels($);
 
-  return byPageOrder(Object.keys(groups), [...labels.keys()]).flatMap((groupId) => {
+  return sortByPageOrder(Object.keys(groups), [...labels.keys()]).flatMap((groupId) => {
     const group = groups[groupId]!;
-    return byPageOrder(Object.keys(group), optionOrder($, groupId))
+    return sortByPageOrder(Object.keys(group), readOptionOrder($, groupId))
       .map((id) => group[id]!)
       .filter((option) => option.name.trim())
       .map((option) => {
-        const modifier = money(option.prices.finalPrice.amount);
+        const modifier = roundToCents(option.prices.finalPrice.amount);
         return {
           category: labels.get(groupId) ?? groupId,
           option_name: option.name.trim(),
           price_modifier: modifier,
-          final_price: money(basePrice + modifier),
+          final_price: roundToCents(basePrice + modifier),
         };
       });
   });

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { parseProduct } from "../src/extract/product.js";
-import { productUrl } from "../src/scrape/product.js";
+import { parseProduct } from "../src/extract/parse-product.js";
+import { buildProductUrl } from "../src/scrape/scrape-product.js";
 
 const source = { id: "S3 PUT", name: "Mizuno S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };
 const init = (json: object) => `<script type="text/x-magento-init">${JSON.stringify(json)}</script>`;
@@ -72,7 +72,7 @@ test("identity comes from the provider JSON", () => {
 });
 
 test("product URL is the slugified SKU", () => {
-  assert.equal(productUrl("LINK 2.2 PUT"), "https://www.2ndswing.com/link-2dot2-put");
+  assert.equal(buildProductUrl("LINK 2.2 PUT"), "https://www.2ndswing.com/link-2dot2-put");
 });
 
 test("attributes follow position order", () => {

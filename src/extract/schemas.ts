@@ -11,7 +11,7 @@ const phpRecord = <T extends z.ZodType>(value: T) =>
   );
 
 // Amounts arrive as numbers or numeric strings.
-const amount = z.object({ amount: z.coerce.number() });
+const AmountSchema = z.object({ amount: z.coerce.number() });
 
 export const SpConfigSchema = z.object({
   attributes: phpRecord(
@@ -24,8 +24,8 @@ export const SpConfigSchema = z.object({
     }),
   ),
   index: phpRecord(phpRecord(z.coerce.string())), // simple product id → attribute id → option id
-  optionPrices: phpRecord(z.object({ finalPrice: amount, oldPrice: amount.optional() })),
-  prices: z.object({ finalPrice: amount }).optional(),
+  optionPrices: phpRecord(z.object({ finalPrice: AmountSchema, oldPrice: AmountSchema.optional() })),
+  prices: z.object({ finalPrice: AmountSchema }).optional(),
   sku: phpRecord(z.string()).optional(), // simple product id → SKU
 });
 
@@ -37,7 +37,7 @@ export const IronsetOptionsSchema = z.object({
     phpRecord(
       z.object({
         name: z.string(),
-        prices: z.object({ finalPrice: amount }), // an add-on amount, not a total price
+        prices: z.object({ finalPrice: AmountSchema }), // an add-on amount, not a total price
       }),
     ),
   ),
