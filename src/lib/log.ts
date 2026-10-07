@@ -22,8 +22,6 @@ export const log = pino(
         options: {
           destination: 2, // status messages belong on stderr
           colorize: useColor,
-          // Only the level is colored, so warnings and errors stand out.
-          customColors: "info:green,warn:yellow,error:red,fatal:red,message:reset",
           translateTime: "SYS:HH:MM:ss",
           ignore: "pid,hostname",
           hideObject: true,
