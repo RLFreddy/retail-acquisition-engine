@@ -126,49 +126,19 @@ Customizations are not conditional: the JSON exposes no dependency between them.
 
 ### Why not the site search
 
-The first approach searched each product (`/catalogsearch/result/?q=<name>`)
-and read the same `x-magento-init` scripts from the page it led to. The
-scraper keeps that data source and only drops the search step:
+Both routes reach the same page and the same `x-magento-init` JSON; the direct
+URL skips the search step. Tested from the same US IP:
 
-```mermaid
-flowchart LR
-    S["Search<br/>/catalogsearch/result/?q=..."] -- "302 redirect<br/>or a results list" --> P["Product page"]
-    D["Direct URL<br/>/link-2dot2-put"] --> P
-    P --> J["x-magento-init JSON"]
-```
+| Check                        | Site search (`/catalogsearch/result/?q=…`) | Direct URL (`/link-2dot2-put`) |
+| ---------------------------- | ------------------------------------------ | ------------------------------ |
+| Requests per product         | 2 (search + redirect); 12 of 40 returned a list to pick from | 1 |
+| [robots.txt](https://www.2ndswing.com/robots.txt) | `Disallow: /catalogsearch/`  | Allowed (no rule matches any of the 700 URLs) |
+| After ~40 searches           | **406** (blocked)                          | **200**                        |
+| 40 + 40 in parallel          | 40 × 406                                   | 40 × 200                       |
+| Other headers / User-Agents  | Still 406 (the limit is per IP)            | –                              |
 
-| Check (same US IP)                          | Site search                                   | Direct URL             |
-| ------------------------------------------- | --------------------------------------------- | ---------------------- |
-| Requests per product                        | 2 (search + redirect)                         | 1                      |
-| Finds the right product (40 SKUs searched)  | 28 redirect; 12 return a list of similar products to pick from | Always (SKU checked on the page) |
-| `robots.txt`                                | `Disallow: /catalogsearch/`                   | Allowed (all 700 URLs checked) |
-| 40 sequential requests                      | 406 after ~40 searches                        | 200                    |
-| 40 + 40 requests, 10 in parallel, at the same time | **40 × 406**                           | **40 × 200**           |
-| Full browser headers                        | Still 406                                     | –                      |
-| 4 different User-Agents (Chrome, Firefox, Safari, iPhone) | Still 406                       | –                      |
-
-**What `robots.txt` says.** It works as a deny list: anything not disallowed is
-allowed. The search is disallowed for every bot; product URLs match no rule.
-[robots.txt](https://www.2ndswing.com/robots.txt), relevant lines:
-
-```text
-User-agent: *                 # applies to every bot
-Disallow: /catalogsearch/     # the site search: /catalogsearch/result/?q=...
-Disallow: /checkout/          # other rules: /customer/, /catalog/, /*.php$, /*?dir*, ...
-                              # no rule matches /link-2dot2-put, so it is allowed
-User-agent: msnbot
-Crawl-delay: 10               # only for Microsoft's bot
-```
-
-All 700 direct URLs were checked against every rule: 0 disallowed.
-
-**What the tests show.** `robots.txt` is only a request; it blocks nothing by
-itself (the first ~40 searches worked). The 406 is a separate usage limit the
-site applies to the search page per IP: product pages kept answering 200 from
-the same IP, changing headers or User-Agent did not lift it, and it was still
-active minutes later. Rotating proxies would get around it, but that goes
-against `robots.txt` and the brief's "considerate of the site", and the direct
-URL does not need it.
+`robots.txt` only asks; the 406 is a separate per-IP limit on the search page.
+Proxies would get around it, but the direct URL does not need it.
 
 ### How it was measured
 
