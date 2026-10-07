@@ -11,4 +11,11 @@ services:
       OUTPUT_DIR: /app/data
     volumes:
       - ./data_docker:/app/data
-      - ./searchresults.csv:/app/searchresults.csv:ro
+      # Long syntax: if the CSV is missing, Compose fails with a clear error
+      # instead of silently creating an empty directory in its place.
+      - type: bind
+        source: ./searchresults.csv
+        target: /app/searchresults.csv
+        read_only: true
+        bind:
+          create_host_path: false # long syntax still defaults to true
