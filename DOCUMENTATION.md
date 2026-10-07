@@ -120,10 +120,9 @@ Customizations are not conditional: the JSON exposes no dependency between them.
 | Decision                              | Why                                                    | Cost                                         |
 | ------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
 | HTTP + embedded JSON, no browser      | One request per product returns everything; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
-| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, answered 406 after ~30 searches, often needs 2 requests | Relies on the site's URL convention (SKU checked on the page) |
+| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, and needs 2 requests (a redirect, or a results list to pick from: 12 of 40 SKUs tested) | Relies on the site's URL convention (SKU checked on the page) |
 | 4 in parallel, 1 new product every 500 ms | Considerate pace with no blocks                       | Slower than the site can take (see the test below) |
 | Retries with backoff (5 s → 40 s), stop after 3 blocked products | Survives throttling without hammering the site | A blocked run ends early (and resumes later)  |
-| Ignoring `Crawl-delay: 10` for this single run | Honoring it means ~2 hours for 700 pages        | The daily pipeline honors it                 |
 
 ### How it was measured
 
@@ -216,7 +215,7 @@ flowchart TD
 | Question                         | Answer                                                                 |
 | -------------------------------- | ---------------------------------------------------------------------- |
 | **Identify new products**        | Compare today's CSV with yesterday's by `Parent Item`: new SKUs are scraped and inserted; removed SKUs are marked inactive, never deleted |
-| **Scrape**                       | Every SKU once a day, honoring `Crawl-delay: 10` (`CONCURRENCY=1 DELAY_MS=10000`, ~2 h, fine for an unattended job). The run state is keyed by date, so a re-run the same day resumes instead of duplicating |
+| **Scrape**                       | Every SKU once a day at a gentle pace (e.g. `CONCURRENCY=1 DELAY_MS=10000`, ~2 h, fine for an unattended job). The run state is keyed by date, so a re-run the same day resumes instead of duplicating |
 | **Detect changes**               | SHA-256 of the normalized record (sorted keys, without `scraped_at` and `extraction_time_ms`). Same hash: nothing to write. Different: compare fields to classify the change (base price, variant price, variant added/removed, customization added/removed/re-priced, out of stock, gone) |
 | **Store history**                | SCD Type 2 in PostgreSQL: a change closes the current row (`valid_to`, `is_current = false`) and inserts a new one. Only changes are stored, instead of ~280,000 near-identical rows a day |
 | **Flag changes**                 | One daily summary (Slack or email): new products, price changes (old → new, %; moves above 10% flagged for review), variants added or removed, products out of stock or gone |
