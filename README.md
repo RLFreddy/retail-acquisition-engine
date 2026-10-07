@@ -9,8 +9,7 @@ page: no headless browser, one request per product.
 
 ## Results
 
-Full run of the 700 products in the CSV (output in `results/`, a 5-product
-sample in [`sample-output/`](sample-output/)):
+Full run of the 700 products in the CSV (output in [`results/`](results/)):
 
 | Metric                  | Value                                         |
 | ----------------------- | --------------------------------------------- |
@@ -50,15 +49,16 @@ make docker-run LIMIT=10
 ```
 
 **Output** goes to `data/` (`data_docker/` with Docker). The folder is
-git-ignored because `output.json` is ~110 MB. Two copies come with the
-submission:
+git-ignored because `output.json` is ~110 MB. The results of the run above
+are in [`results/`](results/), so nothing has to be run to see them:
 
-- [`sample-output/`](sample-output/) (in git): 5 products of different types
-  (putter, iron set, wedge, driver shaft, hybrid), in exactly the same format as
-  the full output, plus the full run's `run-report.json`. No need to run
-  anything to see the result.
-- `results/` (not in git, delivered separately): the full output of the run
-  described above, also as `retail-acquisition-engine-results.zip` (4.4 MB).
+| File                          | Content                                                        |
+| ----------------------------- | -------------------------------------------------------------- |
+| `sample-output.json`          | 5 products of different types, same format as the full output |
+| `sample-variants.csv`         | Their variants                                                 |
+| `sample-customizations.csv`   | Their customization options                                    |
+| `run-report.json`             | Metrics and failures of the full run                           |
+| `full-results.zip` (4.4 MB)   | The complete extraction: all files above for every product, plus the log |
 
 **Configuration** is optional: copy `.env.example` to `.env`. It covers the
 input CSV, output folder, concurrency, delays, retries and thresholds. One
