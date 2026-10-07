@@ -33,8 +33,8 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 - **Product details and media:** description, specs table, every photo of the
   gallery and the YouTube videos
 - **Iron sets:** per-club prices plus the price of the default set (4–PW)
-- **Explorer:** search the products by SKU or name and check each one against
-  its live page (`make explorer`)
+- **Explorer:** search the products by product or variant SKU, name or brand,
+  and check each one against its live page (`make explorer`)
 - **Validated input:** if the site changes its data, the product fails with a
   clear error instead of producing silently empty data
 - **Resumable:** progress is saved per product; running it again continues where
@@ -96,7 +96,7 @@ Run `make dev` (no `LIMIT`) to scrape all the products in the CSV.
 | --------------------------- | -------------------------------------------------- |
 | `make dev`                  | Scrape every product in the CSV                    |
 | `make dev LIMIT=10`         | Scrape only the first 10 (quick test)              |
-| `make explorer`             | Browse the products at `http://localhost:4321`: search by SKU or name, see each one laid out like the store page |
+| `make explorer`             | Browse the products at `http://localhost:4321`: search by product or variant SKU, name or brand; see each one laid out like the store page |
 | `make test`                 | Typecheck and run the tests (no network needed)    |
 | `make build` / `make start` | Compile to `dist/` and run the compiled version    |
 | `make reset`                | Delete all output and the resume state             |

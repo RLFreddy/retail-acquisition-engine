@@ -9,7 +9,7 @@ install:       ## Install dependencies
 dev:           ## Run the scraper locally (make dev LIMIT=10 for a quick test)
 	pnpm dev
 
-explorer:      ## Browse the scraped products at http://localhost:4321 (search by SKU or name)
+explorer:      ## Browse the scraped products at http://localhost:4321
 	pnpm explorer
 
 start:         ## Run the compiled scraper from dist/ (after make build)

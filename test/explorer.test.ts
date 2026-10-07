@@ -13,7 +13,10 @@ const product = {
   brand: "Mizuno",
   category: "Putter",
   media: ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg"],
-  variants: [{ sku: "A" }, { sku: "B" }],
+  variants: [
+    { sku: "C4613215", options: { Dexterity: "Left Handed" } },
+    { sku: "C4613216", options: { Dexterity: "Right Handed" } },
+  ],
   customizations: [{ option_name: "Standard" }],
 };
 fs.writeFileSync(path.join(dir, "output.json"), JSON.stringify([product]));
@@ -49,4 +52,11 @@ test("a product's full record by SKU; 404 for unknown products and other files",
   assert.deepEqual(await (await fetch(`${base}/api/products/${encodeURIComponent("S3 PUT")}`)).json(), product);
   assert.equal((await fetch(`${base}/api/products/NOPE`)).status, 404);
   assert.equal((await fetch(`${base}/package.json`)).status, 404);
+});
+
+test("a variant SKU leads to its product and options, in any case", async () => {
+  const hit = { id: "S3 PUT", sku: "C4613216", options: { Dexterity: "Right Handed" } };
+  assert.deepEqual(await (await fetch(`${base}/api/variants/C4613216`)).json(), hit);
+  assert.deepEqual(await (await fetch(`${base}/api/variants/c4613216`)).json(), hit);
+  assert.equal((await fetch(`${base}/api/variants/C0000000`)).status, 404);
 });

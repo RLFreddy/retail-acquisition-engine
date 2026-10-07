@@ -80,16 +80,33 @@ function filterList() {
     if (!item.hidden) shown++;
   }
   byId("list-count").textContent = `${int(shown)} of ${int(items.size)} products`;
+  clearTimeout(variantLookup);
+  if (!shown && /^[a-z0-9-]{5,}$/.test(q)) variantLookup = setTimeout(() => findVariant(q), 250);
 }
 
-async function select(id) {
+// Variant SKUs (C4592868) are not in the list: the server finds their product,
+// which then opens with that variant's options picked.
+let variantLookup = null;
+async function findVariant(sku) {
+  try {
+    const hit = await getJson(`api/variants/${encodeURIComponent(sku)}`);
+    if (byId("q").value.trim().toLowerCase() !== sku) return; // the query changed meanwhile
+    items.get(hit.id).hidden = false;
+    byId("list-count").textContent = `Variant ${hit.sku} of ${hit.id}`;
+    await select(hit.id, hit.options);
+  } catch {
+    // not a variant SKU either: the list stays empty
+  }
+}
+
+async function select(id, options) {
   wanted = id;
   for (const [key, item] of items) item.setAttribute("aria-current", String(key === id));
   history.replaceState(null, "", `#${slug(id)}`);
   if (!loaded.has(id)) byId("product").replaceChildren(h("p", { class: "empty" }, `Loading ${id}…`));
   try {
     if (!loaded.has(id)) loaded.set(id, prepare(await getJson(`api/products/${encodeURIComponent(id)}`)));
-    if (wanted === id) show(loaded.get(id));
+    if (wanted === id) show(loaded.get(id), options);
   } catch (err) {
     byId("product").replaceChildren(h("p", { class: "empty" }, `Could not load ${id}: ${err.message}`));
   }
@@ -133,9 +150,13 @@ function groupsOf(p) {
   return groups;
 }
 
-function show(p) {
+// options: a variant's choices to pick ({ Dexterity: "Right Handed", … }), or none.
+function show(p, options) {
   state.product = p;
-  state.sel = p.attributes.map(() => null);
+  state.sel = p.attributes.map((a) => {
+    const i = options ? a.options.indexOf(options[a.label]) : -1;
+    return i < 0 ? null : i;
+  });
   state.custom = {};
   state.clubs = new Set(p.included_clubs);
   byId("product").replaceChildren(head(p), h("div", { class: "cols" }, buyBox(p, groupsOf(p)), tabsPanel(p)));

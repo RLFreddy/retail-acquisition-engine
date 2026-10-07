@@ -4,6 +4,7 @@
 // The page loads one product at a time from this API:
 //   GET /api/summary        run metrics, failures and one line per product
 //   GET /api/products/:id   the product's record, exactly as in output.json
+//   GET /api/variants/:sku  the product and options of a variant SKU (C4592868)
 
 import fs from "node:fs";
 import http from "node:http";
@@ -19,7 +20,8 @@ const TYPES: Record<string, string> = { ".html": "text/html", ".css": "text/css"
 function outputReader(outputDir: string) {
   const file = path.join(outputDir, "output.json");
   const reportFile = path.join(outputDir, "run-report.json");
-  let cache = { mtimeMs: -1, byId: new Map<string, Product>(), summary: "" };
+  type VariantHit = { id: string; sku: string; options: Record<string, string> };
+  let cache = { mtimeMs: -1, byId: new Map<string, Product>(), bySku: new Map<string, VariantHit>(), summary: "" };
   return () => {
     if (!fs.existsSync(file)) throw new Error(`${file} not found: run the scraper first (make dev)`);
     const { mtimeMs } = fs.statSync(file);
@@ -39,7 +41,10 @@ function outputReader(outputDir: string) {
         media: p.media.length,
       })),
     };
-    cache = { mtimeMs, byId: new Map(products.map((p) => [p.id, p])), summary: JSON.stringify(summary) };
+    const bySku = new Map(
+      products.flatMap((p) => p.variants.map((v) => [v.sku.toUpperCase(), { id: p.id, sku: v.sku, options: v.options }] as const)),
+    );
+    cache = { mtimeMs, byId: new Map(products.map((p) => [p.id, p])), bySku, summary: JSON.stringify(summary) };
     return cache;
   };
 }
@@ -58,6 +63,11 @@ export function createExplorer(outputDir: string = OUTPUT_DIR): http.Server {
       if (id !== undefined) {
         const product = output().byId.get(decodeURIComponent(id));
         return product ? send(200, "application/json", JSON.stringify(product, null, 2)) : send(404, "text/plain", "Not found");
+      }
+      const sku = pathname.match(/^\/api\/variants\/(.+)$/)?.[1];
+      if (sku !== undefined) {
+        const hit = output().bySku.get(decodeURIComponent(sku).trim().toUpperCase());
+        return hit ? send(200, "application/json", JSON.stringify(hit)) : send(404, "text/plain", "Not found");
       }
       const file = pathname === "/" ? "index.html" : pathname.slice(1);
       const type = TYPES[path.extname(file)];
