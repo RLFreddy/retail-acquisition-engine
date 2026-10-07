@@ -12,10 +12,12 @@ const percentile = (sorted: number[], p: number): number =>
 export const passesQualityCheck = (ok: number, failed: number, maxFailureRate = MAX_FAILURE_RATE): boolean =>
   ok > 0 && failed / (ok + failed) <= maxFailureRate;
 
-export function buildMetrics(products: Product[], failures: Failure[], totalMs: number) {
+export function buildMetrics(products: Product[], failures: Failure[], startedAt: Date, totalMs: number) {
   const total = products.length + failures.length;
   const times = products.map((p) => p.extraction_time_ms).sort((a, b) => a - b);
   return {
+    started_at: startedAt.toISOString(),
+    finished_at: new Date(startedAt.getTime() + totalMs).toISOString(),
     total_ms: roundMs(totalMs),
     concurrency: CONCURRENCY,
     products: total,

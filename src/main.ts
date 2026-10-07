@@ -31,11 +31,12 @@ async function main(): Promise<void> {
     "Starting the scraper.",
   );
 
+  const startedAt = new Date();
   const start = performance.now();
   const { products, failures } = await scrapeAll(sources);
   const totalMs = performance.now() - start;
 
-  const metrics = buildMetrics(products, failures, totalMs);
+  const metrics = buildMetrics(products, failures, startedAt, totalMs);
   const files = writeOutputs(OUTPUT_DIR, products, failures, metrics);
   log.info("All products have been processed, the scraper will shut down.");
   log.info({ event: "run_finished", data: metrics }, "Final request statistics:");
