@@ -120,9 +120,34 @@ Customizations are not conditional: the JSON exposes no dependency between them.
 | Decision                              | Why                                                    | Cost                                         |
 | ------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
 | HTTP + embedded JSON, no browser      | One request per product returns everything; a browser adds seconds and hundreds of MB per page | Depends on the site's JSON shape (mitigated by zod) |
-| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the search page: disallowed in `robots.txt`, needs 2 requests (a redirect, or a results list to pick from: 12 of 40 SKUs tested), and started answering 406 after ~40 searches while product pages kept answering 200 | Relies on the site's URL convention (SKU checked on the page) |
+| Direct URL from the SKU (`LINK 2.2 PUT` → `/link-2dot2-put`) | Avoids the site search (see below)                    | Relies on the site's URL convention (SKU checked on the page) |
 | 4 in parallel, 1 new product every 500 ms | Considerate pace with no blocks                       | Slower than the site can take (see the test below) |
 | Retries with backoff (5 s → 40 s), stop after 3 blocked products | Survives throttling without hammering the site | A blocked run ends early (and resumes later)  |
+
+### Why not the site search
+
+The first approach searched each product (`/catalogsearch/result/?q=<name>`)
+and read the same `x-magento-init` scripts from the page it led to. The
+scraper keeps that data source and only drops the search step:
+
+```mermaid
+flowchart LR
+    S["Search<br/>/catalogsearch/result/?q=..."] -- "302 redirect<br/>or a results list" --> P["Product page"]
+    D["Direct URL<br/>/link-2dot2-put"] --> P
+    P --> J["x-magento-init JSON"]
+```
+
+| Check (same US IP)                          | Site search                                   | Direct URL             |
+| ------------------------------------------- | --------------------------------------------- | ---------------------- |
+| Requests per product                        | 2 (search + redirect)                         | 1                      |
+| Finds the right product (40 SKUs searched)  | 28 redirect; 12 return a list of similar products to pick from | Always (SKU checked on the page) |
+| `robots.txt`                                | `Disallow: /catalogsearch/`                   | Allowed (all 700 URLs checked) |
+| 40 sequential requests                      | 406 after ~40 searches                        | 200                    |
+| 40 + 40 requests, 10 in parallel, at the same time | **40 × 406**                           | **40 × 200**           |
+| Full browser headers                        | Still 406                                     | –                      |
+
+The search block is a usage limit on the search page only, not on the IP or the
+request format; it was still active minutes later.
 
 ### How it was measured
 
