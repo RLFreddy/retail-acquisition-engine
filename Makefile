@@ -1,4 +1,4 @@
-.PHONY: help install dev start test typecheck build clean reset docker-build docker-run
+.PHONY: help install dev explorer start test typecheck build clean reset docker-build docker-run
 
 help:          ## Show the available commands
 	@grep -E '^[a-z-]+:.*##' Makefile | awk -F':.*## ' '{printf "  make %-13s %s\n", $$1, $$2}'
@@ -9,13 +9,16 @@ install:       ## Install dependencies
 dev:           ## Run the scraper locally (make dev LIMIT=10 for a quick test)
 	pnpm dev
 
+explorer:      ## Browse the scraped products at http://localhost:4321 (search by SKU or name)
+	pnpm explorer
+
 start:         ## Run the compiled scraper from dist/ (after make build)
 	pnpm start
 
 test:          ## Typecheck and run the tests
 	pnpm typecheck && pnpm test
 
-typecheck:     ## Typecheck src/ and test/ only
+typecheck:     ## Typecheck src/, test/ and explorer/
 	pnpm typecheck
 
 build:         ## Compile TypeScript to dist/

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explorador del scraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow" id="run">Scraper de 2ndswing.com</p>
+    <h1>Explorador del scraper</h1>
+    <p class="lede">Lo que extrajo el scraper, ordenado como la ficha real. Busca un producto, abre su ficha real (con una IP de EE. UU.), elige las mismas opciones en los dos lados y compara.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <input id="q" type="search" placeholder="Buscar por SKU, nombre o marca" autocomplete="off" aria-label="Buscar productos">
+      <select id="cat" aria-label="Categoría"><option value="">Todas las categorías</option></select>
+      <p class="count" id="list-count"></p>
+      <div class="list" id="list" aria-label="Productos"></div>
+      <details class="failures" id="failures" hidden></details>
+    </aside>
+    <main id="product"><p class="empty">Cargando productos…</p></main>
+  </div>
+
+  <footer>Datos de <span class="mono">output.json</span> y <span class="mono">run-report.json</span>. Las fotos y las miniaturas de los videos se cargan desde 2ndswing.com y YouTube; los precios pueden haber cambiado desde la corrida.</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
