@@ -2,6 +2,7 @@ import PQueue from "p-queue";
 import { CONCURRENCY, DELAY_MS } from "../config.js";
 import { BlockedError } from "../lib/http.js";
 import { log } from "../lib/log.js";
+import { formatDuration } from "../lib/time.js";
 import type { Failure, Product, SourceProduct } from "../types.js";
 import { buildProductUrl, scrapeProduct } from "./scrape-product.js";
 
@@ -27,6 +28,17 @@ export async function scrapeAll(
   const queue = new PQueue({ concurrency: CONCURRENCY, interval: DELAY_MS, intervalCap: 1 });
   let finishedCount = 0;
   let consecutiveBlocks = 0;
+  const startedAt = performance.now();
+
+  // [120/700 · 17% · ~5m 2s left]: the estimate assumes the remaining
+  // products take as long, on average, as the finished ones.
+  const nextProgress = () => {
+    const finished = ++finishedCount;
+    const total = sources.length;
+    const left = ((performance.now() - startedAt) / finished) * (total - finished);
+    const eta = finished < total ? ` · ~${formatDuration(left)} left` : "";
+    return `[${finished}/${total} · ${Math.floor((finished / total) * 100)}%${eta}]`;
+  };
 
   const fail = (source: SourceProduct, reason: string): Failure => {
     const failure = { id: source.id, name: source.name, url: buildProductUrl(source.id), reason };
@@ -35,7 +47,6 @@ export async function scrapeAll(
   };
 
   const task = async (source: SourceProduct) => {
-    const nextProgress = () => `[${++finishedCount}/${sources.length}]`;
     try {
       const product = await scrape(source);
       products.push(product);
