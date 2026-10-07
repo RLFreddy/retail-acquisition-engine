@@ -3,6 +3,7 @@
 //   { "#product_addtocart_form": { "configurable": { "spConfig": {...} } } }
 
 import type { CheerioAPI } from "cheerio";
+import { z } from "zod";
 import {
   IronsetOptionsSchema,
   parseBlock,
@@ -13,17 +14,28 @@ import {
   type SpConfig,
 } from "./schemas.js";
 
-function magentoBlocks($: CheerioAPI): Record<string, any>[] {
+const FORM = "#product_addtocart_form";
+const PROVIDER = "Magento_Catalog/js/product/view/provider";
+
+type Block = Record<string, Record<string, unknown> | undefined>;
+
+function magentoBlocks($: CheerioAPI): Block[] {
   return $('script[type="text/x-magento-init"]')
     .toArray()
     .flatMap((script) => {
       try {
-        return [JSON.parse($(script).text())];
+        return [JSON.parse($(script).text()) as Block];
       } catch {
         return []; // a malformed block only breaks its own widget
       }
     });
 }
+
+const components = (blocks: Block[], selector: string, name: string): unknown[] =>
+  blocks.map((block) => block[selector]?.[name]).filter((config) => config !== undefined);
+
+const hasKey = (value: unknown, key: string): boolean =>
+  typeof value === "object" && value !== null && key in value;
 
 export function productConfigs($: CheerioAPI): {
   product: ProviderItem;
@@ -31,13 +43,10 @@ export function productConfigs($: CheerioAPI): {
   options?: IronsetOptions;
 } {
   const blocks = magentoBlocks($);
-  const form = blocks.map((b) => b["#product_addtocart_form"]).filter(Boolean);
-  const spConfig = form.find((f) => f.configurable)?.configurable.spConfig;
+  const configurable = components(blocks, FORM, "configurable").find((c) => hasKey(c, "spConfig"));
   // ironsetOptions appears twice: an empty stub and the real config.
-  const options = form.find((f) => f.ironsetOptions?.optionConfig)?.ironsetOptions;
-  const provider = blocks.find((b) => b["*"]?.["Magento_Catalog/js/product/view/provider"])?.["*"][
-    "Magento_Catalog/js/product/view/provider"
-  ];
+  const options = components(blocks, FORM, "ironsetOptions").find((c) => hasKey(c, "optionConfig"));
+  const [provider] = components(blocks, "*", PROVIDER);
 
   // Missing on generic model pages the site redirects some retired SKUs to.
   if (!provider) throw new Error("not a product page (no provider block)");
@@ -46,7 +55,9 @@ export function productConfigs($: CheerioAPI): {
 
   return {
     product,
-    spConfig: spConfig && parseBlock("spConfig", SpConfigSchema, spConfig),
-    options: options && parseBlock("ironsetOptions", IronsetOptionsSchema, options),
+    spConfig: configurable
+      ? parseBlock("spConfig", z.object({ spConfig: SpConfigSchema }), configurable).spConfig
+      : undefined,
+    options: options ? parseBlock("ironsetOptions", IronsetOptionsSchema, options) : undefined,
   };
 }

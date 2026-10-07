@@ -6,11 +6,10 @@ import { money } from "../lib/money.js";
 import type { Customization } from "../types.js";
 import type { IronsetOptions } from "./schemas.js";
 
-const byPageOrder = (ids: string[], order: string[]): string[] =>
-  [...ids].sort(
-    (a, b) =>
-      (order.indexOf(a) + 1 || Infinity) - (order.indexOf(b) + 1 || Infinity),
-  );
+const byPageOrder = (ids: string[], order: string[]): string[] => {
+  const rank = (id: string) => (order.includes(id) ? order.indexOf(id) : Infinity);
+  return [...ids].sort((a, b) => rank(a) - rank(b));
+};
 
 function groupLabels($: CheerioAPI): Map<string, string> {
   const labels = new Map<string, string>();

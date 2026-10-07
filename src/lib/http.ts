@@ -24,7 +24,8 @@ const client = axios.create({
 // 406/429 = blocked or rate limited by the CDN; 408/5xx = transient.
 const RETRYABLE = new Set([406, 408, 429, 500, 502, 503, 504]);
 
-export let requestCount = 0;
+let requestCount = 0;
+export const requestsSent = (): number => requestCount;
 
 // A 406 that survives every retry means this IP is blocked: rate limited,
 // or not a US IP (the catalog is US-only).

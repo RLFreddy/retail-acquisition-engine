@@ -1,6 +1,6 @@
 import { CONCURRENCY, INPUT_CSV, LIMIT, OUTPUT_DIR } from "./config.js";
 import { loadProducts } from "./lib/csv.js";
-import { requestCount } from "./lib/http.js";
+import { requestsSent } from "./lib/http.js";
 import { log, LOG_FILE } from "./lib/log.js";
 import { writeOutputs } from "./lib/output.js";
 import { buildMetrics } from "./scrape/metrics.js";
@@ -22,7 +22,7 @@ async function main(): Promise<void> {
   const files = writeOutputs(OUTPUT_DIR, products, failures, metrics);
   log.info(
     { event: "run_finished", ...metrics },
-    `Done in ${(totalMs / 1000).toFixed(1)}s · ${products.length} ok · ${failures.length} failed · ${requestCount} requests`,
+    `Done in ${(totalMs / 1000).toFixed(1)}s · ${products.length} ok · ${failures.length} failed · ${requestsSent()} requests`,
   );
   for (const file of [...files, LOG_FILE]) log.info(`→ ${file}`);
 }
