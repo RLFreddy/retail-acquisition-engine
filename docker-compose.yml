@@ -6,16 +6,17 @@ services:
       - path: .env
         required: false # defaults apply without a .env
     environment:
-      # Single base for ALL output (results, logs, SQLite state): everything
-      # lands inside the bind mount ./data_docker on the host.
+      # Fixed paths inside the container; the host CSV and output folder come
+      # from INPUT_CSV / OUTPUT_DIR in .env (defaults: searchresults.csv, data_docker).
+      INPUT_CSV: /app/input.csv
       OUTPUT_DIR: /app/data
     volumes:
-      - ./data_docker:/app/data
+      - ./${OUTPUT_DIR:-data_docker}:/app/data
       # Long syntax: if the CSV is missing, Compose fails with a clear error
       # instead of silently creating an empty directory in its place.
       - type: bind
-        source: ./searchresults.csv
-        target: /app/searchresults.csv
+        source: ./${INPUT_CSV:-searchresults.csv}
+        target: /app/input.csv
         read_only: true
         bind:
           create_host_path: false # long syntax still defaults to true
