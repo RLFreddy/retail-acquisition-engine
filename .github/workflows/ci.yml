@@ -20,7 +20,10 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
-      - name: Docker uses the Node version in .nvmrc
+      - name: Docker and mise.toml use the versions in .nvmrc and package.json
         run: |
-          v=$(sed 's/^v//' .nvmrc)
-          ! grep '^FROM node:' Dockerfile | grep -v "node:$v-slim"
+          node_v=$(sed 's/^v//' .nvmrc)
+          pnpm_v=$(node -p 'require("./package.json").packageManager.split("@")[1]')
+          if grep '^FROM node:' Dockerfile | grep -v "node:$node_v-slim"; then echo "Dockerfile: use Node $node_v"; exit 1; fi
+          grep -qx "node = \"$node_v\"" mise.toml || { echo "mise.toml: use Node $node_v"; exit 1; }
+          grep -qx "pnpm = \"$pnpm_v\"" mise.toml || { echo "mise.toml: use pnpm $pnpm_v"; exit 1; }

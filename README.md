@@ -82,71 +82,30 @@ Why this approach, and how the page's JSON gives every combination: see
 > If the site blocks your IP, use a **US IP**, for example through a VPN. The
 > scraper detects the block and stops on its own.
 
-| Tool    | Version                                     | Notes                                                 |
-| ------- | ------------------------------------------- | ----------------------------------------------------- |
-| Node.js | 24 (the exact version is in `.nvmrc`)       | Docker and CI use the same version                    |
-| pnpm    | 10 (the exact version is in `package.json`) | Corepack installs it                                  |
-| make    | Any                                         | Optional: every target maps to a `pnpm` script        |
-| Docker  | With Compose 2.24 or later                  | Only for the Docker install, which needs nothing else |
+| Tool    | Version                                                    | Notes                                                 |
+| ------- | ---------------------------------------------------------- | ----------------------------------------------------- |
+| Node.js | 24 (the exact version is in `.nvmrc` and `mise.toml`)       | Docker and CI use the same version                    |
+| pnpm    | 10 (the exact version is in `package.json` and `mise.toml`) | mise or Corepack installs it                          |
+| make    | Any                                                        | Optional: every target maps to a `pnpm` script        |
+| Docker  | With Compose 2.24 or later                                 | Only for the Docker install, which needs nothing else |
 
 No compiler is needed: the SQLite driver ships prebuilt binaries for Linux,
 macOS and Windows. Tested on Linux (Ubuntu, in CI) and on Windows with WSL2.
 
-## Installation
+## Quick start
 
-### With Node
-
-1. **Get the code:**
-
-   ```bash
-   git clone https://github.com/RLFreddy/retail-acquisition-engine.git
-   cd retail-acquisition-engine
-   ```
-
-2. **Install Node and pnpm** at the pinned versions:
-
-   ```bash
-   nvm install          # the Node version in .nvmrc
-   corepack enable      # the pnpm version in package.json
-   node -v && pnpm -v   # should match .nvmrc and package.json
-   ```
-
-   - Without nvm, install Node 24 from [nodejs.org](https://nodejs.org).
-   - Node 25 and later no longer include Corepack: run `npm install -g corepack` first.
-   - The first `pnpm` command may ask to download pnpm: answer `Y`.
-
-3. **Install the dependencies:**
-
-   ```bash
-   make install         # or: pnpm install
-   ```
-
-4. **Check the installation** (no network or VPN needed):
-
-   ```bash
-   make test            # typecheck and 37 tests; ends with "pass 37"
-   ```
-
-### With Docker
-
-The image brings Node and pnpm, so Docker is all you need:
+With [mise](https://mise.jdx.dev), which installs the pinned Node and pnpm:
 
 ```bash
 git clone https://github.com/RLFreddy/retail-acquisition-engine.git
 cd retail-acquisition-engine
-make docker-build          # or: docker compose build
-make docker-run LIMIT=10   # or: docker compose run --rm -e LIMIT=10 scraper
+mise install           # Node and pnpm (answer y if it asks to trust mise.toml)
+make install           # dependencies
+cp .env.example .env   # optional settings
+make dev LIMIT=10      # scrape the first 10 products of searchresults.csv
 ```
 
-The results go to `data_docker/`.
-
-## Quick start
-
-With the project installed, scrape the first 10 products of `searchresults.csv`:
-
-```bash
-make dev LIMIT=10
-```
+Without mise, or with Docker, see [Installation](#installation).
 
 The console shows each product as it finishes, then a summary:
 
@@ -161,6 +120,61 @@ INFO  Scraper: Output saved: {"files":["data/output.json","data/run-report.json"
 Run `make dev` (no `LIMIT`) to scrape all the products in the CSV. If the run
 stops with "The site is blocking this IP", the site does not accept your IP: see
 [Requirements](#requirements).
+
+## Installation
+
+### With nvm
+
+1. **Get the code:**
+
+   ```bash
+   git clone https://github.com/RLFreddy/retail-acquisition-engine.git
+   cd retail-acquisition-engine
+   ```
+
+2. **Install Node and pnpm** at the pinned versions:
+
+   ```bash
+   nvm install          # Node, from .nvmrc
+   corepack enable      # pnpm, from package.json
+   node -v && pnpm -v   # should print the pinned versions
+   ```
+
+   - Without nvm, install Node 24 from [nodejs.org](https://nodejs.org).
+   - Node 25 and later no longer include Corepack: run `npm install -g corepack` first.
+   - The first `pnpm` command may ask to download pnpm: answer `Y`.
+
+3. **Install the dependencies:**
+
+   ```bash
+   make install         # or: pnpm install
+   ```
+
+4. **Settings** (optional; every value in it is the default):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+5. **Check the installation** (no network or VPN needed):
+
+   ```bash
+   make test            # typecheck and 37 tests; ends with "pass 37"
+   ```
+
+### With Docker
+
+The image brings Node and pnpm, so Docker is all you need:
+
+```bash
+git clone https://github.com/RLFreddy/retail-acquisition-engine.git
+cd retail-acquisition-engine
+cp .env.example .env       # optional settings, also read by Docker
+make docker-build          # or: docker compose build
+make docker-run LIMIT=10   # or: docker compose run --rm -e LIMIT=10 scraper
+```
+
+The results go to `data_docker/`.
 
 ## Usage
 

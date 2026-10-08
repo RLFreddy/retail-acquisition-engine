@@ -1,0 +1,5 @@
+# Node and pnpm versions for mise users: run `mise install`.
+# They must match .nvmrc, the Dockerfile and package.json ("packageManager"); CI checks it.
+[tools]
+node = "24.21.0"
+pnpm = "10.14.0"

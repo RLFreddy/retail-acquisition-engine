@@ -1,7 +1,7 @@
 # ==========================================
 # Stage 1: Shared base and pnpm setup
 # ==========================================
-# Node version: must match .nvmrc (CI checks it)
+# Node version: must match .nvmrc and mise.toml (CI checks it)
 FROM node:24.21.0-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
