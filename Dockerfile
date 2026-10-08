@@ -1,6 +1,7 @@
 # ==========================================
 # Stage 1: Shared base and pnpm setup
 # ==========================================
+# Node version: same as .nvmrc (CI reads .nvmrc; update both FROM lines with it)
 FROM node:24.10.0-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
