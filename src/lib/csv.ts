@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import csv from "csv-parser";
-import type { SourceProduct } from "../types.js";
+import type { SourceProduct } from "../types.ts";
 
 export async function loadProducts(file: string): Promise<SourceProduct[]> {
   if (!fs.existsSync(file)) throw new Error(`input CSV not found: ${file}`);

@@ -3,9 +3,9 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { loadProducts } from "../src/lib/csv.js";
-import { writeOutputs } from "../src/lib/output.js";
-import type { Product } from "../src/types.js";
+import { loadProducts } from "../src/lib/csv.ts";
+import { writeOutputs } from "../src/lib/output.ts";
+import type { Product } from "../src/types.ts";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "rae-csv-"));
 after(() => fs.rmSync(dir, { recursive: true, force: true }));

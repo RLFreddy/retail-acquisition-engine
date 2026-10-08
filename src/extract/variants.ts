@@ -2,9 +2,9 @@
 // site. That is how conditional options are captured (e.g. a shaft only sold
 // in Stiff) without simulating clicks.
 
-import { roundToCents } from "../lib/money.js";
-import type { Dropdown, Variant } from "../types.js";
-import type { SpConfig } from "./schemas.js";
+import { roundToCents } from "../lib/money.ts";
+import type { Dropdown, Variant } from "../types.ts";
+import type { SpConfig } from "./schemas.ts";
 
 type SpAttribute = SpConfig["attributes"][string];
 

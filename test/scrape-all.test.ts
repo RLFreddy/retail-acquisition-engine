@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { after, beforeEach, test } from "node:test";
 import Sqlite from "better-sqlite3";
-import type { Product, SourceProduct } from "../src/types.js";
+import type { Product, SourceProduct } from "../src/types.ts";
 
 // Config is read at import time: set it first, then import the modules.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-run-"));
@@ -12,9 +12,9 @@ process.env.OUTPUT_DIR = tmp;
 process.env.CONCURRENCY = "2";
 process.env.DELAY_MS = "0";
 process.env.MAX_ATTEMPTS = "2";
-const { BlockedError } = await import("../src/lib/http.js");
-const { closeState, initState, productState } = await import("../src/lib/state.js");
-const { scrapeAll } = await import("../src/scrape/scrape-all.js");
+const { BlockedError } = await import("../src/lib/http.ts");
+const { closeState, initState, productState } = await import("../src/lib/state.ts");
+const { scrapeAll } = await import("../src/scrape/scrape-all.ts");
 
 // Every test starts from an empty state.
 let run = 0;

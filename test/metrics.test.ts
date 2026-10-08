@@ -3,12 +3,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import type { Product } from "../src/types.js";
+import type { Product } from "../src/types.ts";
 
 // Config is read at import time: set it first, then import the module.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-metrics-"));
 process.env.OUTPUT_DIR = tmp;
-const { buildMetrics, passesQualityCheck } = await import("../src/scrape/metrics.js");
+const { buildMetrics, passesQualityCheck } = await import("../src/scrape/metrics.ts");
 after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 test("quality check: passes with few failures, fails when nothing or too much fails", () => {

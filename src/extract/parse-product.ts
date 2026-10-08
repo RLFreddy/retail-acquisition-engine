@@ -1,11 +1,11 @@
 import * as cheerio from "cheerio";
-import { roundToCents } from "../lib/money.js";
-import type { Product, SourceProduct } from "../types.js";
-import { parseClubs, parseCustomizeDropdowns } from "./customizations.js";
-import { parseBadge, parseDescription, parseSpecs } from "./details.js";
-import { readProductConfigs } from "./magento.js";
-import { parseMainImage, parseVideos } from "./media.js";
-import { parseVariants, sortAttributes, toDropdowns } from "./variants.js";
+import { roundToCents } from "../lib/money.ts";
+import type { Product, SourceProduct } from "../types.ts";
+import { parseClubs, parseCustomizeDropdowns } from "./customizations.ts";
+import { parseBadge, parseDescription, parseSpecs } from "./details.ts";
+import { readProductConfigs } from "./magento.ts";
+import { parseMainImage, parseVideos } from "./media.ts";
+import { parseVariants, sortAttributes, toDropdowns } from "./variants.ts";
 
 export function parseProduct(source: SourceProduct, html: string): Omit<Product, "extraction_time_ms" | "scraped_at"> {
   const $ = cheerio.load(html);

@@ -3,9 +3,9 @@
 
 import type { CheerioAPI } from "cheerio";
 import { z } from "zod";
-import { roundToCents } from "../lib/money.js";
-import type { CustomizeDropdown } from "../types.js";
-import { parseBlock, type IronsetOptions } from "./schemas.js";
+import { roundToCents } from "../lib/money.ts";
+import type { CustomizeDropdown } from "../types.ts";
+import { parseBlock, type IronsetOptions } from "./schemas.ts";
 
 type OptionGroup = IronsetOptions["optionConfig"][string];
 type GroupOption = { name: string; amount: number };

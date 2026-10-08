@@ -4,7 +4,7 @@ import type { AddressInfo } from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { createExplorer } from "../explorer/server.js";
+import { createExplorer } from "../explorer/server.ts";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "rae-explorer-"));
 const product = {

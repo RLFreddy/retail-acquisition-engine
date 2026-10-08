@@ -1,10 +1,10 @@
 import PQueue from "p-queue";
-import { CONCURRENCY, DELAY_MS, MAX_ATTEMPTS } from "../config.js";
-import { BlockedError } from "../lib/http.js";
-import { log } from "../lib/log.js";
-import { doneProducts, markDone, markFailed, productState } from "../lib/state.js";
-import type { Failure, Product, SourceProduct } from "../types.js";
-import { buildProductUrl, scrapeProduct } from "./scrape-product.js";
+import { CONCURRENCY, DELAY_MS, MAX_ATTEMPTS } from "../config.ts";
+import { BlockedError } from "../lib/http.ts";
+import { log } from "../lib/log.ts";
+import { doneProducts, markDone, markFailed, productState } from "../lib/state.ts";
+import type { Failure, Product, SourceProduct } from "../types.ts";
+import { buildProductUrl, scrapeProduct } from "./scrape-product.ts";
 
 const MAX_CONSECUTIVE_BLOCKS = 3; // before stopping the run
 const STATUS_INTERVAL_MS = 60_000; // like Crawlee's periodic statistics

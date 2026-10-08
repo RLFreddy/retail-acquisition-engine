@@ -1,12 +1,12 @@
-import { CONCURRENCY, DELAY_MS, INPUT_CSV, LIMIT, OUTPUT_DIR } from "./config.js";
-import { loadProducts } from "./lib/csv.js";
-import { getRequestCount } from "./lib/http.js";
-import { log, LOG_FILE } from "./lib/log.js";
-import { writeOutputs } from "./lib/output.js";
-import { closeState, DB_PATH, initState } from "./lib/state.js";
-import { formatDuration } from "./lib/time.js";
-import { buildMetrics, passesQualityCheck } from "./scrape/metrics.js";
-import { scrapeAll } from "./scrape/scrape-all.js";
+import { CONCURRENCY, DELAY_MS, INPUT_CSV, LIMIT, OUTPUT_DIR } from "./config.ts";
+import { loadProducts } from "./lib/csv.ts";
+import { getRequestCount } from "./lib/http.ts";
+import { log, LOG_FILE } from "./lib/log.ts";
+import { writeOutputs } from "./lib/output.ts";
+import { closeState, DB_PATH, initState } from "./lib/state.ts";
+import { formatDuration } from "./lib/time.ts";
+import { buildMetrics, passesQualityCheck } from "./scrape/metrics.ts";
+import { scrapeAll } from "./scrape/scrape-all.ts";
 
 // Ctrl+C: every finished product is already saved, so just close the state
 // and say how to continue.

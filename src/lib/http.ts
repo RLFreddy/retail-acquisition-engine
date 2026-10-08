@@ -6,9 +6,9 @@ import {
   RETRY_DELAY_MS,
   TIMEOUT_MS,
   USER_AGENT,
-} from "../config.js";
-import { log } from "./log.js";
-import { sleep } from "./time.js";
+} from "../config.ts";
+import { log } from "./log.ts";
+import { sleep } from "./time.ts";
 
 const client = axios.create({
   timeout: TIMEOUT_MS,

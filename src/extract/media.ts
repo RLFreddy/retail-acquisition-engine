@@ -1,6 +1,6 @@
 import type { CheerioAPI } from "cheerio";
-import { BASE_URL } from "../config.js";
-import { GallerySchema, parseBlock, type ProviderItem } from "./schemas.js";
+import { BASE_URL } from "../config.ts";
+import { GallerySchema, parseBlock, type ProviderItem } from "./schemas.ts";
 
 const GALLERY_IMAGES = `${BASE_URL}images/representative/`;
 

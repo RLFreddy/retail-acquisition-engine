@@ -1,7 +1,7 @@
 import path from "node:path";
 import { styleText } from "node:util";
 import pino from "pino";
-import { OUTPUT_DIR } from "../config.js";
+import { OUTPUT_DIR } from "../config.ts";
 
 // One log file per run, named by its start time: logs/run-2026-10-07T04-04-47.log
 const runStamp = new Date().toISOString().slice(0, 19).replace(/:/g, "-");

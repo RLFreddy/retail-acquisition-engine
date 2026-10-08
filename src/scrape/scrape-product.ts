@@ -1,9 +1,9 @@
-import { BASE_URL } from "../config.js";
-import { fetchText } from "../lib/http.js";
-import { roundMs } from "../lib/time.js";
-import { parseGallery } from "../extract/media.js";
-import { parseProduct } from "../extract/parse-product.js";
-import type { Product, SourceProduct } from "../types.js";
+import { BASE_URL } from "../config.ts";
+import { fetchText } from "../lib/http.ts";
+import { roundMs } from "../lib/time.ts";
+import { parseGallery } from "../extract/media.ts";
+import { parseProduct } from "../extract/parse-product.ts";
+import type { Product, SourceProduct } from "../types.ts";
 
 // The site serves every product at /<sku-slug>, so no search request is
 // needed: "LINK 2.2 PUT" → https://www.2ndswing.com/link-2dot2-put

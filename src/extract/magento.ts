@@ -12,7 +12,7 @@ import {
   type IronsetOptions,
   type ProviderItem,
   type SpConfig,
-} from "./schemas.js";
+} from "./schemas.ts";
 
 const FORM = "#product_addtocart_form";
 const PROVIDER = "Magento_Catalog/js/product/view/provider";

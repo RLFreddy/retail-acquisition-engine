@@ -1,7 +1,7 @@
-import { CONCURRENCY, DELAY_MS, MAX_FAILURE_RATE } from "../config.js";
-import { getRequestCount } from "../lib/http.js";
-import { roundMs } from "../lib/time.js";
-import type { Failure, Product } from "../types.js";
+import { CONCURRENCY, DELAY_MS, MAX_FAILURE_RATE } from "../config.ts";
+import { getRequestCount } from "../lib/http.ts";
+import { roundMs } from "../lib/time.ts";
+import type { Failure, Product } from "../types.ts";
 
 // Nearest-rank percentile over an ascending-sorted list, p in 0..1.
 const percentile = (sorted: number[], p: number): number =>

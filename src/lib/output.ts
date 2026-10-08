@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { Failure, Product } from "../types.js";
+import type { Failure, Product } from "../types.ts";
 
 // Every cell quoted and inner quotes doubled (RFC 4180).
 const toCsvRow = (cells: unknown[]): string =>

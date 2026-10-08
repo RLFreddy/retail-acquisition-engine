@@ -10,8 +10,8 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { OUTPUT_DIR } from "../src/config.js";
-import type { Product } from "../src/types.js";
+import { OUTPUT_DIR } from "../src/config.ts";
+import type { Product } from "../src/types.ts";
 
 const PUBLIC = fileURLToPath(new URL("public/", import.meta.url));
 const TYPES: Record<string, string> = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript" };

@@ -6,8 +6,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import Sqlite, { type Database } from "better-sqlite3";
-import { OUTPUT_DIR } from "../config.js";
-import type { Product } from "../types.js";
+import { OUTPUT_DIR } from "../config.ts";
+import type { Product } from "../types.ts";
 
 // Internal state, kept apart from the results.
 export const DB_PATH = path.join(OUTPUT_DIR, "state", "scraper.db");

@@ -8,9 +8,9 @@ import { after, test } from "node:test";
 // point OUTPUT_DIR at a temp dir first, then import the modules.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-extract-"));
 process.env.OUTPUT_DIR = tmp;
-const { parseGallery } = await import("../src/extract/media.js");
-const { parseProduct } = await import("../src/extract/parse-product.js");
-const { buildProductUrl } = await import("../src/scrape/scrape-product.js");
+const { parseGallery } = await import("../src/extract/media.ts");
+const { parseProduct } = await import("../src/extract/parse-product.ts");
+const { buildProductUrl } = await import("../src/scrape/scrape-product.ts");
 after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 const source = { sku: "S3 PUT", name: "S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };

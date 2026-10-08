@@ -11,7 +11,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rae-http-"));
 process.env.OUTPUT_DIR = tmp;
 process.env.RETRIES = "2";
 process.env.RETRY_DELAY_MS = "1";
-const { BlockedError, fetchText } = await import("../src/lib/http.js");
+const { BlockedError, fetchText } = await import("../src/lib/http.ts");
 
 const hits: Record<string, number> = {};
 const server = http.createServer((req, res) => {
