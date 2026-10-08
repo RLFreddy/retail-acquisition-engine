@@ -167,15 +167,24 @@ function show(p, choices) {
   selectTab(state.tab);
 }
 
+// Besides this explorer, each product opens as the live page, as a clone of
+// it built from the data, or as an easier-to-read alternative.
 function head(p) {
+  const views = [
+    ["Original ↗", "live on 2ndswing.com", p.url, true],
+    ["Clone", "the store page, rebuilt from the data", `clone.html#${slug(p.sku)}`],
+    ["Alternative", "the same data, easier to read", `alternative.html#${slug(p.sku)}`],
+  ];
   return h("div", { class: "p-head" },
     h("div", { class: "p-title" },
       h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.sku}`, p.badge ? h("span", { class: "badge" }, p.badge) : null),
       h("h2", {}, p.name)),
     h("div", { class: "p-actions" },
-      h("a", { class: "btn-real", href: p.url, target: "_blank", rel: "noopener" }, "Open the live page ↗"),
-      h("a", { class: "mono", href: `api/products/${encodeURIComponent(p.sku)}`, target: "_blank", rel: "noopener" }, "View the full JSON ↗"),
-      h("span", { class: "mono muted" }, p.url)));
+      h("p", { class: "label" }, "Open this product as"),
+      h("div", { class: "views" }, views.map(([name, what, href, live]) => h("a", {
+        class: live ? "view live" : "view", href, target: live ? "_blank" : null, rel: live ? "noopener" : null,
+      }, h("b", {}, name), h("small", {}, what)))),
+      h("p", { class: "source" }, h("a", { href: `api/products/${encodeURIComponent(p.sku)}`, target: "_blank", rel: "noopener" }, "Full JSON ↗"), ` · ${p.url}`)));
 }
 
 function buyBox(p) {

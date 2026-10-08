@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clone · Scraper Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="clone.css">
+</head>
+<body>
+<header class="devbar">
+  <div class="devbar-inner">
+    <a class="brand" href="./">Scraper Explorer</a>
+    <span class="devtag">Clone of the 2ndswing.com page, rebuilt from the scraped data</span>
+    <nav class="views" aria-label="Views of this product">
+      <a data-view="explorer" href="./" title="Search the scraped products and check each one">Explorer</a>
+      <a data-view="clone" href="clone.html" title="The 2ndswing.com product page, rebuilt from the scraped data" aria-current="page">Clone</a>
+      <a data-view="alternative" href="alternative.html" title="The same data in an easier-to-read layout">Alternative</a>
+      <a data-view="original" href="https://www.2ndswing.com/" target="_blank" rel="noopener" title="The live product page on 2ndswing.com">Original ↗</a>
+    </nav>
+    <div class="search">
+      <input id="q" type="search" placeholder="Search by SKU, variant SKU, name or brand" autocomplete="off" aria-label="Search products" aria-controls="results">
+      <ul id="results" class="results" role="listbox" hidden></ul>
+    </div>
+  </div>
+</header>
+<main id="page" class="page"><p class="muted">Loading…</p></main>
+<script src="clone.js"></script>
+</body>
+</html>

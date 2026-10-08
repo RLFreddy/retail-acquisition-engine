@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alternative · Scraper Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="alternative.css">
+</head>
+<body>
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="./">Scraper Explorer</a>
+    <span class="bar-tag">The same data, easier to read</span>
+    <nav class="views" aria-label="Views of this product">
+      <a data-view="explorer" href="./" title="Search the scraped products and check each one">Explorer</a>
+      <a data-view="clone" href="clone.html" title="The 2ndswing.com product page, rebuilt from the scraped data">Clone</a>
+      <a data-view="alternative" href="alternative.html" title="The same data in an easier-to-read layout" aria-current="page">Alternative</a>
+      <a data-view="original" href="https://www.2ndswing.com/" target="_blank" rel="noopener" title="The live product page on 2ndswing.com">Original ↗</a>
+    </nav>
+    <div class="search">
+      <input id="q" type="search" placeholder="Search by SKU, variant SKU, name or brand" autocomplete="off" aria-label="Search products" aria-controls="results">
+      <ul id="results" class="results" role="listbox" hidden></ul>
+    </div>
+  </div>
+</header>
+<main id="page" class="page"><p class="empty">Loading…</p></main>
+<script src="alternative.js"></script>
+</body>
+</html>
