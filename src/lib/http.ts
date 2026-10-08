@@ -28,7 +28,7 @@ let requestCount = 0;
 export const getRequestCount = (): number => requestCount;
 
 // A 406 that survives every retry means this IP is blocked: rate limited,
-// or not a US IP (the catalog is US-only).
+// or from a location the site blocks (a US IP is the safe choice).
 export class BlockedError extends Error {
   constructor(url: string) {
     super(`blocked by the site (HTTP 406) on ${url}`);

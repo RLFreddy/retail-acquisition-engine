@@ -288,7 +288,7 @@ any setting:
 
 **Answer**
 
-- **Run** the Docker image as a daily scheduled job in a US region (the site only serves US IP addresses). Any cloud works; nothing ties it to one.
+- **Run** the Docker image as a daily scheduled job in a US region (the site blocks some locations, and US IPs are the safe choice). Any cloud works; nothing ties it to one.
 - **Monitor** what matters for data: products that passed validation, blocks, filled fields, duration and freshness. Alert when they move away from recent runs.
 - **Maintain** with a first step for every alert, zod errors that name the changed field, and 37 offline tests in CI.
 

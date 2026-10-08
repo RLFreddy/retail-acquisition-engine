@@ -41,7 +41,7 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 | Runtime               | **1 min 57 s** with `CONCURRENCY=20 DELAY_MS=0`; about 8 min with the polite defaults |
 
 > [!TIP]
-> **No US IP?** You can still browse the results (after `make install`):
+> **Blocked by the site?** You can still browse the results (after `make install`):
 > `OUTPUT_DIR=results/sample make explorer` shows the 5 sample products, and
 > `unzip results/full-results.zip -d data && make explorer` all 696. The zip holds
 > `output.json`, both CSVs, `run-report.json` and the run's log (182 MB unzipped).
@@ -79,10 +79,8 @@ Why this approach, and how the page's JSON gives every combination: see
 ## Requirements
 
 > [!IMPORTANT]
-> The scraper needs a **US IP address**. From other countries the site answers
-> HTTP 406 to every product page, and the run stops after 3 blocked products.
-> Outside the US, use a US VPN; Docker's traffic goes out through your machine,
-> so the VPN covers it too.
+> If the site blocks your IP, use a **US IP**, for example through a VPN. The
+> scraper detects the block and stops on its own.
 
 | Tool    | Version                                     | Notes                                                 |
 | ------- | ------------------------------------------- | ----------------------------------------------------- |
@@ -293,7 +291,7 @@ local server. CI runs them and the build on every push to `main`.
 
 ## Limitations
 
-- **US IP only:** from other countries the site answers HTTP 406
+- **The site may block your IP:** then use a US IP, for example through a VPN
   ([Requirements](#requirements)).
 - **4 of the 700 products have no data:** the site does not sell them;
   `run-report.json` gives the reason for each.

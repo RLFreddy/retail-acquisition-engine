@@ -14,7 +14,7 @@ function stopRun(queue: PQueue): void {
   if (queue.isPaused) return;
   log.error(
     { event: "run_stopped", data: { consecutiveBlocks: MAX_CONSECUTIVE_BLOCKS, remaining: queue.size } },
-    "The site is blocking this IP, stopping the scraper. A US IP is required.",
+    "The site is blocking this IP, stopping the scraper. Try a US IP, for example through a VPN.",
   );
   queue.pause();
   queue.clear();
