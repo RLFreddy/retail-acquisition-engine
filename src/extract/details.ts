@@ -1,9 +1,16 @@
-// The Description and Specs tabs are plain HTML in the same page; no JSON
-// carries them.
+// The Description and Specs tabs, and the ribbon over the photos, are plain
+// HTML in the same page; no JSON carries them.
 
 import type { CheerioAPI } from "cheerio";
 
 const cleanText = (text: string): string => text.replace(/\s+/g, " ").trim();
+
+// <span id="badge-text">NEW<br>ITEM</span> → "NEW ITEM"; most pages have none.
+export function parseBadge($: CheerioAPI): string | null {
+  const badge = $("#badge-text").first().clone();
+  badge.find("br").replaceWith(" ");
+  return cleanText(badge.text()) || null;
+}
 
 // One line per paragraph: "Who’s It For?", "Construction: Forged"…
 export function parseDescription($: CheerioAPI): string {

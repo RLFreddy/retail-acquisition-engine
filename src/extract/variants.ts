@@ -1,9 +1,9 @@
-// spConfig.index lists only the attribute combinations that exist on the site.
-// That is how conditional options are captured (e.g. a shaft only sold in
-// Stiff) without simulating clicks.
+// spConfig.index lists only the combinations of the dropdowns that exist on the
+// site. That is how conditional options are captured (e.g. a shaft only sold
+// in Stiff) without simulating clicks.
 
 import { roundToCents } from "../lib/money.js";
-import type { ProductOption, Variant } from "../types.js";
+import type { Dropdown, Variant } from "../types.js";
 import type { SpConfig } from "./schemas.js";
 
 type SpAttribute = SpConfig["attributes"][string];
@@ -13,38 +13,38 @@ type SpAttribute = SpConfig["attributes"][string];
 export const sortAttributes = (spConfig: SpConfig | undefined): SpAttribute[] =>
   Object.values(spConfig?.attributes ?? {}).sort((a, b) => a.position - b.position);
 
-export const toProductOptions = (attributes: SpAttribute[]): ProductOption[] =>
-  attributes.map(({ code, label, options }) => ({
-    code,
-    name: label,
-    values: options.map((o) => o.label),
-  }));
+export const toDropdowns = (attributes: SpAttribute[]): Dropdown[] =>
+  attributes.map(({ label, options }) => ({ label, options: options.map((o) => o.label) }));
 
-export function parseVariants(
-  spConfig: SpConfig | undefined,
-  attributes: SpAttribute[],
-  basePrice: number,
-): Variant[] {
+// Days to ship per simple product, repeated under each attribute id:
+// { "632": { "8807653": ["1"] } } → 8807653 → 1
+const readShipsInDays = (spConfig: SpConfig): Map<string, number> =>
+  new Map(
+    Object.values(spConfig.leadtimes ?? {}).flatMap((byProduct) =>
+      Object.entries(byProduct).flatMap(([productId, [days]]) => (days === undefined ? [] : [[productId, days] as const])),
+    ),
+  );
+
+export function parseVariants(spConfig: SpConfig | undefined, attributes: SpAttribute[]): Variant[] {
   if (!spConfig) return [];
+  const shipsInDays = readShipsInDays(spConfig);
   const variants: Variant[] = [];
 
   for (const [productId, combo] of Object.entries(spConfig.index)) {
-    const prices = spConfig.optionPrices[productId];
-    const options: Record<string, string> = {};
+    const price = spConfig.optionPrices[productId]?.finalPrice.amount;
+    const selected: Record<string, string> = {};
     for (const attr of attributes) {
       const option = attr.options.find((o) => o.id === combo[attr.id]);
-      if (option) options[attr.label] = option.label;
+      if (option) selected[attr.label] = option.label;
     }
     // Unpriced or incomplete combinations cannot be bought.
-    if (!prices?.finalPrice.amount || Object.keys(options).length !== attributes.length) continue;
+    if (!price || Object.keys(selected).length !== attributes.length) continue;
 
-    const final = prices.finalPrice.amount;
     variants.push({
       sku: spConfig.sku?.[productId] ?? productId,
-      options,
-      price: roundToCents(final),
-      regular_price: roundToCents(prices.oldPrice?.amount || final),
-      upcharge: roundToCents(final - basePrice),
+      selected,
+      product_price: roundToCents(price),
+      ships_in_days: shipsInDays.get(productId) ?? null,
     });
   }
   return variants;

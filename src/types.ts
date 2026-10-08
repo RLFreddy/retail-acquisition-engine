@@ -1,4 +1,5 @@
-// Output fields are snake_case on purpose: they are the file contract.
+// Output fields are snake_case on purpose: they are the file contract. Each one
+// is named after what a shopper sees on the product page.
 
 export interface SourceProduct {
   sku: string; // "Parent Item" column, which is the site's SKU
@@ -8,29 +9,28 @@ export interface SourceProduct {
   model: string;
 }
 
-// A dropdown that picks the variant, e.g. Dexterity: Left Handed, Right Handed.
-export interface ProductOption {
-  code: string;
-  name: string;
-  values: string[];
+// A dropdown of the page: its label and the options it lists.
+export interface Dropdown {
+  label: string;
+  options: string[];
 }
 
+// A dropdown of the Customize section; an option's price is the "+ $2.50"
+// shown next to it.
+export interface CustomizeDropdown {
+  label: string;
+  options: { name: string; price: number }[];
+}
+
+// A combination of the dropdowns that the store sells as its own SKU.
 export interface Variant {
   sku: string;
-  options: Record<string, string>; // option name → value
-  price: number;
-  regular_price: number;
-  upcharge: number; // price − base_price
+  selected: Record<string, string>; // dropdown label → option chosen
+  product_price: number; // "Product Price"
+  ships_in_days: number | null; // 1 = "In stock • Ships in 1 business day"
 }
 
-// A dropdown of the Customize section; its upcharge adds to the variant's price.
-export interface Customization {
-  name: string;
-  required: boolean; // the site makes every Customize dropdown required on some products
-  options: { name: string; upcharge: number }[];
-}
-
-// Fields grouped by topic: identity, price, content, media, configuration.
+// In the order of the product page.
 export interface Product {
   sku: string;
   name: string;
@@ -38,18 +38,17 @@ export interface Product {
   category: string;
   model: string;
   url: string;
-  base_price: number;
-  price_range: { min: number; max: number };
-  pricing_unit: "per_item" | "per_club"; // iron sets are priced per club
-  clubs: string[]; // iron sets only: the Irons In Set checkboxes
-  included_clubs: string[]; // iron sets only: the clubs checked by default
-  default_set_price: number | null; // iron sets only: base_price × included clubs
-  description: string; // one paragraph per line
-  specs: Record<string, string>[]; // one row of the Specs table per entry
-  media: { images: string[]; videos: string[] }; // image and YouTube URLs
-  options: ProductOption[];
+  badge: string | null; // ribbon over the photos: "NEW ITEM", "PRE ORDER"
+  starting_at: number; // "Starting At $215.00"
+  per_club: boolean; // "Per Club": iron sets are priced per club
+  dropdowns: Dropdown[];
+  irons_in_set: { options: string[]; checked: string[] } | null; // iron sets only
+  customize: { required: boolean; dropdowns: CustomizeDropdown[] }; // required: the site locks Customize on
   variants: Variant[];
-  customizations: Customization[];
+  images: string[]; // the photo gallery
+  videos: string[]; // the Videos tab
+  description: string; // the Description tab, one paragraph per line
+  specs: Record<string, string>[]; // the Specs tab, one table row per entry
   scraped_at: string; // ISO 8601, UTC
   extraction_time_ms: number;
 }

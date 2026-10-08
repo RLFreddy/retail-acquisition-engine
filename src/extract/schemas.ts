@@ -24,9 +24,10 @@ export const SpConfigSchema = z.object({
     }),
   ),
   index: phpRecord(phpRecord(z.coerce.string())), // simple product id → attribute id → option id
-  optionPrices: phpRecord(z.object({ finalPrice: AmountSchema, oldPrice: AmountSchema.optional() })),
+  optionPrices: phpRecord(z.object({ finalPrice: AmountSchema })),
   prices: z.object({ finalPrice: AmountSchema }).optional(),
   sku: phpRecord(z.string()).optional(), // simple product id → SKU
+  leadtimes: phpRecord(phpRecord(z.array(z.coerce.number()))).optional(), // attribute id → simple product id → [days to ship]
 });
 
 export const IronsetOptionsSchema = z.object({

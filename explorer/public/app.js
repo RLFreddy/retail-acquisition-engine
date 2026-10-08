@@ -100,7 +100,7 @@ async function findVariant(sku) {
     if (byId("q").value.trim().toLowerCase() !== sku) return; // the query changed meanwhile
     items.get(hit.product_sku).hidden = false;
     byId("list-count").textContent = `Variant ${hit.sku} of ${hit.product_sku}`;
-    await select(hit.product_sku, hit.options);
+    await select(hit.product_sku, hit.selected);
   } catch {
     // not a variant SKU either: the list stays empty
   }
@@ -124,14 +124,21 @@ async function select(sku, choices) {
 const state = { product: null, sel: [], custom: {}, clubs: new Set(), tab: "details" };
 const ui = {};
 
-// Each variant becomes [sku, price, value index per option], what the dropdowns filter on.
-const OPT = 2;
+// Each variant becomes [sku, price, days to ship, option index per dropdown], what the dropdowns filter on.
+const OPT = 3;
 function prepare(record) {
-  const index = record.options.map((o) => new Map(o.values.map((value, i) => [value, i])));
+  const index = record.dropdowns.map((d) => new Map(d.options.map((option, i) => [option, i])));
   return {
     ...record,
-    vs: record.variants.map((v) => [v.sku, v.price, ...record.options.map((o, k) => index[k].get(v.options[o.name]))]),
+    vs: record.variants.map((v) => [v.sku, v.product_price, v.ships_in_days, ...record.dropdowns.map((d, k) => index[k].get(v.selected[d.label]))]),
   };
+}
+
+// As the live page words it once a variant is chosen.
+function shipsIn(days) {
+  if (days == null) return "";
+  const weeks = Math.ceil(days / 7);
+  return days === 1 ? "In stock • Ships in 1 business day" : `Typically ships in ${weeks} ${weeks === 1 ? "Week" : "Weeks"}`;
 }
 
 const matches = (v, upto) => {
@@ -143,18 +150,18 @@ const matches = (v, upto) => {
 function optionsFor(k) {
   const seen = new Set();
   for (const v of state.product.vs) if (matches(v, k)) seen.add(v[OPT + k]);
-  return state.product.options[k].values.map((value, i) => [value, i]).filter(([, i]) => seen.has(i));
+  return state.product.dropdowns[k].options.map((option, i) => [option, i]).filter(([, i]) => seen.has(i));
 }
 
-// choices: a variant's options to pick ({ Dexterity: "Right Handed", … }), or none.
+// choices: a variant's selected options ({ Dexterity: "Right Handed", … }), or none.
 function show(p, choices) {
   state.product = p;
-  state.sel = p.options.map((o) => {
-    const i = choices ? o.values.indexOf(choices[o.name]) : -1;
+  state.sel = p.dropdowns.map((d) => {
+    const i = choices ? d.options.indexOf(choices[d.label]) : -1;
     return i < 0 ? null : i;
   });
   state.custom = {};
-  state.clubs = new Set(p.included_clubs);
+  state.clubs = new Set(p.irons_in_set?.checked ?? []);
   byId("product").replaceChildren(head(p), h("div", { class: "cols" }, buyBox(p), tabsPanel(p)));
   update();
   selectTab(state.tab);
@@ -163,7 +170,7 @@ function show(p, choices) {
 function head(p) {
   return h("div", { class: "p-head" },
     h("div", { class: "p-title" },
-      h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.sku}`),
+      h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.sku}`, p.badge ? h("span", { class: "badge" }, p.badge) : null),
       h("h2", {}, p.name)),
     h("div", { class: "p-actions" },
       h("a", { class: "btn-real", href: p.url, target: "_blank", rel: "noopener" }, "Open the live page ↗"),
@@ -177,8 +184,9 @@ function buyBox(p) {
   ui.priceUnit = h("span", { class: "price-unit" }, "Per Club");
   ui.priceDetail = h("p", { class: "price-detail" });
   ui.count = h("p", { class: "count" });
+  ui.ships = h("p", { class: "ships" });
   ui.total = h("div", { class: "total", "aria-live": "polite" });
-  ui.selects = p.options.map((o, k) => h("select", {
+  ui.selects = p.dropdowns.map((d, k) => h("select", {
     id: `attr-${k}`,
     onchange: (e) => {
       state.sel[k] = e.target.value === "" ? null : Number(e.target.value);
@@ -187,37 +195,38 @@ function buyBox(p) {
     },
   }));
 
-  const customize = p.customizations.map((c, ci) => h("div", { class: "field" },
-    h("label", { for: `cust-${ci}` }, c.required ? `${c.name} *` : c.name),
-    h("select", { id: `cust-${ci}`, onchange: (e) => { state.custom[ci] = e.target.value === "" ? null : Number(e.target.value); update(); } },
+  const customize = p.customize.dropdowns.map((d, di) => h("div", { class: "field" },
+    h("label", { for: `cust-${di}` }, p.customize.required ? `${d.label} *` : d.label),
+    h("select", { id: `cust-${di}`, onchange: (e) => { state.custom[di] = e.target.value === "" ? null : Number(e.target.value); update(); } },
       h("option", { value: "" }, "-- Please Select --"),
-      c.options.map((o, oi) => h("option", { value: oi }, o.upcharge > 0 ? `${o.name} + ${money(o.upcharge)}` : o.name)))));
+      d.options.map((o, oi) => h("option", { value: oi }, o.price > 0 ? `${o.name} + ${money(o.price)}` : o.name)))));
 
   return h("section", { class: "panel" },
     h("p", { class: "label" }, "Buy box · as on the live page"),
     h("div", {}, h("div", { class: "price" }, ui.priceLabel, ui.priceValue, ui.priceUnit), ui.priceDetail),
     h("div", { class: "fields" },
-      p.options.map((o, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, o.name), ui.selects[k])),
-      p.clubs.length ? clubsField(p) : null),
+      p.dropdowns.map((d, k) => h("div", { class: "field" }, h("label", { for: `attr-${k}` }, d.label), ui.selects[k])),
+      p.irons_in_set ? clubsField(p.irons_in_set) : null),
+    ui.ships,
     ui.count,
-    h("p", { class: "source" }, "options, variants ← the page's spConfig JSON (attributes, index, optionPrices, sku)"),
-    p.clubs.length ? h("p", { class: "source" }, "clubs, included_clubs ← the ironsetOptions JSON (Irons In Set)") : null,
+    h("p", { class: "source" }, "dropdowns, variants ← the page's spConfig JSON (attributes, index, optionPrices, sku, leadtimes)"),
+    p.irons_in_set ? h("p", { class: "source" }, "irons_in_set ← the ironsetOptions JSON (Irons In Set)") : null,
     h("details", { class: "customize", open: true },
       h("summary", {}, "Customize"),
       h("div", { class: "cust-body" },
-        h("p", { class: "count" }, p.customizations.some((c) => c.required)
+        h("p", { class: "count" }, p.customize.required
           ? "The site keeps Customize on for this product: every dropdown (*) is required."
           : "On the live page these show after clicking Customize; Standard hides and resets them."),
         customize.length ? customize : h("p", { class: "empty" }, "This product has no customizations."),
-        h("p", { class: "source" }, "customizations ← the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>"))),
+        h("p", { class: "source" }, "customize ← the ironsetOptions.optionConfig JSON or, when the page lacks it, the HTML <select>; required ← forceRequireOptions"))),
     ui.total);
 }
 
 // Irons In Set: checkboxes under the dropdowns, outside Customize, as on the site.
-function clubsField(p) {
+function clubsField(irons) {
   return h("div", { class: "field" },
     h("span", {}, "Irons In Set"),
-    h("div", { class: "clubs" }, p.clubs.map((club, i) =>
+    h("div", { class: "clubs" }, irons.options.map((club, i) =>
       h("label", { for: `club-${i}` },
         h("input", {
           type: "checkbox", id: `club-${i}`, checked: state.clubs.has(club),
@@ -258,7 +267,7 @@ function tabsPanel(p) {
   const figure = (src, href, alt) => h("figure", {},
     h("a", { href, target: "_blank", rel: "noopener" }, h("img", { src, alt, loading: "lazy" })),
     h("figcaption", {}, h("a", { class: "mono", href, target: "_blank", rel: "noopener" }, href)));
-  const { images, videos } = p.media;
+  const { images, videos } = p;
   panels.media.append(
     h("p", { class: "label" }, `Images (${images.length})`),
     h("div", { class: "thumbs" }, images.map((url) => figure(url, url, p.name))),
@@ -267,14 +276,14 @@ function tabsPanel(p) {
       ? h("div", { class: "thumbs" }, videos.map((url) =>
           figure(`https://i.ytimg.com/vi/${new URL(url).searchParams.get("v")}/mqdefault.jpg`, url, "YouTube video")))
       : h("p", { class: "empty" }, "No videos."),
-    h("p", { class: "source" }, "media.images ← /gallery/<SKU>.json (the page's main photo if there is none) · media.videos ← the Videos tab (#video)"));
+    h("p", { class: "source" }, "images ← /gallery/<SKU>.json (the page's main photo if there is none) · videos ← the Videos tab (#video)"));
 
   ui.variantsInfo = h("p", { class: "count" });
   ui.variantsBody = h("tbody", {});
   panels.variants.append(
     ui.variantsInfo,
     h("div", { class: "table-wrap" }, h("table", {},
-      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.options.map((o) => h("th", {}, o.name)), h("th", {}, "Price"), h("th", {}, "Upcharge"))),
+      h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.dropdowns.map((d) => h("th", {}, d.label)), h("th", {}, "Product Price"), h("th", {}, "Ships"))),
       ui.variantsBody)));
 
   ui.json = h("pre", { class: "json" });
@@ -315,26 +324,28 @@ function update() {
     select.value = state.sel[k] == null ? "" : String(state.sel[k]);
   });
 
-  const matching = p.vs.filter((v) => matches(v, p.options.length));
+  const matching = p.vs.filter((v) => matches(v, p.dropdowns.length));
   const chosen = state.sel.every((s) => s != null) ? matching[0] : null;
-  const unit = chosen ? chosen[1] : p.base_price;
-  const possible = p.options.reduce((acc, o) => acc * o.values.length, 1);
-  ui.priceLabel.textContent = chosen ? "Price" : "Starting At";
+  const unit = chosen ? chosen[1] : p.starting_at;
+  const possible = p.dropdowns.reduce((acc, d) => acc * d.options.length, 1);
+  const prices = p.vs.map((v) => v[1]);
+  ui.priceLabel.textContent = chosen ? "Product Price" : "Starting At";
   ui.priceValue.textContent = money(unit);
-  ui.priceUnit.hidden = p.pricing_unit !== "per_club";
+  ui.priceUnit.hidden = !p.per_club;
   ui.priceDetail.textContent = chosen
-    ? `SKU ${chosen[0]} · +${money(round(chosen[1] - p.base_price))} over the base price`
-    : `${int(p.vs.length)} variants, from ${money(p.price_range.min)} to ${money(p.price_range.max)}`;
+    ? `SKU ${chosen[0]}`
+    : prices.length ? `${int(p.vs.length)} variants, from ${money(Math.min(...prices))} to ${money(Math.max(...prices))}` : "";
+  ui.ships.textContent = chosen ? shipsIn(chosen[2]) : "";
   ui.count.textContent = `${int(p.vs.length)} valid combinations of ${int(possible)} possible · ${int(matching.length)} match the choices`;
 
-  const mods = round(p.customizations.reduce((sum, c, ci) => sum + (state.custom[ci] != null ? c.options[state.custom[ci]].upcharge : 0), 0));
-  if (p.pricing_unit === "per_club") {
+  const mods = round(p.customize.dropdowns.reduce((sum, d, di) => sum + (state.custom[di] != null ? d.options[state.custom[di]].price : 0), 0));
+  if (p.per_club) {
     const each = round(unit + mods);
     ui.total.replaceChildren(
       h("span", {}, "Per club: ", h("b", {}, money(unit)), " + ", h("b", {}, money(mods)), " in customizations = ", h("b", {}, money(each))),
       h("span", {}, "Clubs checked: ", h("b", {}, state.clubs.size)),
       h("span", { class: "big" }, `Set total: ${money(round(each * state.clubs.size))}`),
-      h("span", { class: "muted" }, `As on the site: (per-club price + customizations) × clubs. The scraper's default_set_price: ${money(p.default_set_price ?? 0)}`));
+      h("span", { class: "muted" }, "As on the site: (per-club price + customizations) × clubs checked"));
   } else {
     ui.total.replaceChildren(
       h("span", {}, "Price ", h("b", {}, money(unit)), " + customizations ", h("b", {}, money(mods))),
@@ -345,9 +356,9 @@ function update() {
   ui.variantsInfo.textContent = `Showing ${int(shown.length)} of ${int(matching.length)} variants that match the choices (${int(p.vs.length)} in total).`;
   ui.variantsBody.replaceChildren(...shown.map((v) => h("tr", {},
     h("td", { class: "sku" }, v[0]),
-    p.options.map((o, k) => h("td", {}, o.values[v[OPT + k]])),
+    p.dropdowns.map((d, k) => h("td", {}, d.options[v[OPT + k]])),
     h("td", { class: "num" }, money(v[1])),
-    h("td", { class: "num" }, v[1] > p.base_price ? `+${money(round(v[1] - p.base_price))}` : "—"))));
+    h("td", {}, shipsIn(v[2])))));
 }
 
 // ---- Start -----------------------------------------------------------------

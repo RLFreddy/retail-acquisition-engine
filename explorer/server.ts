@@ -4,7 +4,7 @@
 // The page loads one product at a time from this API:
 //   GET /api/summary        run metrics, failures and one line per product
 //   GET /api/products/:sku  the product's record, exactly as in output.json
-//   GET /api/variants/:sku  the product and options of a variant SKU (C4592868)
+//   GET /api/variants/:sku  the product and the options selected for a variant SKU (C4592868)
 
 import fs from "node:fs";
 import http from "node:http";
@@ -20,7 +20,7 @@ const TYPES: Record<string, string> = { ".html": "text/html", ".css": "text/css"
 function outputReader(outputDir: string) {
   const file = path.join(outputDir, "output.json");
   const reportFile = path.join(outputDir, "run-report.json");
-  type VariantHit = { product_sku: string; sku: string; options: Record<string, string> };
+  type VariantHit = { product_sku: string; sku: string; selected: Record<string, string> };
   let cache = { mtimeMs: -1, products: new Map<string, Product>(), variants: new Map<string, VariantHit>(), summary: "" };
   return () => {
     if (!fs.existsSync(file)) throw new Error(`${file} not found: run the scraper first (make dev)`);
@@ -37,13 +37,13 @@ function outputReader(outputDir: string) {
         brand: p.brand,
         category: p.category,
         variants: p.variants.length,
-        customizations: p.customizations.length,
-        images: p.media.images.length,
+        customizations: p.customize.dropdowns.length,
+        images: p.images.length,
       })),
     };
     const variants = new Map(
       products.flatMap((p) =>
-        p.variants.map((v) => [v.sku.toUpperCase(), { product_sku: p.sku, sku: v.sku, options: v.options }] as const),
+        p.variants.map((v) => [v.sku.toUpperCase(), { product_sku: p.sku, sku: v.sku, selected: v.selected }] as const),
       ),
     );
     cache = { mtimeMs, products: new Map(products.map((p) => [p.sku, p])), variants, summary: JSON.stringify(summary) };

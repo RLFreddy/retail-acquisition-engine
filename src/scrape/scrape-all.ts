@@ -69,8 +69,8 @@ export async function scrapeAll(
       const product = await scrape(source);
       markDone(product);
       consecutiveBlocks = 0;
-      const { variants, customizations, extraction_time_ms: ms } = product;
-      const customizationOptions = customizations.reduce((n, c) => n + c.options.length, 0);
+      const { variants, customize, extraction_time_ms: ms } = product;
+      const customizationOptions = customize.dropdowns.reduce((n, d) => n + d.options.length, 0);
       log.info(
         {
           event: "product_ok",

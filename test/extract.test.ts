@@ -15,20 +15,20 @@ after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 const source = { sku: "S3 PUT", name: "S3 Putter", brand: "Mizuno", category: "Putter", model: "S3" };
 const init = (json: object) => `<script type="text/x-magento-init">${JSON.stringify(json)}</script>`;
-const price = (amount: number) => ({ finalPrice: { amount }, oldPrice: { amount } });
+const price = (amount: number) => ({ finalPrice: { amount } });
 const option = (name: string, amount: number, option_type = "select") => ({ name, option_type, prices: { finalPrice: { amount } } });
 
 // Minimal page shaped like the live site: attributes out of position order,
 // one unpriced variant, option groups out of page order, an empty stub block.
-const page = ({ sku = "S3 PUT", available = true, optionsJson = true, ironset = false, forceRequire = false } = {}) => `
+const page = ({ sku = "S3 PUT", available = true, optionsJson = true, ironset = false, forceRequire = false, badge = false } = {}) => `
 <link rel="canonical" href="https://www.2ndswing.com/golf-clubs/putters/mizuno-s3-putter/s3-put" />
+${badge ? '<span class="pdp-badge new-item-badge"><span id="badge-text">NEW<br>ITEM</span></span>' : ""}
 <label class="label" for="select_10"><span>Grips</span></label>
 <select name="options[10]"><option value="">--</option><option value="102" price="29.99">B +
   $29.99</option><option value="101" price="0">A </option></select>
 <label class="label" for="select_20"><span>Lie Angle</span></label>
 <select name="options[20]"><option value="201" price="0">Standard</option></select>
-<label class="label" for="select_30"><span>Irons In Set</span></label>
-<input type="checkbox" name="options[30][]" value="301" price="0"><input type="checkbox" name="options[30][]" value="302" price="0">
+${ironset ? '<label class="label" for="select_30"><span>Irons In Set</span></label>' : ""}
 <div id="details"><div class="row"><p><p><strong>Who’s It For?</strong></p><p>Golfers who <span>putt</span>.<br>Often.</p>
 <ul><li>Forged</li></ul></div></div>
 <div id="specs"><table><tr><td>Club</td><td>Loft</td></tr><tr><td>4</td><td>24°</td></tr><tr><td>5</td><td>27°</td></tr></table></div>
@@ -45,6 +45,7 @@ ${init({
         index: { "1": { "632": "rh", "626": "s" }, "2": { "632": "rh", "626": "s" } },
         optionPrices: { "1": price(450) },
         sku: { "1": "SKU-1" },
+        leadtimes: { "632": { "1": ["1"] }, "626": { "1": ["1"] } }, // days as the site sends them: numbers or strings
         prices: price(400),
       },
     },
@@ -80,11 +81,14 @@ ${optionsJson ? init({
       basePrice: 400,
       isIronsetProduct: ironset ? 1 : 0,
       forceRequireOptions: forceRequire,
-      clubInformation: { included_clubs: ["7 Iron", "8 Iron", "9 Iron"] },
+      clubInformation: { included_clubs: ironset ? ["7 Iron", "8 Iron", "9 Iron"] : [] },
       optionConfig: {
         "20": { "201": option("Standard", 0) },
         "10": { "101": option("A ", 0, "grips"), "102": option("B", 29.99, "grips") },
-        "30": { "301": option("7 Iron", 0, "clubs"), "302": option("PW", 0, "clubs") },
+        ...(ironset && {
+          "30": { "301": option("7 Iron", 0, "clubs"), "302": option("8 Iron", 0, "clubs"),
+                  "303": option("9 Iron", 0, "clubs"), "304": option("PW", 0, "clubs") },
+        }),
       },
     },
   },
@@ -101,47 +105,50 @@ test("product URL is the slugified SKU", () => {
   assert.equal(buildProductUrl("LINK 2.2 PUT"), "https://www.2ndswing.com/link-2dot2-put");
 });
 
-test("options follow position order", () => {
-  assert.deepEqual(product.options, [
-    { code: "hand", name: "Dexterity", values: ["Right"] },
-    { code: "flex", name: "Flex", values: ["Stiff"] },
+test("badge: the ribbon over the photos, or null", () => {
+  assert.equal(parseProduct(source, page({ badge: true })).badge, "NEW ITEM");
+  assert.equal(product.badge, null);
+});
+
+test("dropdowns follow position order", () => {
+  assert.deepEqual(product.dropdowns, [
+    { label: "Dexterity", options: ["Right"] },
+    { label: "Flex", options: ["Stiff"] },
   ]);
 });
 
-test("only priced variants, upcharge = price − base price", () => {
+test("only priced variants, with the options selected, price and days to ship", () => {
+  assert.equal(product.starting_at, 400);
   assert.deepEqual(product.variants, [
-    { sku: "SKU-1", options: { Dexterity: "Right", Flex: "Stiff" }, price: 450, regular_price: 450, upcharge: 50 },
-  ]);
-  assert.deepEqual(product.price_range, { min: 450, max: 450 });
-});
-
-test("customizations: one per dropdown, labels, page order and upcharges", () => {
-  assert.deepEqual(product.customizations, [
-    { name: "Grips", required: false, options: [{ name: "B", upcharge: 29.99 }, { name: "A", upcharge: 0 }] },
-    { name: "Lie Angle", required: false, options: [{ name: "Standard", upcharge: 0 }] },
+    { sku: "SKU-1", selected: { Dexterity: "Right", Flex: "Stiff" }, product_price: 450, ships_in_days: 1 },
   ]);
 });
 
-test("customizations are required where the site forces them", () => {
-  const forced = parseProduct(source, page({ forceRequire: true }));
-  assert.deepEqual(forced.customizations.map((c) => c.required), [true, true]);
+test("customize: one dropdown per label, in page order, with each option's price", () => {
+  assert.deepEqual(product.customize, {
+    required: false,
+    dropdowns: [
+      { label: "Grips", options: [{ name: "B", price: 29.99 }, { name: "A", price: 0 }] },
+      { label: "Lie Angle", options: [{ name: "Standard", price: 0 }] },
+    ],
+  });
 });
 
-test("customizations come from the HTML select when the page has no options JSON", () => {
-  assert.deepEqual(parseProduct(source, page({ optionsJson: false })).customizations, product.customizations);
+test("customize is required where the site locks it on", () => {
+  assert.equal(parseProduct(source, page({ forceRequire: true })).customize.required, true);
 });
 
-test("iron sets: default set price = per-club price × included clubs", () => {
+test("customize comes from the HTML select when the page has no options JSON", () => {
+  assert.deepEqual(parseProduct(source, page({ optionsJson: false })).customize.dropdowns, product.customize.dropdowns);
+});
+
+test("iron sets: priced per club, with the Irons In Set checkboxes apart from Customize", () => {
   const ironset = parseProduct(source, page({ ironset: true }));
-  assert.equal(ironset.pricing_unit, "per_club");
-  assert.equal(ironset.default_set_price, 1200);
-  assert.equal(product.default_set_price, null);
-});
-
-test("iron sets: Irons In Set gives the clubs, not a customization", () => {
-  const ironset = parseProduct(source, page({ ironset: true }));
-  assert.deepEqual(ironset.clubs, ["7 Iron", "PW"]);
-  assert.deepEqual(ironset.customizations.map((c) => c.name), ["Grips", "Lie Angle"]);
+  assert.equal(ironset.per_club, true);
+  assert.deepEqual(ironset.irons_in_set, { options: ["7 Iron", "8 Iron", "9 Iron", "PW"], checked: ["7 Iron", "8 Iron", "9 Iron"] });
+  assert.deepEqual(ironset.customize.dropdowns.map((d) => d.label), ["Grips", "Lie Angle"]);
+  assert.equal(product.per_club, false);
+  assert.equal(product.irons_in_set, null);
 });
 
 test("description and specs from the page tabs", () => {
@@ -153,7 +160,7 @@ test("description and specs from the page tabs", () => {
 });
 
 test("the page JSON gives one main photo: the gallery's copy, encoded, without ?width", () => {
-  assert.deepEqual(product.media.images, ["https://www.2ndswing.com/images/representative/S3%20PUT.jpg"]);
+  assert.deepEqual(product.images, ["https://www.2ndswing.com/images/representative/S3%20PUT.jpg"]);
 });
 
 test("gallery: one image per name, encoded like the site does", () => {
@@ -165,7 +172,7 @@ test("gallery: one image per name, encoded like the site does", () => {
 });
 
 test("videos from the Videos tab", () => {
-  assert.deepEqual(product.media.videos, ["https://www.youtube.com/watch?v=abc123"]);
+  assert.deepEqual(product.videos, ["https://www.youtube.com/watch?v=abc123"]);
 });
 
 test("rejects a page for another SKU", () => {

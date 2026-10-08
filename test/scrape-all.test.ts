@@ -36,7 +36,7 @@ const sources: SourceProduct[] = Array.from({ length: 10 }, (_, i) => ({
 }));
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const product = (source: SourceProduct) =>
-  ({ ...source, variants: [], customizations: [], extraction_time_ms: 0 }) as unknown as Product;
+  ({ ...source, variants: [], customize: { required: false, dropdowns: [] }, extraction_time_ms: 0 }) as unknown as Product;
 
 test("keeps CSV order although workers finish out of order", async () => {
   // Earlier products take longer, so they finish last.

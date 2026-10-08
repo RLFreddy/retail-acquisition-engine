@@ -27,19 +27,19 @@ test("output CSVs: one row per variant and per customization option, led by thei
   const product = {
     sku: "PRO S4 STS",
     name: "Mizuno Pro S-4 Iron Set",
-    base_price: 215,
-    pricing_unit: "per_club",
-    variants: [{ sku: "C4605039", options: { Dexterity: "Left Handed" }, price: 275, regular_price: 275, upcharge: 60 }],
-    customizations: [{ name: "Ferrule", required: false, options: [{ name: "ICON (Black/Blue/White)", upcharge: 2.5 }] }],
+    starting_at: 215,
+    per_club: true,
+    variants: [{ sku: "C4605039", selected: { Dexterity: "Left Handed" }, product_price: 275, ships_in_days: 21 }],
+    customize: { required: false, dropdowns: [{ label: "Ferrule", options: [{ name: "ICON (Black/Blue/White)", price: 2.5 }] }] },
   } as unknown as Product;
   writeOutputs(dir, [product], [], {});
   const lines = (file: string) => fs.readFileSync(path.join(dir, file), "utf8").split("\n");
   assert.deepEqual(lines("variants.csv"), [
-    '"product_sku","product_name","sku","options","base_price","upcharge","price","pricing_unit"',
-    '"PRO S4 STS","Mizuno Pro S-4 Iron Set","C4605039","{""Dexterity"":""Left Handed""}","215","60","275","per_club"',
+    '"product_sku","product_name","sku","selected","starting_at","product_price","ships_in_days","per_club"',
+    '"PRO S4 STS","Mizuno Pro S-4 Iron Set","C4605039","{""Dexterity"":""Left Handed""}","215","275","21","true"',
   ]);
   assert.deepEqual(lines("customizations.csv"), [
-    '"product_sku","product_name","customization","required","option","upcharge","pricing_unit"',
-    '"PRO S4 STS","Mizuno Pro S-4 Iron Set","Ferrule","false","ICON (Black/Blue/White)","2.5","per_club"',
+    '"product_sku","product_name","required","dropdown","option","price","per_club"',
+    '"PRO S4 STS","Mizuno Pro S-4 Iron Set","false","Ferrule","ICON (Black/Blue/White)","2.5","true"',
   ]);
 });

@@ -12,12 +12,13 @@ const product = {
   name: "Mizuno S3 Putter",
   brand: "Mizuno",
   category: "Putter",
-  media: { images: ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg"], videos: [] },
+  images: ["https://www.2ndswing.com/images/standard/S3%20PUT.jpg"],
+  videos: [],
   variants: [
-    { sku: "C4613215", options: { Dexterity: "Left Handed" } },
-    { sku: "C4613216", options: { Dexterity: "Right Handed" } },
+    { sku: "C4613215", selected: { Dexterity: "Left Handed" } },
+    { sku: "C4613216", selected: { Dexterity: "Right Handed" } },
   ],
-  customizations: [{ name: "Grips", options: [{ name: "Standard", upcharge: 0 }] }],
+  customize: { required: false, dropdowns: [{ label: "Grips", options: [{ name: "Standard", price: 0 }] }] },
 };
 fs.writeFileSync(path.join(dir, "output.json"), JSON.stringify([product]));
 fs.writeFileSync(
@@ -57,8 +58,8 @@ test("a product's full record by SKU; 404 for unknown products and other files",
   assert.equal((await fetch(`${base}/package.json`)).status, 404);
 });
 
-test("a variant SKU leads to its product and options, in any case", async () => {
-  const hit = { product_sku: "S3 PUT", sku: "C4613216", options: { Dexterity: "Right Handed" } };
+test("a variant SKU leads to its product and the options selected, in any case", async () => {
+  const hit = { product_sku: "S3 PUT", sku: "C4613216", selected: { Dexterity: "Right Handed" } };
   assert.deepEqual(await (await fetch(`${base}/api/variants/C4613216`)).json(), hit);
   assert.deepEqual(await (await fetch(`${base}/api/variants/c4613216`)).json(), hit);
   assert.equal((await fetch(`${base}/api/variants/C0000000`)).status, 404);

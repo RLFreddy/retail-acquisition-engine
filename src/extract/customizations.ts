@@ -4,7 +4,7 @@
 import type { CheerioAPI } from "cheerio";
 import { z } from "zod";
 import { roundToCents } from "../lib/money.js";
-import type { Customization } from "../types.js";
+import type { CustomizeDropdown } from "../types.js";
 import { parseBlock, type IronsetOptions } from "./schemas.js";
 
 type OptionGroup = IronsetOptions["optionConfig"][string];
@@ -51,7 +51,7 @@ const readHtmlOptions = ($: CheerioAPI, groupId: string): GroupOption[] =>
 const isClubs = (group: OptionGroup | undefined): boolean =>
   Object.values(group ?? {}).some((option) => option.option_type === "clubs");
 
-export function parseCustomizations($: CheerioAPI, options: IronsetOptions | undefined): Customization[] {
+export function parseCustomizeDropdowns($: CheerioAPI, options: IronsetOptions | undefined): CustomizeDropdown[] {
   const groups = options?.optionConfig ?? {};
   const labels = readGroupLabels($);
   const groupIds = [...new Set([...Object.keys(groups), ...labels.keys()])].filter((id) => !isClubs(groups[id]));
@@ -60,14 +60,13 @@ export function parseCustomizations($: CheerioAPI, options: IronsetOptions | und
     .map((groupId) => {
       const group = groups[groupId];
       return {
-        name: labels.get(groupId) ?? groupId,
-        required: options?.forceRequireOptions ?? false,
+        label: labels.get(groupId) ?? groupId,
         options: (group ? readJsonOptions($, groupId, group) : readHtmlOptions($, groupId))
           .filter((option) => option.name.trim())
-          .map((option) => ({ name: option.name.trim(), upcharge: roundToCents(option.amount) })),
+          .map((option) => ({ name: option.name.trim(), price: roundToCents(option.amount) })),
       };
     })
-    .filter((customization) => customization.options.length);
+    .filter((dropdown) => dropdown.options.length);
 }
 
 // Every club an iron set can include; each one checked adds the per-club price.

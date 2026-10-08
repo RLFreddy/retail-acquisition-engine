@@ -24,7 +24,7 @@ export async function scrapeProduct(source: SourceProduct): Promise<Product> {
   return {
     ...product,
     // The photos are the page's gallery; without one, the page's main photo.
-    media: { ...product.media, images: galleryImages.length ? galleryImages : product.media.images },
+    images: galleryImages.length ? galleryImages : product.images,
     scraped_at: new Date().toISOString(),
     extraction_time_ms: roundMs(performance.now() - start),
   };

@@ -35,16 +35,16 @@ export function buildMetrics(products: Product[], failures: Failure[], startedAt
       max: percentile(times, 1),
     },
     variants: products.reduce((n, p) => n + p.variants.length, 0),
-    customization_options: products.reduce((n, p) => n + p.customizations.reduce((m, c) => m + c.options.length, 0), 0),
+    customization_options: products.reduce((n, p) => n + p.customize.dropdowns.reduce((m, d) => m + d.options.length, 0), 0),
     // Products with each part: a drop between runs points to a site change
     // that left a field empty without failing the product.
     coverage: {
       variants: count((p) => p.variants.length > 0),
-      customizations: count((p) => p.customizations.length > 0),
+      customize: count((p) => p.customize.dropdowns.length > 0),
       description: count((p) => p.description !== ""),
       specs: count((p) => p.specs.length > 0),
-      images: count((p) => p.media.images.length > 0),
-      videos: count((p) => p.media.videos.length > 0),
+      images: count((p) => p.images.length > 0),
+      videos: count((p) => p.videos.length > 0),
     },
   };
 }

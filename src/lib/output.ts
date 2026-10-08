@@ -29,27 +29,27 @@ export function writeOutputs(
   // One row per variant and per customization option, led by their product.
   writeCsv(
     files.variants,
-    ["product_sku", "product_name", "sku", "options", "base_price", "upcharge", "price", "pricing_unit"],
+    ["product_sku", "product_name", "sku", "selected", "starting_at", "product_price", "ships_in_days", "per_club"],
     products.flatMap((p) =>
       p.variants.map((v) => [
         p.sku,
         p.name,
         v.sku,
-        JSON.stringify(v.options),
-        p.base_price,
-        v.upcharge,
-        v.price,
-        p.pricing_unit,
+        JSON.stringify(v.selected),
+        p.starting_at,
+        v.product_price,
+        v.ships_in_days ?? "",
+        p.per_club,
       ]),
     ),
   );
 
   writeCsv(
     files.customizations,
-    ["product_sku", "product_name", "customization", "required", "option", "upcharge", "pricing_unit"],
+    ["product_sku", "product_name", "required", "dropdown", "option", "price", "per_club"],
     products.flatMap((p) =>
-      p.customizations.flatMap((c) =>
-        c.options.map((o) => [p.sku, p.name, c.name, c.required, o.name, o.upcharge, p.pricing_unit]),
+      p.customize.dropdowns.flatMap((d) =>
+        d.options.map((o) => [p.sku, p.name, p.customize.required, d.label, o.name, o.price, p.per_club]),
       ),
     ),
   );

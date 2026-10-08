@@ -14,7 +14,7 @@ export const DB_PATH = path.join(OUTPUT_DIR, "state", "scraper.db");
 
 // Bump when the Product record changes: a state saved in an older format is
 // dropped instead of mixing old records into the output.
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
 
 type ProductState = { status: "pending" | "done" | "failed"; attempts: number };
 

@@ -23,10 +23,11 @@ test("speed counts only this run; coverage counts every product", () => {
       scraped_at,
       extraction_time_ms: ms,
       variants: [{}],
-      customizations: [],
+      customize: { required: false, dropdowns: [] },
       description: "Who’s It For?",
       specs: [],
-      media: { images: ["a.jpg"], videos: [] },
+      images: ["a.jpg"],
+      videos: [],
     }) as unknown as Product;
   const resumed = record("2026-10-06T10:00:00.000Z", 9000);
   const fresh = record("2026-10-07T22:00:30.000Z", 2000);
@@ -34,5 +35,5 @@ test("speed counts only this run; coverage counts every product", () => {
   assert.equal(metrics.resumed, 1);
   assert.equal(metrics.products_per_minute, 1);
   assert.equal(metrics.product_ms.max, 2000);
-  assert.deepEqual(metrics.coverage, { variants: 2, customizations: 0, description: 2, specs: 0, images: 2, videos: 0 });
+  assert.deepEqual(metrics.coverage, { variants: 2, customize: 0, description: 2, specs: 0, images: 2, videos: 0 });
 });
