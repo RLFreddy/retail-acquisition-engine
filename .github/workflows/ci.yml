@@ -20,3 +20,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - name: Docker uses the Node version in .nvmrc
+        run: |
+          v=$(sed 's/^v//' .nvmrc)
+          ! grep '^FROM node:' Dockerfile | grep -v "node:$v-slim"

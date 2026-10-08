@@ -1,8 +1,8 @@
 # ==========================================
 # Stage 1: Shared base and pnpm setup
 # ==========================================
-# Node version: same as .nvmrc (CI reads .nvmrc; update both FROM lines with it)
-FROM node:24.10.0-slim AS base
+# Node version: must match .nvmrc (CI checks it)
+FROM node:24.21.0-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -33,7 +33,7 @@ RUN pnpm build
 # ==========================================
 # Stage 4: Final runtime (ultra slim)
 # ==========================================
-FROM node:24.10.0-slim AS runtime
+FROM node:24.21.0-slim AS runtime
 
 ENV NODE_ENV=production \
     OUTPUT_DIR=/app/data

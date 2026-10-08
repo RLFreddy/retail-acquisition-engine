@@ -84,12 +84,12 @@ Why this approach, and how the page's JSON gives every combination: see
 > Outside the US, use a US VPN; Docker's traffic goes out through your machine,
 > so the VPN covers it too.
 
-| Tool    | Version                                   | Notes                                                  |
-| ------- | ----------------------------------------- | ------------------------------------------------------ |
-| Node.js | 24 (exactly 24.10.0, from `.nvmrc`)       | Docker and CI use the same version                     |
-| pnpm    | 10 (exactly 10.14.0, from `package.json`) | Corepack installs it                                   |
-| make    | Any                                       | Optional: every target maps to a `pnpm` script         |
-| Docker  | With Compose 2.24 or later                | Only for the Docker install, which needs nothing else  |
+| Tool    | Version                                     | Notes                                                 |
+| ------- | ------------------------------------------- | ----------------------------------------------------- |
+| Node.js | 24 (the exact version is in `.nvmrc`)       | Docker and CI use the same version                    |
+| pnpm    | 10 (the exact version is in `package.json`) | Corepack installs it                                  |
+| make    | Any                                         | Optional: every target maps to a `pnpm` script        |
+| Docker  | With Compose 2.24 or later                  | Only for the Docker install, which needs nothing else |
 
 No compiler is needed: the SQLite driver ships prebuilt binaries for Linux,
 macOS and Windows. Tested on Linux (Ubuntu, in CI) and on Windows with WSL2.
@@ -108,14 +108,14 @@ macOS and Windows. Tested on Linux (Ubuntu, in CI) and on Windows with WSL2.
 2. **Install Node and pnpm** at the pinned versions:
 
    ```bash
-   nvm install          # Node 24.10.0, read from .nvmrc
-   corepack enable      # pnpm 10.14.0, read from package.json
-   node -v && pnpm -v   # v24.10.0 and 10.14.0
+   nvm install          # the Node version in .nvmrc
+   corepack enable      # the pnpm version in package.json
+   node -v && pnpm -v   # should match .nvmrc and package.json
    ```
 
    - Without nvm, install Node 24 from [nodejs.org](https://nodejs.org).
    - Node 25 and later no longer include Corepack: run `npm install -g corepack` first.
-   - The first `pnpm` command may ask to download pnpm 10.14.0: answer `Y`.
+   - The first `pnpm` command may ask to download pnpm: answer `Y`.
 
 3. **Install the dependencies:**
 
