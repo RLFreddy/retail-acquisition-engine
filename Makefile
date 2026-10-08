@@ -33,5 +33,10 @@ reset:         ## Delete all results and the resume state (data/, data_docker/)
 docker-build:  ## Build the Docker image
 	docker compose build
 
+# Settings given to make (make docker-run LIMIT=10 CONCURRENCY=20) reach the
+# container and win over .env, as with make dev. INPUT_CSV and OUTPUT_DIR are
+# host paths, which docker-compose.yml reads itself.
+SETTINGS := LIMIT CONCURRENCY DELAY_MS RETRIES RETRY_DELAY_MS TIMEOUT_MS MAX_ATTEMPTS MAX_FAILURE_RATE USER_AGENT
+
 docker-run:    ## Run the scraper in Docker (make docker-run LIMIT=10 for a quick test)
-	docker compose run --rm $(if $(LIMIT),-e LIMIT=$(LIMIT)) scraper
+	docker compose run --rm $(strip $(foreach v,$(SETTINGS),$(if $($(v)),-e "$(v)=$($(v))"))) scraper
