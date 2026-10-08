@@ -171,5 +171,8 @@ th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--lin
 th { position: sticky; top: 0; background: var(--surface); font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 tbody tr:nth-child(even) { background: color-mix(in srgb, var(--paper) 60%, transparent); }
 .videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.videos iframe { width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius); }
+.video { margin: 0; display: grid; gap: 6px; }
+.video iframe { width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius); }
+.video figcaption, .watch { font-size: 14px; }
+.watch { margin: 8px 0 0; }
 .json { margin: 0; padding: 16px; max-height: 560px; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-family: var(--font-mono); font-size: 14px; }

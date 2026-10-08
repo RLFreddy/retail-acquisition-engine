@@ -171,20 +171,32 @@ function gallery(p) {
     }),
   ];
   ui.stage = h("div", { class: "stage" });
+  ui.watch = h("p", { class: "watch", hidden: true });
   ui.thumbs = items.map((m, i) => h("button", {
     class: "thumb", type: "button", "aria-label": m.id ? "Play the video" : `Photo ${i + 1}`,
     onclick: () => { state.media = i; drawStage(items); },
   }, h("img", { src: m.thumb, alt: "", loading: "lazy" }), m.id ? h("span", { class: "play", "aria-hidden": "true" }, "▶") : null));
   drawStage(items);
-  return h("section", { class: "gallery", "aria-label": "Photos and videos" }, ui.stage, items.length > 1 ? h("div", { class: "thumbs" }, ui.thumbs) : null);
+  return h("section", { class: "gallery", "aria-label": "Photos and videos" }, ui.stage, ui.watch, items.length > 1 ? h("div", { class: "thumbs" }, ui.thumbs) : null);
 }
+
+// The store's own player (youtube.com, not youtube-nocookie): it can use the
+// viewer's YouTube session, so YouTube asks less often to "confirm you're not
+// a bot" (VPNs trigger it). The link below each video always works.
+const player = (id, lazy) => h("iframe", {
+  src: `https://www.youtube.com/embed/${id}`, title: "Product video", loading: lazy ? "lazy" : null,
+  referrerpolicy: "strict-origin-when-cross-origin", allow: "encrypted-media; picture-in-picture", allowfullscreen: true,
+});
+const watchLink = (url) => h("a", { href: url, target: "_blank", rel: "noopener" }, "Watch on YouTube ↗");
 
 function drawStage(items) {
   const m = items[state.media];
   const content = !m ? h("p", { class: "empty" }, "No photos.")
-    : m.id ? h("iframe", { src: `https://www.youtube-nocookie.com/embed/${m.id}`, title: "Product video", allow: "encrypted-media; picture-in-picture", allowfullscreen: true })
+    : m.id ? player(m.id)
     : h("a", { href: m.url, target: "_blank", rel: "noopener", title: "Open the full-size photo" }, h("img", { src: m.url, alt: state.p.name }));
-  ui.stage.replaceChildren(state.p.badge ? h("span", { class: "ribbon" }, state.p.badge) : null, content);
+  ui.stage.replaceChildren(...[state.p.badge && !m?.id ? h("span", { class: "ribbon" }, state.p.badge) : null, content].filter(Boolean)); // the ribbon would cover a video's title
+  ui.watch.replaceChildren(...(m?.id ? [watchLink(m.url)] : []));
+  ui.watch.hidden = !m?.id;
   ui.thumbs.forEach((t, i) => t.setAttribute("aria-current", String(i === state.media)));
 }
 
@@ -516,9 +528,8 @@ function details(p) {
           h("tbody", {}, p.specs.map((row) => h("tr", {}, cols.map((c) => h("td", {}, row[c] ?? "")))))))
       : h("p", { class: "empty" }, "This product has no specs table.")],
     [`Videos (${p.videos.length})`, p.videos.length
-      ? h("div", { class: "videos" }, p.videos.map((url) => h("iframe", {
-          src: `https://www.youtube-nocookie.com/embed/${new URL(url).searchParams.get("v")}`, title: "Product video",
-          loading: "lazy", allow: "encrypted-media; picture-in-picture", allowfullscreen: true })))
+      ? h("div", { class: "videos" }, p.videos.map((url) => h("figure", { class: "video" },
+          player(new URL(url).searchParams.get("v"), true), h("figcaption", {}, watchLink(url)))))
       : h("p", { class: "empty" }, "No videos.")],
     [`All variants (${int(p.variants.length)})`, [ui.variantsInfo, h("div", { class: "table-wrap" }, h("table", {},
       h("thead", {}, h("tr", {}, h("th", {}, "SKU"), p.dropdowns.map((d) => h("th", {}, d.label)), h("th", {}, "Product Price"), h("th", {}, "Ships"))),

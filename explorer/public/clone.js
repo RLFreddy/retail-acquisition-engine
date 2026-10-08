@@ -161,9 +161,10 @@ function gallery(p) {
 function drawStage() {
   const p = state.p;
   const url = p.images[state.media];
-  ui.stage.replaceChildren(
+  ui.stage.replaceChildren(...[
     p.badge ? h("span", { class: "corner", role: "img", "aria-label": p.badge }, h("span", {}, p.badge.split(" ").map((word, i) => (i ? [h("br"), word] : word)))) : null,
-    url ? h("a", { href: url, target: "_blank", rel: "noopener", title: "Open the full-size photo" }, h("img", { src: url, alt: p.name })) : h("p", { class: "muted" }, "No photos."));
+    url ? h("a", { href: url, target: "_blank", rel: "noopener", title: "Open the full-size photo" }, h("img", { src: url, alt: p.name })) : h("p", { class: "muted" }, "No photos."),
+  ].filter(Boolean));
   ui.thumbs.forEach((t, i) => t.setAttribute("aria-current", String(i === state.media)));
 }
 
@@ -208,7 +209,7 @@ function clubsField(irons) {
 }
 
 // Standard | Customize. Where the store forces Customize the switch is faded
-// and stays on Customize.
+// and cannot be used.
 function customizeSwitch(p) {
   const locked = p.customize.required;
   ui.standard = h("button", { type: "button", disabled: locked, onclick: () => setCustomize(false) }, "Standard");
@@ -291,29 +292,25 @@ function fill(k) {
   return list;
 }
 
-// A dropdown left with one option is chosen by the page, which unlocks the
-// next. Returns the last dropdown chosen this way, or -1.
+// A dropdown left with one option is chosen by the page, which unlocks the next.
 function autoChoose(k) {
-  let last = -1;
   while (k < state.sel.length && state.lists[k]?.length === 1) {
     state.sel[k] = state.lists[k][0];
-    last = k++;
+    k++;
     if (k < state.sel.length) state.lists[k] = fill(k);
   }
-  return last;
 }
 
 // On load the page fills the first dropdown and chooses the ones left with a
-// single option; the shipping line comes from the last one it chose.
+// single option. Its shipping line starts at "Typically ships in 1 to 3 Weeks",
+// as the live page shows even when it chose every option (DIAMANA WB HST).
 function load(selected) {
   const p = state.p;
-  let last = -1;
   if (p.dropdowns.length) {
     state.lists[0] = fill(0);
-    last = autoChoose(0);
+    autoChoose(0);
   }
-  if (last >= 0) setShip(...range(fitting(last + 1)));
-  else setShip(21, 1);
+  setShip(21, 1);
   // A variant SKU from the search: its options, chosen in order.
   if (selected) p.dropdowns.forEach((d, k) => {
     const i = d.options.indexOf(selected[d.label]);
@@ -490,11 +487,13 @@ function render() {
   }
   if (ui.panel) {
     ui.panel.hidden = !state.customOn;
-    ui.notice.style.visibility = state.customOn ? "visible" : "hidden";
-    ui.standard.className = state.customOn ? "" : "active";
-    ui.customize.className = state.customOn ? "active" : "";
-    ui.standard.setAttribute("aria-pressed", String(!state.customOn));
-    ui.customize.setAttribute("aria-pressed", String(state.customOn));
+    // Where Customize is forced, the page shows its fields but leaves the faded switch on Standard.
+    const switchedOn = state.customOn && !p.customize.required;
+    ui.notice.style.visibility = switchedOn ? "visible" : "hidden";
+    ui.standard.className = switchedOn ? "" : "active";
+    ui.customize.className = switchedOn ? "active" : "";
+    ui.standard.setAttribute("aria-pressed", String(!switchedOn));
+    ui.customize.setAttribute("aria-pressed", String(switchedOn));
     ui.cu.forEach(({ select, error }, i) => {
       select.value = state.custom[i] == null ? "" : String(state.custom[i]);
       flag(select, error, `cu-${i}`);
@@ -535,11 +534,16 @@ function details(p) {
     [...sections.values()]);
 }
 
+// The store's own player (youtube.com, not youtube-nocookie): it can use the
+// viewer's YouTube session, so YouTube asks less often to "confirm you're not
+// a bot" (VPNs trigger it). The link below each video always works.
 function videos(p) {
-  return h("div", { class: "videos" }, p.videos.map((url) => h("iframe", {
-    src: `https://www.youtube-nocookie.com/embed/${new URL(url).searchParams.get("v")}`, title: "Product video",
-    loading: "lazy", allow: "encrypted-media; picture-in-picture", allowfullscreen: true,
-  })));
+  return h("div", { class: "videos" }, p.videos.map((url) => h("figure", { class: "video" },
+    h("iframe", {
+      src: `https://www.youtube.com/embed/${new URL(url).searchParams.get("v")}`, title: "Product video", loading: "lazy",
+      referrerpolicy: "strict-origin-when-cross-origin", allow: "encrypted-media; picture-in-picture", allowfullscreen: true,
+    }),
+    h("figcaption", {}, h("a", { href: url, target: "_blank", rel: "noopener" }, "Watch on YouTube ↗")))));
 }
 
 // One paragraph per line; short lines without a final period are the store's
