@@ -18,28 +18,30 @@ Full run of the 700 products in `searchresults.csv` (output in [`results/`](resu
 | Metric                | Value                                              |
 | --------------------- | -------------------------------------------------- |
 | Products captured     | **696 / 700** (the other 4 are not available on the site) |
-| Valid configurations  | **280,886**, each with its price                   |
-| Customization options | **38,983**, each with its upcharge; on 57 products the site requires them |
-| Details and media     | Description for all 696, specs table for 689, 3,397 images (every gallery), 852 YouTube videos on 535 products |
+| Valid configurations  | **280,886**, each with its price and days to ship  |
+| Customization options | **38,983**, each with its price; on 57 products the site requires them |
+| Details and media     | Description for all 696, specs table for 689, 3,397 images (every gallery), 852 YouTube videos on 535 products, the badge of 21 ("PRE ORDER", "NEW ITEM") |
 | Requests              | 1,396 (page + gallery per product), 0 retries, 0 blocks |
-| Runtime               | **1 min 52 s** with `CONCURRENCY=20 DELAY_MS=0`, or 47 s right after another run (the site's cache is warm) · about 8 min with the defaults |
+| Runtime               | **1 min 57 s** with `CONCURRENCY=20 DELAY_MS=0`, or 47 s right after another run (the site's cache is warm) · about 8 min with the defaults |
 
 **No US IP?** You can still browse the results (after `make install`):
 `OUTPUT_DIR=results/sample make explorer` shows the 5 sample products, and
 `unzip results/full-results.zip -d data && make explorer` all 696. The zip holds
-`output.json`, both CSVs, `run-report.json` and the run's log (188 MB unzipped).
+`output.json`, both CSVs, `run-report.json` and the run's log (182 MB unzipped).
 
 ## Features
 
-- **Every valid configuration with its price**, including combinations that the
-  site only reveals after several clicks
-- **Customization options with their upcharge**, grouped and ordered as the
-  site shows them, including those that only exist in the page's HTML form,
-  and whether the site requires them
-- **Product details and media:** description, specs table, every image of the
-  gallery and the YouTube videos
-- **Iron sets:** per-club prices, the clubs each set can include and the price
-  of its default set
+- **Named like the product page:** every field is something a shopper sees there
+  ("Starting At", the dropdowns, "Irons In Set", "Customize", "Product Price"…)
+- **Every valid configuration with its price and days to ship**, including
+  combinations that the site only reveals after several clicks
+- **Customize options with their price**, grouped and ordered as the site shows
+  them, including those that only exist in the page's HTML form, and whether the
+  site requires them
+- **Product details and media:** badge, description, specs table, every image of
+  the gallery and the YouTube videos
+- **Iron sets:** per-club prices and the Irons In Set clubs, with the ones checked
+  by default
 - **Explorer:** search the products by product or variant SKU, name or brand,
   and check each one against its live page (`make explorer`)
 - **Checked site data:** every JSON block it reads is validated, so a changed
@@ -127,9 +129,9 @@ Everything goes to `data/` (`data_docker/` with Docker):
 
 | File                   | Content                                                    |
 | ---------------------- | ---------------------------------------------------------- |
-| `output.json`          | One record per product: details, media, options, variants, customizations |
-| `variants.csv`         | One row per valid configuration, with its price            |
-| `customizations.csv`   | One row per customization option, with its upcharge and whether it is required |
+| `output.json`          | One record per product, named and ordered like the product page |
+| `variants.csv`         | One row per valid configuration, with its price and days to ship |
+| `customizations.csv`   | One row per Customize option, with its price and whether it is required |
 | `run-report.json`      | Run metrics and each failed product with the reason        |
 | `logs/run-<start>.log` | One file per run, one JSON line per event                  |
 | `state/scraper.db`     | Resume state (internal, not part of the results)           |
@@ -137,8 +139,8 @@ Everything goes to `data/` (`data_docker/` with Docker):
 A row of `variants.csv`:
 
 ```csv
-"product_sku","product_name","sku","options","base_price","upcharge","price","pricing_unit"
-"M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613215","{""Dexterity"":""Left Handed"",""Club Length"":""32.0in""}","399.99","0","399.99","per_item"
+"product_sku","product_name","sku","selected","starting_at","product_price","ships_in_days","per_club"
+"M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613215","{""Dexterity"":""Left Handed"",""Club Length"":""32.0in""}","399.99","399.99","21","false"
 ```
 
 The full record format is described in the
@@ -171,9 +173,10 @@ Docker. Any variable can also be set on the command line
 
 **Speed:** with the defaults, the 4 parallel requests set the pace (87 products
 per minute, 8 min, measured before the gallery request); with more of them,
-`DELAY_MS=500` caps a run at 120 products per minute. The last full runs used `CONCURRENCY=20 DELAY_MS=0`: 1,396
-requests without retries or blocks, in 1 min 52 s, or 47 s right after another
-run, while the site still has the pages cached. The defaults stay conservative on
+`DELAY_MS=500` caps a run at 120 products per minute. The last full runs used
+`CONCURRENCY=20 DELAY_MS=0`: 1,396 requests without retries or blocks, in about
+2 minutes (1 min 57 s the last time), or 47 s right after another run, while the
+site still has the pages cached. The defaults stay conservative on
 purpose; see [Runtime](DOCUMENTATION.md#3-runtime).
 
 ## Project structure
