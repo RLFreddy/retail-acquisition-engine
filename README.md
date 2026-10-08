@@ -25,7 +25,7 @@ SKUs into structured data.
 | --------------------------------- | ---------------------------------------------------------------------- |
 | Source code and how to run it     | [`src/`](src/), [Installation](#installation) and [Quick start](#quick-start) |
 | Structured output (JSON and CSV)  | [`results/`](results/): `full-results.zip` (all 696 products) and `sample/` (5, unzipped) ([Output](#output)) |
-| How it works and why: data model, conditional options, accuracy, runtime, production, daily design | [DOCUMENTATION.md](DOCUMENTATION.md) ([sections](#documentation)) |
+| How it works and why: data model, conditional options, accuracy, runtime, production, daily design | [DESIGN.md](DESIGN.md) ([sections](#documentation)) |
 
 ## Results
 
@@ -73,8 +73,8 @@ flowchart LR
 ```
 
 Why this approach, and how the page's JSON gives every combination: see
-[Approach](DOCUMENTATION.md#1-approach) and
-[Conditional options](DOCUMENTATION.md#3-conditional-options-and-price-changes).
+[Approach](DESIGN.md#1-approach) and
+[Conditional options](DESIGN.md#3-conditional-options-and-price-changes).
 
 ## Requirements
 
@@ -206,7 +206,7 @@ A row of `variants.csv`:
 "M CRAFT X S3 PUT","Mizuno M.Craft X S3 Putter","C4613215","{""Dexterity"":""Left Handed"",""Club Length"":""32.0in""}","399.99","399.99","21","false"
 ```
 
-- **Full record format:** [Data model](DOCUMENTATION.md#2-data-model); a 5-product
+- **Full record format:** [Data model](DESIGN.md#2-data-model); a 5-product
   sample is in [`results/sample/`](results/sample/).
 - **Spreadsheets:** some option names start with "+" or "-" (`+ 1 Wrap`, `- .50"`)
   and may be read as formulas. Import the CSVs as text (in Excel, Data → From
@@ -263,7 +263,7 @@ file works for `make dev` and Docker. A value given on the command line wins ove
 
 **Speed:** the defaults are conservative on purpose; the run in
 [Results](#results) used `CONCURRENCY=20 DELAY_MS=0`. Measurements and
-trade-offs are in [Runtime](DOCUMENTATION.md#5-runtime).
+trade-offs are in [Runtime](DESIGN.md#5-runtime).
 
 ## Tests
 
@@ -291,11 +291,11 @@ local server. CI runs them and the build on every push to `main`.
   script; `customize.required` marks the 57 products where all are required).
   Images and videos are kept as URLs, not downloaded.
 - **A single run, not a service:** scheduling, alerts and the history of changes
-  are designed in [Production](DOCUMENTATION.md#7-production-run-monitor-maintain) and
-  [Daily CSV pipeline](DOCUMENTATION.md#8-daily-csv-pipeline), not built.
+  are designed in [Production](DESIGN.md#7-production-run-monitor-maintain) and
+  [Daily CSV pipeline](DESIGN.md#8-daily-csv-pipeline), not built.
 
 Each gap, and how it could be closed:
-[Data that could not be captured](DOCUMENTATION.md#6-data-that-could-not-be-captured-reliably).
+[Data that could not be captured](DESIGN.md#6-data-that-could-not-be-captured-reliably).
 
 ## Project structure
 
@@ -314,18 +314,18 @@ assets/            demo.gif, the demo at the top of this README
 
 ## Documentation
 
-[DOCUMENTATION.md](DOCUMENTATION.md) explains how the scraper works, and why.
+[DESIGN.md](DESIGN.md) explains how the scraper works, and why.
 Each section starts with the question it answers and a short answer, then the
 details, tables and diagrams:
 
-1. [Approach](DOCUMENTATION.md#1-approach): why plain HTTP and the page's JSON, and how it stays considerate of the site
-2. [Data model](DOCUMENTATION.md#2-data-model): what is captured and how it is stored
-3. [Conditional options and price changes](DOCUMENTATION.md#3-conditional-options-and-price-changes): valid configurations and how prices change
-4. [Accuracy](DOCUMENTATION.md#4-accuracy): how the data is checked
-5. [Runtime](DOCUMENTATION.md#5-runtime): trade-offs, measurement, improvements
-6. [Data that could not be captured](DOCUMENTATION.md#6-data-that-could-not-be-captured-reliably): what is missing, and how it could be added
-7. [Production](DOCUMENTATION.md#7-production-run-monitor-maintain): run, monitor, maintain
-8. [Daily CSV pipeline](DOCUMENTATION.md#8-daily-csv-pipeline): new products, changes, history, flags
+1. [Approach](DESIGN.md#1-approach): why plain HTTP and the page's JSON, and how it stays considerate of the site
+2. [Data model](DESIGN.md#2-data-model): what is captured and how it is stored
+3. [Conditional options and price changes](DESIGN.md#3-conditional-options-and-price-changes): valid configurations and how prices change
+4. [Accuracy](DESIGN.md#4-accuracy): how the data is checked
+5. [Runtime](DESIGN.md#5-runtime): trade-offs, measurement, improvements
+6. [Data that could not be captured](DESIGN.md#6-data-that-could-not-be-captured-reliably): what is missing, and how it could be added
+7. [Production](DESIGN.md#7-production-run-monitor-maintain): run, monitor, maintain
+8. [Daily CSV pipeline](DESIGN.md#8-daily-csv-pipeline): new products, changes, history, flags
 
 ## License
 

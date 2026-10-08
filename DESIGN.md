@@ -1,4 +1,4 @@
-# retail-acquisition-engine — Documentation
+# retail-acquisition-engine — Design
 
 How the scraper works, and why. Each section starts with **the question** it
 answers and **a short answer**; details, tables and diagrams follow. For setup
