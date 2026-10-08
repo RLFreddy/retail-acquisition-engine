@@ -10,6 +10,7 @@
   --accent-ink: #ffffff;
   --accent-soft: #e3efe8;
   --bad: #9b2c1f;
+  --warn: #8a5300;
   --photo: #ffffff;
   --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
@@ -19,7 +20,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #0f1512; --surface: #161f1a; --ink: #e3ebe5; --muted: #9baba1; --line: #2b3831;
-    --accent: #5dbf8d; --accent-ink: #0b1510; --accent-soft: #1c3026; --bad: #f08a7a;
+    --accent: #5dbf8d; --accent-ink: #0b1510; --accent-soft: #1c3026; --bad: #f08a7a; --warn: #f0b456;
     color-scheme: dark;
   }
 }
@@ -31,11 +32,11 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(
 a { color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 h1, h2, h4 { margin: 0; text-wrap: balance; }
-.mono { font-family: var(--font-mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.mono { font-family: var(--font-mono); font-size: 13px; overflow-wrap: anywhere; }
 .muted { color: var(--muted); }
 .empty { margin: 0; color: var(--muted); font-size: 14px; }
 .count { margin: 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.source { margin: 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
+.source { margin: 0; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
 .eyebrow, .label, th {
   font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
 }
@@ -47,8 +48,12 @@ h1, h2, h4 { margin: 0; text-wrap: balance; }
 .ships { margin: 0; font-weight: 600; color: var(--accent); }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 5vw, 46px); line-height: 1; }
 .lede { margin: 0; max-width: 78ch; color: var(--muted); }
-.stats { display: flex; flex-wrap: wrap; gap: 6px; }
-.stat { font-family: var(--font-mono); font-size: 12.5px; font-variant-numeric: tabular-nums; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--surface); }
+/* The run at a glance */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 6px; }
+.kpi { display: grid; gap: 2px; align-content: start; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.kpi b { font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.kpi span { font-size: 13px; color: var(--muted); }
+.kpi-alert { justify-self: start; margin-top: 6px; padding: 1px 9px; border: 0; border-radius: 999px; background: var(--bad); color: var(--surface); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
 footer { font-size: 13px; color: var(--muted); }
 
 /* Product list */
@@ -71,8 +76,15 @@ select:disabled { opacity: 0.5; }
 }
 .item:hover { border-color: var(--accent); }
 .item[aria-current="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.item-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .item-title { font-weight: 600; font-size: 14px; }
-.item-meta { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.item-price { flex: none; font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.item-price small { font-weight: 400; font-size: 12px; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+.tag { padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+.tag.hot { border-color: var(--bad); background: var(--bad); color: var(--surface); font-weight: 600; }
+.tag.warn { border-color: var(--warn); color: var(--warn); font-weight: 600; }
+.item-meta { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
 .failures { border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; background: var(--surface); }
 .failures summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--bad); }
 .failures ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; }
@@ -81,6 +93,12 @@ select:disabled { opacity: 0.5; }
 #product { display: grid; gap: 18px; min-width: 0; }
 .p-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
 .p-title { display: grid; gap: 4px; min-width: 0; }
+/* The product at a glance */
+.facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.fact { display: inline-flex; align-items: baseline; gap: 6px; padding: 3px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.fact small { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.fact.good { border-color: var(--accent); color: var(--accent); }
+.fact.warn { border-color: var(--warn); color: var(--warn); }
 h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 36px); line-height: 1.05; }
 .p-actions { display: grid; gap: 8px; justify-items: start; min-width: 0; }
 .views { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -120,6 +138,8 @@ details.customize > summary { cursor: pointer; font-family: var(--font-display);
   background: none; border: 0; border-bottom: 2px solid transparent; padding: 6px 12px; cursor: pointer; white-space: nowrap;
 }
 .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tab .n { margin-left: 6px; padding: 0 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-family: var(--font-body); font-size: 12px; font-weight: 600; vertical-align: 2px; }
+.tab .n.zero { background: var(--paper); color: var(--muted); }
 .tabpanel { display: grid; gap: 12px; min-width: 0; }
 .desc { max-width: 72ch; }
 .desc h4 { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin: 14px 0 2px; }

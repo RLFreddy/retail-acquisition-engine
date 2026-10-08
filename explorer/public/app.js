@@ -39,13 +39,15 @@ function renderRun(run, failures) {
     const date = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(new Date(run.started_at));
     const seconds = Math.round(run.total_ms / 1000);
     byId("run").textContent = `2ndswing.com scraper · run of ${date} UTC`;
-    byId("stats").replaceChildren(...[
-      `${int(run.ok)} of ${int(run.products)} products`,
-      `${int(run.variants)} variants`,
-      `${int(run.customization_options)} customization options`,
-      `${int(run.http_requests)} requests`,
-      `${Math.floor(seconds / 60)} min ${seconds % 60} s`,
-    ].map((text) => h("span", { class: "stat" }, text)));
+    // The run at a glance; the products without data are one click away.
+    const kpi = (value, label, extra) => h("div", { class: "kpi" }, h("b", {}, value), h("span", {}, label), extra);
+    const openFailures = () => { byId("failures").open = true; byId("failures").scrollIntoView?.({ block: "center" }); };
+    byId("stats").replaceChildren(
+      kpi(`${int(run.ok)} / ${int(run.products)}`, "products scraped",
+        failures.length ? h("button", { class: "kpi-alert", type: "button", onclick: openFailures }, `${failures.length} without data`) : null),
+      kpi(int(run.variants), "variants, each with its SKU and price"),
+      kpi(int(run.customization_options), "Customize options"),
+      kpi(`${Math.floor(seconds / 60)} min ${seconds % 60} s`, `${int(run.http_requests)} requests${run.concurrency ? `, ${run.concurrency} at a time` : ""}`));
   }
   if (failures.length) {
     byId("failures").replaceChildren(
@@ -61,9 +63,15 @@ function renderList(products) {
   byId("cat").append(...categories.map((c) => h("option", { value: c }, `${c} (${products.filter((p) => p.category === c).length})`)));
   byId("list").replaceChildren(...products.map((p) => {
     const item = h("button", { class: "item", type: "button", onclick: () => select(p.sku) },
-      h("span", { class: "item-title" }, p.name),
+      h("span", { class: "item-row" },
+        h("span", { class: "item-title" }, p.name),
+        p.starting_at ? h("span", { class: "item-price" }, h("small", {}, "from "), money(p.starting_at)) : null),
       h("span", { class: "item-meta" }, `${p.category} · ${p.brand} · ${p.sku}`),
-      h("span", { class: "item-meta" }, `${int(p.variants)} variants · ${int(p.customizations)} customizations · ${p.images} images`));
+      h("span", { class: "tags" },
+        h("span", { class: "tag" }, `${int(p.variants)} ${p.variants === 1 ? "variant" : "variants"}`),
+        p.required ? h("span", { class: "tag warn", title: LOCKED }, "Customize required")
+          : p.customizations ? h("span", { class: "tag" }, `${p.customizations} Customize`) : null,
+        p.badge ? h("span", { class: "tag hot" }, p.badge) : null));
     item.dataset.text = `${p.sku} ${p.name} ${p.brand} ${p.category}`.toLowerCase();
     item.dataset.category = p.category;
     items.set(p.sku, item);
@@ -126,6 +134,7 @@ const ui = {};
 
 // Each variant becomes [sku, price, days to ship, option index per dropdown], what the dropdowns filter on.
 const OPT = 3;
+const LOCKED = "On the store the Standard | Customize switch is locked: every Customize option must be chosen before Add to Cart";
 function prepare(record) {
   const index = record.dropdowns.map((d) => new Map(d.options.map((option, i) => [option, i])));
   return {
@@ -153,6 +162,17 @@ function optionsFor(k) {
   return state.product.dropdowns[k].options.map((option, i) => [option, i]).filter(([, i]) => seen.has(i));
 }
 
+// Like the store: a dropdown left with a single option is chosen for you, which
+// opens the next one (X-Stiff and 103 on DIAMANA WB HST).
+function autoChoose(from) {
+  for (let k = from; k < state.sel.length && state.sel[k] == null; k++) {
+    if (state.sel.slice(0, k).some((s) => s == null)) return;
+    const options = optionsFor(k);
+    if (options.length !== 1) return;
+    state.sel[k] = options[0][1];
+  }
+}
+
 // choices: a variant's selected options ({ Dexterity: "Right Handed", … }), or none.
 function show(p, choices) {
   state.product = p;
@@ -160,6 +180,7 @@ function show(p, choices) {
     const i = choices ? d.options.indexOf(choices[d.label]) : -1;
     return i < 0 ? null : i;
   });
+  autoChoose(0);
   state.custom = {};
   state.clubs = new Set(p.irons_in_set?.checked ?? []);
   byId("product").replaceChildren(head(p), h("div", { class: "cols" }, buyBox(p), tabsPanel(p)));
@@ -178,13 +199,34 @@ function head(p) {
   return h("div", { class: "p-head" },
     h("div", { class: "p-title" },
       h("p", { class: "eyebrow" }, `${p.category} · ${p.brand} · SKU ${p.sku}`, p.badge ? h("span", { class: "badge" }, p.badge) : null),
-      h("h2", {}, p.name)),
+      h("h2", {}, p.name),
+      facts(p)),
     h("div", { class: "p-actions" },
       h("p", { class: "label" }, "Open this product as"),
       h("div", { class: "views" }, views.map(([name, what, href, live]) => h("a", {
         class: live ? "view live" : "view", href, target: live ? "_blank" : null, rel: live ? "noopener" : null,
       }, h("b", {}, name), h("small", {}, what)))),
       h("p", { class: "source" }, h("a", { href: `api/products/${encodeURIComponent(p.sku)}`, target: "_blank", rel: "noopener" }, "Full JSON ↗"), ` · ${p.url}`)));
+}
+
+// The product at a glance: prices, variants, shipping, Customize and clubs.
+function facts(p) {
+  const prices = p.variants.map((v) => v.product_price);
+  const days = p.variants.map((v) => v.ships_in_days).filter((d) => d != null);
+  const when = (d) => (d === 1 ? "1 business day" : `${Math.ceil(d / 7)} ${Math.ceil(d / 7) === 1 ? "week" : "weeks"}`);
+  const low = Math.min(...prices);
+  const high = Math.max(...prices);
+  const fast = Math.min(...days);
+  const slow = Math.max(...days);
+  const fact = (label, value, tone, title) => h("span", { class: tone ? `fact ${tone}` : "fact", title }, h("small", {}, label), value);
+  const nCustom = p.customize.dropdowns.length;
+  return h("div", { class: "facts" },
+    prices.length ? fact("Price", `${low === high ? money(low) : `${money(low)} – ${money(high)}`}${p.per_club ? " per club" : ""}`) : null,
+    fact("Variants", int(prices.length)),
+    days.length ? fact("Ships in", when(fast) === when(slow) ? when(fast) : `${when(fast)} – ${when(slow)}`, fast === 1 ? "good" : null) : null,
+    p.customize.required ? fact("Customize", "required", "warn", LOCKED)
+      : fact("Customize", nCustom ? `${nCustom} optional` : "none"),
+    p.irons_in_set ? fact("Irons in set", `${p.irons_in_set.checked.length} of ${p.irons_in_set.options.length} checked`) : null);
 }
 
 function buyBox(p) {
@@ -200,6 +242,7 @@ function buyBox(p) {
     onchange: (e) => {
       state.sel[k] = e.target.value === "" ? null : Number(e.target.value);
       for (let j = k + 1; j < state.sel.length; j++) state.sel[j] = null;
+      autoChoose(k + 1);
       update();
     },
   }));
@@ -255,8 +298,10 @@ const TABS = [
 function tabsPanel(p) {
   const panels = (ui.panels = {});
   const tablist = h("div", { class: "tabs", role: "tablist" });
+  const counts = { specs: p.specs.length, media: p.images.length + p.videos.length, variants: p.variants.length };
   for (const [key, label] of TABS) {
-    tablist.append(h("button", { class: "tab", role: "tab", type: "button", id: `tab-${key}`, onclick: () => selectTab(key) }, label));
+    const n = key in counts ? h("span", { class: counts[key] ? "n" : "n zero" }, int(counts[key])) : null;
+    tablist.append(h("button", { class: "tab", role: "tab", type: "button", id: `tab-${key}`, onclick: () => selectTab(key) }, label, n));
     panels[key] = h("div", { class: "tabpanel", role: "tabpanel", "aria-labelledby": `tab-${key}` });
   }
 
@@ -296,7 +341,7 @@ function tabsPanel(p) {
       ui.variantsBody)));
 
   ui.json = h("pre", { class: "json" });
-  panels.json.append(h("p", { class: "count" }, "The output.json record, with variants cut to the first 5. \"View the full JSON\", above, opens all of it."), ui.json);
+  panels.json.append(h("p", { class: "count" }, "The output.json record, with variants cut to the first 5. \"Full JSON\", above, opens all of it."), ui.json);
 
   return h("section", { class: "panel" }, h("p", { class: "label" }, "Page tabs and scraper data"), tablist, Object.values(panels));
 }
@@ -341,11 +386,14 @@ function update() {
   ui.priceLabel.textContent = chosen ? "Product Price" : "Starting At";
   ui.priceValue.textContent = money(unit);
   ui.priceUnit.hidden = !p.per_club;
+  const [low, high] = [Math.min(...prices), Math.max(...prices)];
   ui.priceDetail.textContent = chosen
     ? `SKU ${chosen[0]}`
-    : prices.length ? `${int(p.vs.length)} variants, from ${money(Math.min(...prices))} to ${money(Math.max(...prices))}` : "";
+    : prices.length === 1 ? `1 variant, ${money(low)}`
+    : prices.length ? `${int(p.vs.length)} variants, ${low === high ? money(low) : `from ${money(low)} to ${money(high)}`}` : "";
   ui.ships.textContent = chosen ? shipsIn(chosen[2]) : "";
-  ui.count.textContent = `${int(p.vs.length)} valid combinations of ${int(possible)} possible · ${int(matching.length)} match the choices`;
+  const plural = (n, one, many) => `${int(n)} ${n === 1 ? one : many}`;
+  ui.count.textContent = `${plural(p.vs.length, "valid combination", "valid combinations")} of ${int(possible)} possible · ${plural(matching.length, "matches", "match")} the choices`;
 
   const mods = round(p.customize.dropdowns.reduce((sum, d, di) => sum + (state.custom[di] != null ? d.options[state.custom[di]].price : 0), 0));
   if (p.per_club) {
