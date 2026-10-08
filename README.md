@@ -214,15 +214,26 @@ A row of `variants.csv`:
 
 ## Explorer
 
-`make explorer` serves the results at `http://localhost:4321`
-(`PORT=8080 make explorer` for another port). Every product opens in three views
-of the same data, plus a link to its live page:
+Browse the results in your browser:
 
-| View            | Address             | What it is for                                                  |
-| --------------- | ------------------- | --------------------------------------------------------------- |
-| **Explorer**    | `/`                 | Search by product or variant SKU, name or brand; each product's key facts (price range, variants, shipping, Customize), its JSON and where each field comes from |
-| **Clone**       | `/clone.html`       | The store's product page rebuilt from the data, with the page's own rules: dropdowns that open in order, the price table, Customize, the shipping line and the Add to Cart checks |
-| **Alternative** | `/alternative.html` | The same data, easier to read: choose options in any order and see the price of each one |
+```bash
+make explorer             # then open http://localhost:4321
+PORT=8080 make explorer   # the same, on another port
+```
+
+Every product opens in three views of the same data, plus a link to its live page:
+
+| View            | Address             | What it is for                                                       |
+| --------------- | ------------------- | -------------------------------------------------------------------- |
+| **Explorer**    | `/`                 | Search by SKU, variant SKU, name or brand; see each product's key facts, its JSON and where each field comes from |
+| **Clone**       | `/clone.html`       | The store's product page rebuilt from the data, with its own rules: dropdowns in order, price table, Customize, shipping line and Add to Cart checks |
+| **Alternative** | `/alternative.html` | The same data, easier to read: choose options in any order and see each one's price |
+
+| Explorer | Clone | Alternative |
+| :------: | :---: | :---------: |
+| [![Explorer view: the run's totals, the product list and the putter with its options chosen](assets/explorer.webp)](assets/explorer.webp) | [![Clone view: the store's product page rebuilt from the data, with its price table](assets/clone.webp)](assets/clone.webp) | [![Alternative view: the putter's options as buttons, with the shipping line and total](assets/alternative.webp)](assets/alternative.webp) |
+
+<sub>The Mizuno M.Craft X S3 Putter with Right Handed and 34.0in chosen. Click an image to see it full size.</sub>
 
 ## Configuration
 
@@ -309,7 +320,7 @@ src/
 explorer/          web explorer: server.ts (API) + public/ (Explorer, Clone and Alternative views)
 test/              37 offline tests
 results/           output of the full run (sample/ + full-results.zip)
-assets/            demo.gif, the demo at the top of this README
+assets/            the demo GIF and the explorer screenshots shown in this README
 ```
 
 ## Documentation
